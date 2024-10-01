@@ -101,19 +101,22 @@ De la même manière, un même bail peut être associé à un ou plusieurs locat
 
 ---
 
-## Exemple d'un load fractionné
+## Construire un fichier de caractéristiques
 
-Afin de vous aider à mieux comprendre le format attendu, détaillons ensemble les différentes parties qui composent ce fichier et comment l'intégration fonctionne à travers un exemple concret.
+Afin de vous aider à mieux comprendre les formats attendus, analysons ensemble les blocs qui composent ce fichier et comment l'intégration fonctionne à travers un exemple concret.
 
-Le fichier est composé de deux parties principales :
+Le fichier est composé de trois parties principales :
 
-- **header** comprenant les informations générales du fichier, cela permet d'identifier le partenaire et le type de fichier. **Obligatoire et présent dans tous les fichiers chargés.**
-- **aggregations** : Représente un tableau de déclarants. Chaque déclarant est composé de propriétés et d'associés. C'est donc le haut de l'entonnoir et sera systématiquement présent dans le fichier.
+- **header : obligatoire et présent dans tous les fichiers chargés**. Il comprend les informations générales du fichier, cela permet d'identifier le partenaire et le type de fichier.
 
-  Chaque déclarant est composé de :
+- **declarants** : Représente un tableau de déclarants. _Les déclarants sont les individus ou entités responsables de la déclaration des informations associées aux propriétés_.
 
-  - **properties** : un tableau d'objets représentant les propriétés. Chaque propriété est composée de caractéristiques spécifiques.
-  - **aggregationAssociates** : un tableau d'objets représentant les associés. Chaque associé est composé de caractéristiques spécifiques.
+  Un déclarant peut être composé de :
+
+  - **properties** : un tableau d'objets représentant les propriétés. Chaque propriété est composée de caractéristiques spécifiques. _Les propriétés sont les biens immobiliers concernés par la déclaration_.
+  - **associates** : un tableau d'objets représentant les associés. Chaque associé est composé de caractéristiques spécifiques. _Les associés sont les individus ou entités propriétaires de l’aggregation déclarant_.
+
+- **characteristics** (propriétés): Représente un tableau de propriétés. Ce champ permet de loader des propriétés sans passer par un déclarant.
 
 ### Création d'un déclarant
 
@@ -127,26 +130,26 @@ Dans ce premier exemple, nous illustrons la création d'un déclarant sans propr
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "aggregations": [
+  "declarants": [
     {
-      "id": "123456789declarant",
-      "legalStatusId": "SARL",
+      "id": "declarant-exemple-id-1",
+      "legalStatusId": "SCI",
       "corporateName": "Qlower",
-      "address": "22bis Rue Arthur Rimbaud",
-      "townName": "Charleville",
-      "postCode": "08109"
+      "address": "22 Boulevard Poissonière",
+      "townName": "Paris",
+      "postCode": "75002"
     }
   ]
 }
 ```
 
-À présent, nous avons créé un premier déclarant `123456789declarant`. Nous allons ensuite ajouter une propriété à ce déclarant. Pour cela, nous allons ajouter un objet `properties` à l'intérieur de l'objet `aggregations` tout en lui fournissant l'identifiant du déclarant précédemment créé.
-
-> **Note :** `properties` étant un tableau, nous pouvons ajouter autant de propriétés que nécessaire.
+Nous venons de créér un premier déclarant d'identifiant `declarant-exemple-id-1`, de forme juridique `SCI` et de nom `Qlower`. Vous pouvez ajouter autant de champs et de déclarants que nécessaire.
 
 ### Création d'une propriété à travers un déclarant
 
-Grâce à l'identifiant fourni obligatoirement, nous allons pouvoir créer une première propriété et la lier à notre déclarant.
+Nous allons maintenant ajouter une première propriété à ce déclarant. Pour cela, nous ajoutons une clé `properties`, en lui fournissant l'identifiant du déclarant précédemment créé.
+
+> **Note :** `properties` étant un tableau, nous pouvons ajouter autant de propriétés que nécessaire.
 
 :::tip[Mise à jour]
 Le déclarant ayant déjà été créé au préalable dans l'exemple précédent, les champs présents au niveau du déclarant seront donc désormais des **UPDATE** du déclarant.
@@ -163,15 +166,15 @@ Le déclarant ayant déjà été créé au préalable dans l'exemple précédent
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "aggregations": [
+  "declarants": [
     {
-      "id": "123456789declarant",
+      "id": "declarant-example-id-1",
       "corporateName": "Comptappart",
       "properties": [
         {
-          "id": "123456789property",
+          "id": "property-example-id-1",
           "type": "A",
-          "description": "Appartement 1",
+          "description": "Appartement Example",
           "furnished": "N",
           "managed": "D",
           "bldgNb": "22",
@@ -179,11 +182,7 @@ Le déclarant ayant déjà été créé au préalable dans l'exemple précédent
           "streetName2": "Appartement 1",
           "townName": "Charleville",
           "postCode": "08109",
-          "ctry": "FR",
-          "lastName": "Dupont",
-          "firstName": "Jean",
-          "telNumber": "0601020304",
-          "email": "jean@example.com"
+          "ctry": "FR"
         }
       ]
     }
@@ -191,11 +190,11 @@ Le déclarant ayant déjà été créé au préalable dans l'exemple précédent
 }
 ```
 
-Nous voici donc avec un déclarant ID `123456789declarant` possédant une propriété `123456789property` nommée `Appartement 1`. Nous avons fourni les informations minimales pour la création d'une propriété. Vous pouvez ajouter autant de champs et propriétés que nécessaire et ainsi les lier à votre déclarant.
+Nous voici donc avec un déclarant ID `declarant-exemple-id-1` possédant une propriété `property-example-id-1` nommée `Appartement 1`. Nous avons fourni les informations minimales pour la création d'une propriété. Vous pouvez ajouter autant de champs et propriétés que nécessaire et ainsi les lier à votre déclarant.
 
 ### Création d'un associé à travers un déclarant
 
-Pour ajouter un associé à notre déclarant, nous allons ajouter un objet `aggregationAssociates` à l'intérieur de l'objet `aggregations` de la même manière que pour les propriétés.
+Pour ajouter un associé à notre déclarant, nous allons ajouter une clé `associates` à l'intérieur d'un des `declarants`, de la même manière que pour les propriétés.
 
 ```json
 {
@@ -205,10 +204,10 @@ Pour ajouter un associé à notre déclarant, nous allons ajouter un objet `aggr
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "aggregations": [
+  "declarants": [
     {
       "id": "123456789declarant",
-      "aggregationAssociates": [
+      "associates": [
         {
           "id": "123456789associate",
           "civility": "M",
@@ -227,9 +226,9 @@ Pour ajouter un associé à notre déclarant, nous allons ajouter un objet `aggr
 
 Nous avons donc créé un associé `123456789associate` lié à notre déclarant `123456789declarant`. Vous pouvez ajouter autant d'associés que nécessaire et les lier à votre déclarant.
 
-### Mise à jour d'une propriété
+### Mise à jour d'une propriété à travers un déclarant
 
-Pour mettre à jour une propriété, il suffit de fournir l'identifiant de la propriété à mettre à jour et de fournir les champs à mettre à jour.
+Pour mettre à jour une propriété, il suffit de saisir le déclarant à modifier et fournir l'identifiant de la propriété à mettre à jour, ainsi que les champs à modifier.
 
 ```json
 {
@@ -239,9 +238,9 @@ Pour mettre à jour une propriété, il suffit de fournir l'identifiant de la pr
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "aggregations": [
+  "declarants": [
     {
-      "id": "123456789declarant",
+      "id": "declarant-example-id-1",
       "properties": [
         {
           "id": "123456789property",
@@ -257,11 +256,13 @@ Pour mettre à jour une propriété, il suffit de fournir l'identifiant de la pr
 }
 ```
 
-Enfin dans ce dernier exemple, nous avons mis à jour la description de la propriété `123456789property` et ajouté une nouvelle propriété `123456789property2`.
+Enfin dans ce dernier exemple, nous avons mis à jour la description de la propriété `123456789property` car cette dernière était déjà présente et nousa avons également cérer une nouvelle propriété `123456789property2`.
 
-## Exemple d'un load complet
+---
 
-Ci-dessous, un exemple complet d'un fichier de caractéristiques avec un déclarant, une propriété et un associé.
+### Création d'une propriété sans déclarant
+
+Il est également possible de créer une propriété sans passer par un déclarant. Pour cela, il suffit de créer un tableau `characteristics` directement dans le fichier.
 
 ```json
 {
@@ -271,41 +272,19 @@ Ci-dessous, un exemple complet d'un fichier de caractéristiques avec un déclar
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "aggregations": [
+  "characteristics": [
     {
-      "id": "123456789declarant",
-      "corporateName": "Comptappart",
-      "properties": [
-        {
-          "id": "123456789property",
-          "type": "A",
-          "description": "Appartement 1",
-          "furnished": "N",
-          "managed": "D",
-          "bldgNb": "22",
-          "streetName": "Rue Arthur Rimbaud",
-          "streetName2": "Appartement 1",
-          "townName": "Charleville",
-          "postCode": "08109",
-          "ctry": "FR",
-          "lastName": "Dupont",
-          "firstName": "Jean",
-          "telNumber": "0601020304",
-          "email": "jean@qlower.com"
-        },
-      ],
-      "aggregationAssociates": [
-        {
-          "id": "123456789associate",
-          "civility": "M",
-          "firstName": "Jean",
-          "lastName": "Dupont",
-          "adress": "22bis Rue Arthur Rimbaud",
-          "townName": "Charleville",
-          "ctry": "FR",
-          "email": "
-        }
-      ]
+      "id": "123456789property",
+      "type": "A",
+      "description": "Appartement 1",
+      "furnished": "N",
+      "managed": "D",
+      "bldgNb": "22",
+      "streetName": "Rue Arthur Rimbaud",
+      "streetName2": "Appartement 1",
+      "townName": "Charleville",
+      "postCode": "08109",
+      "ctry": "FR"
     }
   ]
 }
@@ -314,3 +293,7 @@ Ci-dessous, un exemple complet d'un fichier de caractéristiques avec un déclar
 ## Conclusion
 
 Vous avez maintenant toutes les informations nécessaires pour créer un fichier de caractéristiques. Vous pouvez ajouter autant de déclarants, propriétés et associés que nécessaire. N'hésitez pas à consulter les modèles ci-dessus pour plus d'informations sur les champs disponibles.
+
+```
+
+```
