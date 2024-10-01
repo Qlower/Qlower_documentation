@@ -12,26 +12,17 @@ L’architecture globale des loaders 2.0 est articulée autour de plusieurs couc
 
 Le schéma ci-dessus présente les principaux blocs fonctionnels impliqués dans le processus :
 
-1. **Utilisateur**  
-   L'utilisateur dépose des fichiers JSON dans un bucket AWS S3.
+1. **Dépot d'un fichier JSON**  
+   L'utilisateur dépose un fichier JSON dans un bucket AWS S3 attribué au partenaire.
 
-2. **AWS S3**  
-   Stocke les fichiers JSON soumis.
+2. **Analyse du fichier**  
+   Un premier module valide statiquement les fichiers JSON soumis, en vérifiant leur structure, leur format et leur contenu.
 
-3. **AWS Lambda / Celery (Validation)**  
-   Un premier module Lambda valide les fichiers JSON déposés.
+3. **Traitement Celery (Traitement)**  
+   Transmission à un système de traitement asynchrone (Celery) pour une validation plus approfondie et une intégration dans les systèmes internes de Qlower.
 
-4. **AWS Lambda / Celery (Traitement)**  
-   Si la validation réussit, un deuxième module Lambda traite les données.
-
-5. **AWS Lambda / Celery (Archivage)**  
-   Si le traitement a lieu, le dossier est déplacé dans les sous-dossiers `success` ou `failure` du bucket S3 pour des audits futurs.
-
-6. **BDD / Stockage**  
-   Les données traitées sont ensuite sauvegardées dans un système de stockage ou une base de données (ex. S3, RDS, etc.).
-
-7. **Monitoring**  
-   Permet d’obtenir les résultats du processus de chargement par mail, tout en capturant les logs et métriques pour analyse.
+4. **Archivage et monitoring**  
+   Les fichiers traités sont déplacés dans un dossier `success` ou `failure`, pour garantir leur traçabilité et leur disponibilité en cas de besoin, un système de monitoring permet de suivre l'état des opérations, et de déclencher des alertes en cas d'erreur.
 
 Chaque couche est pensée pour être **extensible** et **indépendante**, permettant ainsi des ajustements ou des mises à jour sans perturber l’ensemble du système.
 

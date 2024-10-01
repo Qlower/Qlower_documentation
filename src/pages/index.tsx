@@ -33,7 +33,7 @@ export default function Home(): JSX.Element {
     <Layout title={`Documentation ${siteConfig.title}`}>
       <main>
         <HomepageHeader />
-        {/* <HomepageFeatures /> */}
+        <HomepageFeatures />
       </main>
     </Layout>
   );

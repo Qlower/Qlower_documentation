@@ -18,17 +18,17 @@ Le renseignement de l’**ID externe** permet non seulement de garantir une pist
 
 ### Modèle transaction
 
-| **Attributs**         | **Obligatoire** | **Description**                  | **Valeur par défaut**                             | **Clé JSON**  | **ISO**    | **Domaine de validité**                                                |
-| --------------------- | :-------------: | -------------------------------- | ------------------------------------------------- | ------------- | ---------- | ---------------------------------------------------------------------- |
-| **Identifiant tiers** |       [x]       | Votre identifiant de transaction |                                                   | `id`          |            | Clé d'identification unique (chaîne de caractères)                     |
-| **Date**              |       [x]       | Date de la transaction           | None                                              | `reqdExctnDt` | YYYY-MM-DD | Chaîne de caractères                                                   |
-| **Propriété**         |       [x]       | Votre identifiant de propriété   |                                                   | `id-prty`     |            | Clé d'identification unique (chaîne de caractères)                     |
-| **Locataire**         |                 | Votre identifiant de locataire   | None                                              | `id-tenant`   |            | Clé d'identification unique (chaîne de caractères)                     |
-| **Montant**           |       [x]       | Montant signé TTC                | Montant négatif = débit, Montant positif = crédit | `amt`         | 20022      | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
-| **Devise**            |                 | Devise normalisée                | "EUR"                                             | `ccy`         | 20022      | EUR, USD, GBP, …                                                       |
-| **Catégorie**         |                 | Votre code catégorie             |                                                   | `purpose`     | 20022      | Votre liste de catégories                                              |
-| **TVA**               |                 | Montant signé                    | Montant négatif = débit, Montant positif = crédit | `tax`         | 20022      | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
-| **Référence**         |       [x]       | Description de la transaction    | None                                              | `ref`         | 20022      | Chaîne de caractères                                                   |
+| **Attributs**         | **Obligatoire** | **Description**                  | **Valeur par défaut**                             | **Clé JSON**  | **Domaine de validité**                                                |
+| --------------------- | :-------------: | -------------------------------- | ------------------------------------------------- | ------------- | ---------------------------------------------------------------------- |
+| **Identifiant tiers** |       [x]       | Votre identifiant de transaction |                                                   | `id`          | Clé d'identification unique (chaîne de caractères)                     |
+| **Date**              |       [x]       | Date de la transaction           | None                                              | `reqdExctnDt` | YYYY-MM-DD                                                             |
+| **Propriété**         |       [x]       | Votre identifiant de propriété   |                                                   | `id-prty`     | Clé d'identification unique (chaîne de caractères)                     |
+| **Locataire**         |                 | Votre identifiant de locataire   | None                                              | `id-tenant`   | Clé d'identification unique (chaîne de caractères)                     |
+| **Montant**           |       [x]       | Montant signé TTC                | Montant négatif = débit, Montant positif = crédit | `amt`         | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
+| **Devise**            |                 | Devise normalisée                | "EUR"                                             | `ccy`         | EUR, USD, GBP, …                                                       |
+| **Catégorie**         |                 | Votre code catégorie             |                                                   | `purpose`     | Votre liste de catégories                                              |
+| **TVA**               |                 | Montant signé                    | Montant négatif = débit, Montant positif = crédit | `tax`         | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
+| **Référence**         |       [x]       | Description de la transaction    | None                                              | `ref`         | Chaîne de caractères                                                   |
 
 ### Exemple
 
@@ -36,21 +36,21 @@ Le renseignement de l’**ID externe** permet non seulement de garantir une pist
 {
   "msgId": "transactions",
   "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId" : "qlower",
-  "inigPtyId" : "0620000001",
-  "version" : "2.0",
-  "inigPtynm" : "qlower",
-  "transactions" : [
+  "inigPtyOrgId": "qlower",
+  "inigPtyId": "0620000001",
+  "version": "2.0",
+  "inigPtynm": "qlower",
+  "transactions": [
     {
-      "id" : "12312121268978tr",
-      "reqdExctnDt" : "2023-08-28",
-      "id-prty" : "12345678azerty",
-      "id-tenant" : "65465azertyuio",
-      "amt" : 522.99,
-      "ccy" : "EUR",
-      "purpose" : "Loyer",
-      "tax-amount" : 0, # non-implémenté
-      "ref" : "Loyer de Jean durand payé le 28 août 2023 "
+      "id": "12312121268978tr",
+      "reqdExctnDt": "2023-08-28",
+      "id-prty": "12345678azerty",
+      "id-tenant": "65465azertyuio",
+      "amt": 522.99,
+      "ccy": "EUR",
+      "purpose": "Loyer",
+      "tax-amount": 0,
+      "ref": "Loyer de Jean durand payé le 28 août 2023 "
     }
   ]
 }
