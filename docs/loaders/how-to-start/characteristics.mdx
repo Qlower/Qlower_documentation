@@ -1,4 +1,6 @@
 ---
+id: caractéristiques
+title: Créer des caractéristiques
 sidebar_position: 2
 ---
 
@@ -116,7 +118,7 @@ Le fichier est composé de trois parties principales :
   - **properties** : un tableau d'objets représentant les propriétés. Chaque propriété est composée de caractéristiques spécifiques. _Les propriétés sont les biens immobiliers concernés par la déclaration_.
   - **associates** : un tableau d'objets représentant les associés. Chaque associé est composé de caractéristiques spécifiques. _Les associés sont les individus ou entités propriétaires de l’aggregation déclarant_.
 
-- **characteristics** (propriétés): Représente un tableau de propriétés. Ce champ permet de loader des propriétés sans passer par un déclarant.
+- **properties** (propriétés): Représente un tableau de propriétés. Ce champ permet de loader des propriétés sans passer par un déclarant.
 
 ### Création d'un déclarant
 
@@ -245,10 +247,6 @@ Pour mettre à jour une propriété, il suffit de saisir le déclarant à modifi
         {
           "id": "123456789property",
           "description": "Appartement mis à jour"
-        },
-        {
-          "id": "123456789property2",
-          "description": "Nouvel appartement"
         }
       ]
     }
@@ -256,13 +254,13 @@ Pour mettre à jour une propriété, il suffit de saisir le déclarant à modifi
 }
 ```
 
-Enfin dans ce dernier exemple, nous avons mis à jour la description de la propriété `123456789property` car cette dernière était déjà présente et nousa avons également cérer une nouvelle propriété `123456789property2`.
+Enfin dans ce dernier exemple, nous avons mis à jour la description de la propriété `123456789property` car cette dernière était déjà présente.
 
 ---
 
 ### Création d'une propriété sans déclarant
 
-Il est également possible de créer une propriété sans passer par un déclarant. Pour cela, il suffit de créer un tableau `characteristics` directement dans le fichier.
+Il est également possible de créer une propriété sans passer par un déclarant. Pour cela, il suffit de créer un tableau `properties` directement dans le fichier.
 
 ```json
 {
@@ -272,7 +270,7 @@ Il est également possible de créer une propriété sans passer par un déclara
   "inigPtyId": "0620000001",
   "inigPtynm": "qlower",
   "versionId": "2.0",
-  "characteristics": [
+  "properties": [
     {
       "id": "123456789property",
       "type": "A",
@@ -289,6 +287,10 @@ Il est également possible de créer une propriété sans passer par un déclara
   ]
 }
 ```
+
+import SwaggerDoc from "../../../src/components/swagger-doc";
+
+<SwaggerDoc />
 
 ## Conclusion
 
