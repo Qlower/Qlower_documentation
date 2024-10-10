@@ -12,11 +12,6 @@ const config: Config = {
   projectName: "qlower-doc",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  i18n: {
-    defaultLocale: "fr",
-    locales: ["fr"],
-  },
-
   presets: [
     [
       "classic",
