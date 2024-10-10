@@ -2,10 +2,8 @@ import React from "react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
-const isClient = typeof window !== "undefined";
-
 const SwaggerDoc = () => {
-  if (!isClient) {
+  if (typeof window !== "undefined") {
     return null;
   }
 
