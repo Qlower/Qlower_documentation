@@ -1,33 +1,3 @@
----
-sidebar_position: 2
----
-
-# Fichier caractéristiques
-
-Les **caractéristiques** regroupent des informations détaillées sur les propriétés, leur fiscalité associée, ainsi que les éléments locatifs liés aux propriétés. Cela inclut des caractéristiques telles que :
-
-- Les propriétés,
-- Le déclarant,
-- Le propriétaire
-
-Un **partenaire B2B** peut avoir, dans son compte Qlower, plusieurs propriétés :
-
-- Soit parce qu'il les gère (administrateur de bien, agences, notaires, gestionnaires de résidences gérées, mandataires, etc.),
-- Soit parce qu'il offre une prestation de service aux propriétaires de ces biens (expert-comptable, CGPI, promoteurs, banques, etc.).
-
-> **Note :**  
-> Une même propriété peut être associée à plusieurs baux (d'où la présence d'une liste dans le modèle JSON). Ce cas se présente dans des situations comme une colocation formelle au sein d'une même propriété, ou encore lors du départ d'un locataire et de l'arrivée d'un autre.
-
-De la même manière, un même bail peut être associé à un ou plusieurs locataires lorsque deux locataires sont contractuellement engagés à payer une part du loyer chacun. Ils sont alors **co-titulaires**.
-
-### Représentation schématique
-
-![Schema loader](/img/loader-characteristics.svg)
-
-- **properties** : Représente l'élément central des caractéristiques. Il s'agit du bien immobilier concerné.
-- **aggregations** : Ce sont les individus ou entités responsables de la déclaration des informations associées à la propriété. Chaque propriété peut être liée à 0 ou 1 aggregation.
-- **aggregationAssociates** : Indique les individus ou entités propriétaires de l’aggregation déclarant. Chaque propriété peut être liée à un ou plusieurs propriétaires. Chaque associate doit être lié à 1 aggregation.
-
 ### Modèle propriété
 
 | **Attributs**                     | **Obligatoire** | **Description**                                                   | **Valeur par défaut** | **Clé JSON**       | **Domaine de validité**                                                                |
@@ -99,201 +69,33 @@ De la même manière, un même bail peut être associé à un ou plusieurs locat
 | **Email**                    |       [x]       | Email du propriétaire           |                       | `email`      | Chaîne de caractères                               |
 | **Gérant**                   |                 | Le propriétaire est le gérant ? | FALSE                 | `manager`    | `TRUE`, `FALSE`                                    |
 
----
+# Transaction
 
-## Construire un fichier de caractéristiques
+Les **transactions** regroupent des informations détaillées sur les transactions financières liées à la location de biens immobiliers.
 
-Afin de vous aider à mieux comprendre les formats attendus, analysons ensemble les blocs qui composent ce fichier et comment l'intégration fonctionne à travers un exemple concret.
+### Attributs
 
-Le fichier est composé de trois parties principales :
+| **Attributs**         | **Obligatoire** | **Description**                  | **Valeur par défaut**                             | **Clé JSON**  | **Domaine de validité**                                                |
+| --------------------- | :-------------: | -------------------------------- | ------------------------------------------------- | ------------- | ---------------------------------------------------------------------- |
+| **Identifiant tiers** |       [x]       | Votre identifiant de transaction |                                                   | `id`          | Clé d'identification unique (chaîne de caractères)                     |
+| **Date**              |       [x]       | Date de la transaction           | None                                              | `reqdExctnDt` | YYYY-MM-DD                                                             |
+| **Propriété**         |       [x]       | Votre identifiant de propriété   |                                                   | `id-prty`     | Clé d'identification unique (chaîne de caractères)                     |
+| **Montant**           |       [x]       | Montant signé TTC                | Montant négatif = débit, Montant positif = crédit | `amt`         | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
+| **Devise**            |                 | Devise normalisée                | "EUR"                                             | `ccy`         | EUR, USD, GBP, …                                                       |
+| **Catégorie**         |                 | Votre code catégorie             |                                                   | `purpose`     | Votre liste de catégories                                              |
+| **Référence**         |       [x]       | Description de la transaction    | None                                              | `ref`         | Chaîne de caractères                                                   |
 
-- **header : obligatoire et présent dans tous les fichiers chargés**. Il comprend les informations générales du fichier, cela permet d'identifier le partenaire et le type de fichier.
+# Document
 
-- **declarants** : Représente un tableau de déclarants. _Les déclarants sont les individus ou entités responsables de la déclaration des informations associées aux propriétés_.
+Les **documents** regroupent des informations détaillées sur les fichiers associés aux propriétés immobilières.
 
-  Un déclarant peut être composé de :
+### Attributs
 
-  - **properties** : un tableau d'objets représentant les propriétés. Chaque propriété est composée de caractéristiques spécifiques. _Les propriétés sont les biens immobiliers concernés par la déclaration_.
-  - **associates** : un tableau d'objets représentant les associés. Chaque associé est composé de caractéristiques spécifiques. _Les associés sont les individus ou entités propriétaires de l’aggregation déclarant_.
-
-- **characteristics** (propriétés): Représente un tableau de propriétés. Ce champ permet de loader des propriétés sans passer par un déclarant.
-
-### Création d'un déclarant
-
-Dans ce premier exemple, nous illustrons la création d'un déclarant sans propriétés ni associés. Créons un premier fichier avec l'en-tête et le minimum requis pour créer un premier déclarant.
-
-```json
-{
-  "msgId": "caractéristiques",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId": "qlower",
-  "inigPtyId": "0620000001",
-  "inigPtynm": "qlower",
-  "versionId": "2.0",
-  "declarants": [
-    {
-      "id": "declarant-exemple-id-1",
-      "legalStatusId": "SCI",
-      "corporateName": "Qlower",
-      "address": "22 Boulevard Poissonière",
-      "townName": "Paris",
-      "postCode": "75002"
-    }
-  ]
-}
-```
-
-Nous venons de créér un premier déclarant d'identifiant `declarant-exemple-id-1`, de forme juridique `SCI` et de nom `Qlower`. Vous pouvez ajouter autant de champs et de déclarants que nécessaire.
-
-### Création d'une propriété à travers un déclarant
-
-Nous allons maintenant ajouter une première propriété à ce déclarant. Pour cela, nous ajoutons une clé `properties`, en lui fournissant l'identifiant du déclarant précédemment créé.
-
-> **Note :** `properties` étant un tableau, nous pouvons ajouter autant de propriétés que nécessaire.
-
-:::tip[Mise à jour]
-Le déclarant ayant déjà été créé au préalable dans l'exemple précédent, les champs présents au niveau du déclarant seront donc désormais des **UPDATE** du déclarant.
-
-> **INFO :** Dans ce cas-ci, nous avons ajouté un champ **corporateName**, mettant à jour le nom de la société de `Qlower` à `Comptappart`.
-
-:::
-
-```json
-{
-  "msgId": "caractéristiques",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId": "qlower",
-  "inigPtyId": "0620000001",
-  "inigPtynm": "qlower",
-  "versionId": "2.0",
-  "declarants": [
-    {
-      "id": "declarant-example-id-1",
-      "corporateName": "Comptappart",
-      "properties": [
-        {
-          "id": "property-example-id-1",
-          "type": "A",
-          "description": "Appartement Example",
-          "furnished": "N",
-          "managed": "D",
-          "bldgNb": "22",
-          "streetName": "Rue Arthur Rimbaud",
-          "streetName2": "Appartement 1",
-          "townName": "Charleville",
-          "postCode": "08109",
-          "ctry": "FR"
-        }
-      ]
-    }
-  ]
-}
-```
-
-Nous voici donc avec un déclarant ID `declarant-exemple-id-1` possédant une propriété `property-example-id-1` nommée `Appartement 1`. Nous avons fourni les informations minimales pour la création d'une propriété. Vous pouvez ajouter autant de champs et propriétés que nécessaire et ainsi les lier à votre déclarant.
-
-### Création d'un associé à travers un déclarant
-
-Pour ajouter un associé à notre déclarant, nous allons ajouter une clé `associates` à l'intérieur d'un des `declarants`, de la même manière que pour les propriétés.
-
-```json
-{
-  "msgId": "caractéristiques",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId": "qlower",
-  "inigPtyId": "0620000001",
-  "inigPtynm": "qlower",
-  "versionId": "2.0",
-  "declarants": [
-    {
-      "id": "123456789declarant",
-      "associates": [
-        {
-          "id": "123456789associate",
-          "civility": "M",
-          "firstName": "Jean",
-          "lastName": "Dupont",
-          "adress": "22bis Rue Arthur Rimbaud",
-          "townName": "Charleville",
-          "ctry": "FR",
-          "email": "jean@example.com"
-        }
-      ]
-    }
-  ]
-}
-```
-
-Nous avons donc créé un associé `123456789associate` lié à notre déclarant `123456789declarant`. Vous pouvez ajouter autant d'associés que nécessaire et les lier à votre déclarant.
-
-### Mise à jour d'une propriété à travers un déclarant
-
-Pour mettre à jour une propriété, il suffit de saisir le déclarant à modifier et fournir l'identifiant de la propriété à mettre à jour, ainsi que les champs à modifier.
-
-```json
-{
-  "msgId": "caractéristiques",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId": "qlower",
-  "inigPtyId": "0620000001",
-  "inigPtynm": "qlower",
-  "versionId": "2.0",
-  "declarants": [
-    {
-      "id": "declarant-example-id-1",
-      "properties": [
-        {
-          "id": "123456789property",
-          "description": "Appartement mis à jour"
-        },
-        {
-          "id": "123456789property2",
-          "description": "Nouvel appartement"
-        }
-      ]
-    }
-  ]
-}
-```
-
-Enfin dans ce dernier exemple, nous avons mis à jour la description de la propriété `123456789property` car cette dernière était déjà présente et nousa avons également cérer une nouvelle propriété `123456789property2`.
-
----
-
-### Création d'une propriété sans déclarant
-
-Il est également possible de créer une propriété sans passer par un déclarant. Pour cela, il suffit de créer un tableau `characteristics` directement dans le fichier.
-
-```json
-{
-  "msgId": "caractéristiques",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "inigPtyOrgId": "qlower",
-  "inigPtyId": "0620000001",
-  "inigPtynm": "qlower",
-  "versionId": "2.0",
-  "characteristics": [
-    {
-      "id": "123456789property",
-      "type": "A",
-      "description": "Appartement 1",
-      "furnished": "N",
-      "managed": "D",
-      "bldgNb": "22",
-      "streetName": "Rue Arthur Rimbaud",
-      "streetName2": "Appartement 1",
-      "townName": "Charleville",
-      "postCode": "08109",
-      "ctry": "FR"
-    }
-  ]
-}
-```
-
-## Conclusion
-
-Vous avez maintenant toutes les informations nécessaires pour créer un fichier de caractéristiques. Vous pouvez ajouter autant de déclarants, propriétés et associés que nécessaire. N'hésitez pas à consulter les modèles ci-dessus pour plus d'informations sur les champs disponibles.
-
-```
-
-```
+| **Attributs**             | **Obligatoire** | **Description**                      | **Valeur par défaut** | **Clé JSON** | **Domaine de validité**                            |
+| ------------------------- | :-------------: | ------------------------------------ | --------------------- | ------------ | -------------------------------------------------- |
+| **Identifiant**           |       [x]       | Votre identifiant de document        |                       | `id`         | Clé d'identification unique (chaîne de caractères) |
+| **Identifiant Propriété** |       [x]       | Identifiant de la propriété associée |                       | `propertyId` | Clé d'identification unique (chaîne de caractères) |
+| **Nom du fichier**        |       [x]       | Nom du fichier                       |                       | `fileName`   | Chaîne de caractères                               |
+| **Type de fichier**       |       [x]       | Type de fichier                      |                       | `fileType`   | Code numérique représentant le type de fichier     |
+| **Année**                 |       [ ]       | Année du document                    |                       | `year`       | Année en format YYYY                               |
+| **Lien du fichier**       |       [x]       | URL du fichier                       |                       | `fileLink`   | URL valide                                         |
