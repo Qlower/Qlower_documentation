@@ -1,8 +1,0 @@
-{
-  "label": "Présentation",
-  "position": 1,
-  "link": {
-    "type": "generated-index",
-    "description": "Comprendre les concepts de base de notre architecture loader. Cela vous permettra de mieux appréhender les autres sections de la documentation."
-  }
-}

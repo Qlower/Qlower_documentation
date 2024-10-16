@@ -1,6 +1,6 @@
 {
   "label": "Modèles",
-  "position": 3,
+  "position": 4,
   "link": {
     "type": "generated-index",
     "description": "Les loaders 2.0 prennent en charge différents types de données organisées de manière structurée. Les types de contenu sont divisés en plusieurs catégories : En-tête (Header), Caractéristiques, Transactions et Documents. Cette section détaille ces catégories et explique comment les données doivent être organisées pour être correctement traitées par le système."

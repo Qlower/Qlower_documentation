@@ -11,6 +11,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Attributs**                     | **Obligatoire** | **Description**                                                   | **Valeur par défaut** | **Clé JSON**       | **Domaine de validité**                                                                |
 | --------------------------------- | :-------------: | ----------------------------------------------------------------- | --------------------- | ------------------ | -------------------------------------------------------------------------------------- |
 | **Description d’une propriété**   |       [x]       | Votre identifiant de la propriété                                 |                       | `id`               | Clé d'identification unique (chaîne de caractères)                                     |
+| **Identifiant du déclarant**      |                 | Identifiant du déclarant associé à la propriété                   |                       | `declarantId`      | Chaîne de caractères                                                                   |
 | **Identifiant tiers**             |                 | Demande de suppression                                            |                       | `remove`           | ``, `R`                                                                                |
 | **Type**                          |                 | Type de propriété                                                 |                       | `type`             | `A (appartement)`, `H (maison)`, `CL (commerce)`, `P (parking)`                        |
 | **Description**                   |       [x]       | Nom complet de la propriété                                       |                       | `description`      | Chaîne de caractères représentant le dossier à traiter                                 |
@@ -43,6 +44,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Prix de revient**               |                 | Prix de revient (si disponible)                                   |                       | `costPrice`        | Nombre décimal (exemple : `13.56`)                                                     |
 | **Neuf/vefa**                     |                 | Statut de completion à la date d'acquisition (neuf, vefa, ancien) |                       | `completionStatus` | `NEW` (neuf), `VEFA` (VEFA), `OLD` (ancien)                                            |
 | **Dépôt de permis de construire** |                 | Date de dépôt du permis de construire (si disponible)             |                       | `startConstrDate`  | Chaîne de caractères (en l'absence de fuseau horaire, celui-ci est mis à Paris/France) |
+| **Documents**                     |                 | Liste des documents associés à la propriété                       |                       | `documents`        | Tableau d'objets représentant les documents associés à la propriété                    |
 
 ### JSON
 
@@ -79,6 +81,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
   "workCompDate": "2021-01-01",
   "costPrice": 200000.0,
   "completionStatus": "NEW",
-  "startConstrDate": "1999-01-01"
+  "startConstrDate": "1999-01-01",
+  "documents": []
 }
 ```
