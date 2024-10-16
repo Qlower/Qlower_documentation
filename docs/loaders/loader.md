@@ -4,8 +4,6 @@ sidebar_position: 3
 
 # Charger un fichier
 
-### Introduction
-
 Le fichier de **chargement (load)** a pour rôle d'intégrer des données dans le système tout en respectant une structure précise. Il permet d'importer des informations relatives aux **déclarants**, **propriétés**, **associés**, **transactions** et **documents**. Ce fichier est essentiel pour la gestion des données fiscales et administratives, en assurant la cohérence et l'intégrité des informations à travers plusieurs sections.
 
 ### 1. **Structure du fichier**
