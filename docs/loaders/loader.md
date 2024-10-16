@@ -48,8 +48,6 @@ La section **déclarants** permet de décrire les individus ou les entités qui 
 - Un tableau de **propriétés** détenues par ce déclarant.
 - Un tableau d'**associés** représentant des personnes physiques ou morales liées au déclarant (comme des copropriétaires ou actionnaires).
 
-Chaque déclarant est identifié par un identifiant unique et peut inclure des informations légales, fiscales, et géographiques.
-
 Voir [Modèle Déclarant](/docs/loaders/models/declarants) pour plus d'informations.
 
 ### 3. **Propriétés**
@@ -66,8 +64,6 @@ Voir [Modèle Propriété](/docs/loaders/models/properties) pour plus d'informat
 ### 4. **Associés**
 
 Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Cette section permet de lier des individus ou des entreprises à un déclarant, avec des informations spécifiques comme le nom, l'adresse, et les coordonnées.
-
-Les associés peuvent également inclure des rôles spécifiques comme celui de gestionnaire.
 
 Voir [Modèle Associé](/docs/loaders/models/associates) pour plus d'informations.
 
@@ -111,7 +107,7 @@ Voir [Modèle Document](/docs/loaders/models/documents) pour plus d'informations
 
   :::info[Indépendance]
 
-- **Propriétés ou documents** : Il est possible de lier des **documents** et des **propriétés** indépendamment ou directement à un déclarant. Assurez-vous de respecter la structure de lien entre les entités.
+- **Propriétés ou documents** : Il est possible de lier des **documents** et des **propriétés** indépendamment. Assurez-vous de respecter la structure de lien entre les entités.
   :::
 
 ### 8. **Exemple complet de fichier de chargement**
