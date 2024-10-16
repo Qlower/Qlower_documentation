@@ -69,7 +69,7 @@ Les **associés** sont les personnes physiques ou morales associées à un décl
 
 Les associés peuvent également inclure des rôles spécifiques comme celui de gestionnaire.
 
-Voir [Modèle Associé](/docs/loaders/how-to-start/models/associates) pour plus d'informations.
+Voir [Modèle Associé](/docs/loaders/models/associates) pour plus d'informations.
 
 ### 5. **Transactions**
 
@@ -82,7 +82,7 @@ La section **transactions** est dédiée aux mouvements financiers et opération
 
 Cela permet de suivre les flux financiers associés à la gestion des propriétés déclarées.
 
-Voir [Modèle Transaction](/docs/loaders/how-to-start/models/transactions) pour plus d'informations.
+Voir [Modèle Transaction](/docs/loaders/models/transactions) pour plus d'informations.
 
 ### 6. **Documents**
 
@@ -100,7 +100,7 @@ Les documents peuvent être liés directement à une propriété ou déclarés i
 1. **Dans le cadre d'une propriété** : Les documents sont attachés à une propriété spécifique via la section `documents` de cette propriété.
 2. **Indépendamment d'une propriété** : Un document peut être déclaré indépendamment dans la section principale `documents`, en utilisant un `declarantId` pour lier ce document à une propriété ou un déclarant spécifique.
 
-Voir [Modèle Document](/docs/loaders/how-to-start/models/documents) pour plus d'informations.
+Voir [Modèle Document](/docs/loaders/models/documents) pour plus d'informations.
 
 ### 7. **Règles importantes à respecter**
 
