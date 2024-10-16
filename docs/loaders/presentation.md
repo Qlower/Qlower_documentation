@@ -13,15 +13,13 @@ L'architecture suit un **pipeline structuré** composé de plusieurs modules fon
 1. **Utilisateur** : L'utilisateur (ou le système tiers) dépose des fichiers JSON contenant les données (ex. : transactions, caractéristiques de biens, documents) dans un **bucket AWS S3**.
 2. **AWS S3 (Stockage des données)** : Les fichiers sont stockés dans un bucket sécurisé S3, qui sert de point d'entrée central pour le traitement des données. S3 garantit une **haute disponibilité** et la **scalabilité automatique**, adaptée au volume des fichiers entrants.
 
-3. **AWS Lambda/Celery (Validation)** : Dès qu’un fichier JSON est déposé, un **événement S3** déclenche une **fonction AWS Lambda** ou un worker Celery qui valide les fichiers. Cette validation initiale vérifie que le format JSON est correct et que tous les champs obligatoires sont présents.
+3. **AWS Lambda/Celery (Traitement)** : Une tâche Celery prend en charge le **traitement des données**. Cela inclut la normalisation, la transformation des données au format Qlower, et l'enrichissement si nécessaire (comme l’ajout de données manquantes ou calculées).
 
-4. **AWS Lambda/Celery (Traitement)** : Si la validation réussit, un deuxième module Lambda prend en charge le **traitement des données**. Cela inclut la normalisation, la transformation des données au format Qlower, et l'enrichissement si nécessaire (comme l’ajout de données manquantes ou calculées).
+4. **Archivage et gestion des erreurs** : Après traitement, les fichiers JSON sont déplacés dans des sous-dossiers "success" ou "failure" dans S3, en fonction de l’issue. Cela permet une **traçabilité** complète pour les audits ou corrections futures.
 
-5. **Archivage et gestion des erreurs** : Après traitement, les fichiers JSON sont déplacés dans des sous-dossiers "success" ou "failure" dans S3, en fonction de l’issue. Cela permet une **traçabilité** complète pour les audits ou corrections futures.
+5. **BDD / Stockage** : Une fois transformées et validées, les données sont sauvegardées dans les systèmes fonctionnels de Qlower (ex. : bases de données relationnelles comme **AWS RDS**, stockage S3 pour les documents ou autres systèmes internes).
 
-6. **BDD / Stockage** : Une fois transformées et validées, les données sont sauvegardées dans les systèmes fonctionnels de Qlower (ex. : bases de données relationnelles comme **AWS RDS**, stockage S3 pour les documents ou autres systèmes internes).
-
-7. **Monitoring et Notifications** : Un **module de monitoring** envoie des **notifications en temps réel** (par email ou via des webhooks) à l'utilisateur pour indiquer le statut du traitement (succès ou échec). Il capture également les logs et métriques pour faciliter l'analyse et la résolution des erreurs.
+6. **Monitoring et Notifications** : Un **module de monitoring** envoie des **notifications en temps réel** (par email ou via des webhooks) à l'utilisateur pour indiquer le statut du traitement (succès ou échec). Il capture également les logs et métriques pour faciliter l'analyse et la résolution des erreurs.
 
 ---
 
@@ -32,9 +30,6 @@ Le **flux de traitement des loaders** repose sur un **ordonnancement asynchrone*
 #### 1. **Modes d’Intégration**
 
 - **Photo quotidienne (Batch)** : Chaque nuit, les partenaires peuvent déposer un **instantané complet** (photo) de leurs données. Ce traitement batch assure la mise à jour quotidienne des informations dans la plateforme Qlower, permettant d’intégrer à la fois les nouvelles données et les mises à jour.
-- **Rafraîchissement intraday (Batch + API)** : En cours de journée, il est possible de **rafraîchir** les données en fonction des changements depuis la dernière photo, grâce à un traitement par lot intraday. Cela garantit une **mise à jour plus rapide**, adaptée à des environnements plus dynamiques.
-
-- **Mode fil de l’eau (API)** : Ce mode utilise une **API temps réel** pour répliquer instantanément les modifications faites dans le système partenaire vers la plateforme Qlower. Chaque modification est traitée à la volée, assurant une **synchronisation en temps réel**.
 
 #### 2. **Étapes du Processus de Traitement**
 
@@ -54,7 +49,6 @@ Les étapes suivantes sont orchestrées de manière séquentielle et asynchrone 
 ### Technologies Clés Utilisées
 
 - **AWS S3** : Stockage sécurisé et scalable pour la réception des fichiers.
-- **AWS Lambda** : Exécution sans serveur pour la validation, transformation et traitement des données.
 - **Celery** : Outil de traitement asynchrone pour orchestrer les tâches en arrière-plan et gérer les workloads élevés.
 - **JSON** : Format de fichier standardisé pour la manipulation et l’échange de données entre les systèmes partenaires et Qlower.
 
