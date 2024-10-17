@@ -21,9 +21,9 @@ Ci-dessous, une liste des types de documents acceptés avec leurs descriptions r
 | 56       | Report de résultat BIC (2042-C-PRO)                                 |
 | 57       | Liasse année précédente                                             |
 | 58       | Tableau immobilisation                                              |
-| 59       | Extrait K-bis (Loader)                                              |
+| 59       | Extrait K-bis                                                       |
 | 60       | Tableau des apports et retraits en compte courant d'associés        |
-| 61       | Mememto fiscal (modifié)                                            |
+| 61       | Memento fiscal                                                      |
 
 ---
 
