@@ -114,8 +114,8 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
 
 ```json
 {
-  "inigPtynm": "qlower",
-  "apiKey": "7Swvx0CZDKXLkeJ6iaOeH8Cb6TPdbHAL",
+  "inigPtynm": "tristan",
+  "apiKey": "YcSk0ZAab6ahG7Kgimu138qFtV4DNKPA",
   "creDtTm": "2023-08-28T10:15:43.25+01:00",
   "versionId": "2.0",
   "declarants": [
@@ -123,7 +123,7 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
       "id": "DECL123456789",
       "sirenId": "123456789",
       "nicId": "00012",
-      "legalStatusId": "SARL",
+      "legalStatusId": "224",
       "taxRegime": "IS",
       "corporateName": "Mon Entreprise",
       "debActDate": "2020-05-01",
@@ -151,7 +151,7 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
           "firstName": "Jean",
           "telNumber": "0123456789",
           "email": "jean.dupont@example.com",
-          "constructionDate": "2000-01-01",
+          "constructionDate": "2020-01-01",
           "acquisitionDate": "2020-01-01",
           "nbrRooms": 3,
           "area": 75.5,
@@ -160,7 +160,6 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
           "nbrFloors": 2,
           "nbrPark": 1,
           "siretId": "12345678901234",
-          "tvaOption": "20%",
           "netReevaluation": 250000.0,
           "debActDate": "2020-01-01",
           "taxRegime": 7,
@@ -186,7 +185,7 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
           "civility": "M",
           "firstName": "John",
           "lastName": "Doe",
-          "adress": "12 Rue de la République, Lyon, France",
+          "address": "12 Rue de la République, Lyon, France",
           "email": "johndoe@example.com",
           "manager": true
         }
@@ -197,10 +196,10 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
     {
       "id": "TRANS123456789",
       "reqdExctnDt": "2023-06-15",
-      "id-prty": "PROP12345678AZERTY",
+      "id-prty": "exemple-propriété",
       "amt": 1500.0,
       "ccy": "EUR",
-      "purpose": "Loyer mensuel",
+      "purpose": "Loyer",
       "ref": "PAIEMENT12345"
     }
   ]

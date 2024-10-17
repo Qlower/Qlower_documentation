@@ -14,7 +14,7 @@ sidebar_position: 2
 | **Civilité (M/MME/société)** |       [x]       | Type de propriétaire            |                       | `civility`   | `M` (monsieur), `MME` (madame), `SOC` (société)    |
 | **Prénom**                   |                 | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
 | **Nom**                      |                 | Nom du propriétaire             |                       | `lastName`   | Chaîne de caractères                               |
-| **Adresse**                  |                 | Adresse du propriétaire         |                       | `adress`     | Chaîne de caractères                               |
+| **Adresse**                  |                 | Adresse du propriétaire         |                       | `address`    | Chaîne de caractères                               |
 | **Ville**                    |                 | Ville du propriétaire           |                       | `townName`   | Chaîne de caractères                               |
 | **Pays**                     |                 | Pays du propriétaire            |                       | `ctry`       | Code de pays `FR`                                  |
 | **Email**                    |       [x]       | Email du propriétaire           |                       | `email`      | Chaîne de caractères                               |
