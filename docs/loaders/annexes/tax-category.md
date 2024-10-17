@@ -1,7 +1,7 @@
 ---
 id: categories-fiscales
-title: Annexe - Catégories fiscales
-sidebar_label: Catégories fiscales
+title: Annexe - Catégories Fiscales
+sidebar_label: Catégories Fiscales
 sidebar_position: 5
 ---
 
