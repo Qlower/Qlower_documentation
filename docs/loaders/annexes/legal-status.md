@@ -12,12 +12,7 @@ Ci-dessous, une liste des statuts juridiques avec leurs descriptions respectives
 | legalStatusId | Description                          |
 | ------------- | ------------------------------------ |
 | 5426          | SARL immobilière de gestion          |
-| 1000          | Entrepreneur individuel              |
-| 2110          | Indivision entre personnes physiques |
-| 6540          | Société civile immobilière           |
-| 6599          | Autre société civile                 |
 | 5710          | SAS, société par actions simplifiée  |
-| 5426          | SARL immobilière de gestion          |
 | 1000          | Entrepreneur individuel              |
 | 2110          | Indivision entre personnes physiques |
 | 6540          | Société civile immobilière           |

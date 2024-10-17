@@ -5,7 +5,7 @@ sidebar_label: Catégories Fiscales
 sidebar_position: 5
 ---
 
-# Catégories fiscales
+# Catégories Fiscales
 
 Ci-dessous, une liste des catégories fiscales utilisées dans le cadre de la gestion et l'investissement immobilier.
 
