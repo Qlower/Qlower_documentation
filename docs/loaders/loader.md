@@ -130,10 +130,10 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
       "address": "123 Avenue des Champs",
       "townName": "Paris",
       "postCode": "75008",
-      "ogaSiretId": "12345678900012",
-      "ogaName": "OGA Expert",
-      "ogaId": "OGA123456",
-      "ogaNumber": "ADH20200456",
+      "ogaSiretId": "31517251000036",
+      "ogaName": "OGI-France",
+      "ogaId": "105350",
+      "ogaNumber": "98079",
       "properties": [
         {
           "id": "exemple-propriété",
