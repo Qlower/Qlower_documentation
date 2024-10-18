@@ -16,7 +16,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Type**                          |                 | Type de propriété                                                 |                       | `type`             | `A (appartement)`, `H (maison)`, `CL (commerce)`, `P (parking)`                        |
 | **Description**                   |       [x]       | Nom complet de la propriété                                       |                       | `description`      | Chaîne de caractères représentant le dossier à traiter                                 |
 | **Meublé**                        |                 | Le logement est-il meublé ?                                       | `N`                   | `furnished`        | `O`, `N`                                                                               |
-| **Gestion**                       |                 | Mode de Gestion                                                   | `N`                   | `managed`          | `D (direct)`, `A (agence)`, `STRP (plateforme temporaire)`, `M (mandataire)`           |
+| **Gestion**                       |                 | Mode de Gestion                                                   | `N`                   | `managed`          | `D (direct)`, `A (agence)`, `STRP (plateforme courte durée)`, `M (mandataire)`           |
 | **Numéro**                        |       [x]       | Numéro dans la rue                                                |                       | `bldgNb`           | Chaîne de caractères                                                                   |
 | **Rue**                           |       [x]       | Nom de la rue                                                     |                       | `streetName`       | Chaîne de caractères                                                                   |
 | **Rue (partie 2)**                |       [x]       | Nom de la rue (deuxième partie)                                   |                       | `streetName2`      | Chaîne de caractères                                                                   |
@@ -45,6 +45,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Neuf/vefa**                     |                 | Statut de completion à la date d'acquisition (neuf, vefa, ancien) |                       | `completionStatus` | `NEW` (neuf), `VEFA` (VEFA), `OLD` (ancien)                                            |
 | **Dépôt de permis de construire** |                 | Date de dépôt du permis de construire (si disponible)             |                       | `startConstrDate`  | Chaîne de caractères (en l'absence de fuseau horaire, celui-ci est mis à Paris/France) |
 | **Documents**                     |                 | Liste des documents associés à la propriété                       |                       | `documents`        | Tableau d'objets représentant les documents associés à la propriété                    |
+| **Propriété démembrée** |               | La propriété est-elle démembrée ?                   |`FALSE`      |`dismembered_property` | `TRUE`, `FALSE`
 
 ### JSON
 

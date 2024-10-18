@@ -11,16 +11,13 @@ Ci-dessous, une liste des types de documents acceptés avec leurs descriptions r
 
 | fileType | Description                                                         |
 | -------- | ------------------------------------------------------------------- |
-| 26       | Liasse fiscale                                                      |
 | 42       | Acte notarié                                                        |
-| 46       | Déclaration d’activité                                              |
-| 53       | Tableau d’amortissement du prêt                                     |
-| 28       | Extrait KBIS                                                        |
+| 53       | Tableau d’amortissement du prêt daté                                |
 | 27       | Autres documents                                                    |
-| 55       | Déclaration de revenus fonciers de l'année précédente (cerfa2044EB) |
+| 55       | Déclaration 1044EB (Défiscalisation)                                |
 | 56       | Report de résultat BIC (2042-C-PRO)                                 |
-| 57       | Liasse année précédente                                             |
-| 58       | Tableau immobilisation                                              |
+| 57       | Liasse fiscale année précédente                                     |
+| 58       | Tableau des immobilisations                                         |
 | 59       | Extrait K-bis                                                       |
 | 60       | Tableau des apports et retraits en compte courant d'associés        |
 | 61       | Memento fiscal                                                      |
