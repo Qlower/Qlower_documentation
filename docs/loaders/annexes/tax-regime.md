@@ -1,7 +1,7 @@
 ---
 id: regimes-fiscaux
 title: Annexe - Régimes Fiscaux
-sidebar_label: Régimes Fiscaux
+sidebar_label: Régimes Fiscaux - Propriété
 sidebar_position: 1
 ---
 

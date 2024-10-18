@@ -13,7 +13,7 @@ L'en-tête d'un loader représente un ensemble de métadonnées cruciales fourni
 | **Nom du Partenaire** |       [x]       | Id du partenaire attribué par Qlower |                       | `inigPtynm`  | Chaîne de caractères                                           |
 | **Clé d'accès**       |       [x]       | Clé d'accès générée par notre équipe |                       | `apiKey`     | Chaîne de caractères                                           |
 | **Date d’émission**   |       [x]       | Date d’émission du message           |                       | `creDtTm`    | ISO 8601 (en l’absence de fuseau horaire, fuseau Paris/France) |
-| **Version du loader** |       [x]       | Version du loader utilisée           |                       | `versionId`  | Chaîne de caractères                                           |
+| **Version du loader** |       [x]       | Version du loader utilisée           |                       | `versionId`  | Chaîne de caractères (**'1.0'** / **'2.0'**)                                           |
 
 ## Exemple
 

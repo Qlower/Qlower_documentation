@@ -12,7 +12,7 @@ sidebar_position: 2
 | ---------------------------- | :-------------: | ------------------------------- | --------------------- | ------------ | -------------------------------------------------- |
 | **Description d’un associé** |       [x]       | Votre identifiant de déclarant  |                       | `id`         | Clé d'identification unique (chaîne de caractères) |
 | **Civilité (M/MME/société)** |       [x]       | Type de propriétaire            |                       | `civility`   | `M` (monsieur), `MME` (madame), `SOC` (société)    |
-| **Prénom**                   |                 | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
+| **Prénom**                   |             | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
 | **Nom**                      |                 | Nom du propriétaire             |                       | `lastName`   | Chaîne de caractères                               |
 | **Adresse**                  |                 | Adresse du propriétaire         |                       | `address`    | Chaîne de caractères                               |
 | **Ville**                    |                 | Ville du propriétaire           |                       | `townName`   | Chaîne de caractères                               |

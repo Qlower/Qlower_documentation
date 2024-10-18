@@ -1,7 +1,7 @@
 ---
 id: regimes-fiscaux-aggreagation
 title: Annexe - Régimes Fiscaux
-sidebar_label: Régimes Fiscaux
+sidebar_label: Régimes Fiscaux - Déclarant
 sidebar_position: 2
 ---
 
@@ -23,4 +23,4 @@ Ci-dessous, une liste des régimes fiscaux avec leurs descriptions respectives :
 | 10        | Catégorie fiscale RF des sociétés immobilières déposant des 2072                   |
 ---
 
-Ce tableau présente les différents régimes fiscaux applicables aux investissements immobiliers, incluant des dispositifs tels que **Pinel**, **Censi-Bouvard**, **Malraux**, et **Girardin**, entre autres.
+Ce tableau présente les différents régimes fiscaux applicables aux déclarants.
