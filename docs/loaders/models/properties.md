@@ -45,7 +45,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Neuf/vefa**                     |                 | Statut de completion à la date d'acquisition (neuf, vefa, ancien) |                       | `completionStatus` | `NEW` (neuf), `VEFA` (VEFA), `OLD` (ancien)                                            |
 | **Dépôt de permis de construire** |                 | Date de dépôt du permis de construire (si disponible)             |                       | `startConstrDate`  | Chaîne de caractères (en l'absence de fuseau horaire, celui-ci est mis à Paris/France) |
 | **Documents**                     |                 | Liste des documents associés à la propriété                       |                       | `documents`        | Tableau d'objets représentant les documents associés à la propriété                    |
-| **Propriété démembrée** |               | La propriété est-elle démembrée ?                   |`FALSE`      |`dismembered_property` | `TRUE`, `FALSE`
+| **Propriété démembrée** |               | La propriété est-elle démembrée ?                   |`FALSE`      |`dismemberedProperty` | `TRUE`, `FALSE`
 
 ### JSON
 
@@ -83,6 +83,7 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
   "costPrice": 200000.0,
   "completionStatus": "NEW",
   "startConstrDate": "1999-01-01",
+  "dismemberedProperty": false,
   "documents": []
 }
 ```
