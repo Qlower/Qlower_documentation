@@ -2,7 +2,7 @@
 id: statuts-juridiques
 title: Annexe - Statuts Juridiques
 sidebar_label: Statuts Juridiques
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Statuts Juridiques

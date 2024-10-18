@@ -2,7 +2,7 @@
 id: types-de-documents
 title: Annexe - Types de Documents
 sidebar_label: Types de Documents
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Types de Documents Acceptés
