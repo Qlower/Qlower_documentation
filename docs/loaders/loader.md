@@ -115,16 +115,18 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
 ```json
 {
   "inigPtynm": "tristan",
-  "apiKey": "YcSk0ZAab6ahG7Kgimu138qFtV4DNKPA",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
+  "apiKey": "YcSk0ZAab6ahG7Kgimu138qFtV4DNKPB",
+  "creDtTm": "2020-10-10",
   "versionId": "2.0",
   "declarants": [
     {
-      "id": "DECL123456789",
+      "id": "DECL9876543211",
       "sirenId": "123456789",
       "nicId": "00012",
-      "legalStatusId": "224",
-      "taxRegime": "IS",
+      "legalStatusId": "5426",
+      "taxRegimeAggregation": "IS",
+      "taxCategoryId": "3",
+      "taxRegimeId": "3",
       "corporateName": "Mon Entreprise",
       "debActDate": "2020-05-01",
       "address": "123 Avenue des Champs",
@@ -136,7 +138,7 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
       "ogaNumber": "98079",
       "properties": [
         {
-          "id": "exemple-propriété",
+          "id": "exemple-propriete",
           "type": "A",
           "description": "Appartement 1",
           "furnished": "N",
@@ -160,16 +162,18 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
           "nbrFloors": 2,
           "nbrPark": 1,
           "siretId": "12345678901234",
+          "tvaOption": "N",
           "netReevaluation": 250000.0,
           "debActDate": "2020-01-01",
-          "taxRegime": 7,
+          "taxRegime": 5,
           "workCompDate": "2021-01-01",
           "costPrice": 200000.0,
           "completionStatus": "NEW",
           "startConstrDate": "1999-01-01",
+          "dismemberedProperty": "N",
           "documents": [
             {
-              "id": "9876543211234iddocument",
+              "id": "9876543211234iddocuments",
               "propertyId": "PROP12345678AZERTY",
               "fileName": "Liasse 2022 Appartement XXX",
               "fileType": "26",
@@ -181,22 +185,24 @@ Voici un exemple complet de fichier illustrant les différentes sections, avec u
       ],
       "associates": [
         {
-          "id": "ASSOC123456",
+          "id": "ASSOC12345678",
           "civility": "M",
           "firstName": "John",
           "lastName": "Doe",
           "address": "12 Rue de la République, Lyon, France",
+          "townName": "Paris",
+          "ctry": "FR",
           "email": "johndoe@example.com",
-          "manager": true
+          "manager": "O"
         }
       ]
     }
   ],
   "transactions": [
     {
-      "id": "TRANS123456789",
+      "id": "TRANS114725836912",
       "reqdExctnDt": "2023-06-15",
-      "id-prty": "exemple-propriété",
+      "id-prty": "exemple-propriete",
       "amt": 1500.0,
       "ccy": "EUR",
       "purpose": "Loyer",

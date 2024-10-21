@@ -12,26 +12,26 @@ sidebar_position: 2
 | ---------------------------- | :-------------: | ------------------------------- | --------------------- | ------------ | -------------------------------------------------- |
 | **Description d’un associé** |       [x]       | Votre identifiant de déclarant  |                       | `id`         | Clé d'identification unique (chaîne de caractères) |
 | **Civilité (M/MME/société)** |       [x]       | Type de propriétaire            |                       | `civility`   | `M` (monsieur), `MME` (madame), `SOC` (société)    |
-| **Prénom**                   |             | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
+| **Prénom**                   |                 | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
 | **Nom**                      |                 | Nom du propriétaire             |                       | `lastName`   | Chaîne de caractères                               |
 | **Adresse**                  |                 | Adresse du propriétaire         |                       | `address`    | Chaîne de caractères                               |
 | **Ville**                    |                 | Ville du propriétaire           |                       | `townName`   | Chaîne de caractères                               |
 | **Pays**                     |                 | Pays du propriétaire            |                       | `ctry`       | Code de pays `FR`                                  |
 | **Email**                    |       [x]       | Email du propriétaire           |                       | `email`      | Chaîne de caractères                               |
-| **Gérant**                   |                 | Le propriétaire est le gérant ? | FALSE                 | `manager`    | `TRUE`, `FALSE`                                    |
+| **Gérant**                   |                 | Le propriétaire est le gérant ? | `N`                   | `manager`    | `O`, `N`                                           |
 
 ### JSON
 
 ```json
 {
-  "id": "exemple-associé",
+  "id": "ASSOC12345678",
   "civility": "M",
-  "firstName": "Jean",
-  "lastName": "Dupont",
-  "adress": "123 rue Exemple",
-  "townName": "Exempleville",
+  "firstName": "John",
+  "lastName": "Doe",
+  "address": "12 Rue de la République, Lyon, France",
+  "townName": "Paris",
   "ctry": "FR",
-  "email": "jean.dupont@example.com",
-  "manager": true
+  "email": "johndoe@example.com",
+  "manager": "O"
 }
 ```

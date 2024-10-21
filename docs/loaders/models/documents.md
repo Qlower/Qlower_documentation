@@ -14,15 +14,15 @@ Les **documents** regroupent des informations détaillées sur les fichiers asso
 | **Identifiant Propriété** |       [x]       | Identifiant de la propriété associée |                       | `propertyId` | Clé d'identification unique (chaîne de caractères) |
 | **Nom du fichier**        |       [x]       | Nom du fichier                       |                       | `fileName`   | Chaîne de caractères                               |
 | **Type de fichier**       |       [x]       | Type de fichier                      |                       | `fileType`   | Code numérique représentant le type de fichier     |
-| **Année**                 |       [ ]       | Année du document                    |                       | `year`       | Année en format YYYY                               |
+| **Année**                 |       [ ]       | Année du document                    |                       | `year`       | `YYYY`                                             |
 | **Lien du fichier**       |       [x]       | URL du fichier                       |                       | `fileLink`   | URL valide                                         |
 
 ### JSON
 
 ```json
 {
-  "id": "9876543211234iddocument",
-  "propertyId": "12345678azerty",
+  "id": "9876543211234iddocuments",
+  "propertyId": "PROP12345678AZERTY",
   "fileName": "Liasse 2022 Appartement XXX",
   "fileType": "26",
   "year": "2022",
