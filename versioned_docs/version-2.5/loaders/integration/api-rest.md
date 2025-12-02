@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ## Corps de la requête
 
-Le corps de la requête doit contenir un objet JSON conforme au format des loaders (voir [Structure des données JSON](../../loader)).
+Le corps de la requête doit contenir un objet JSON conforme au format des loaders (voir [Structure des données JSON](../loader)).
 
 ## Réponses
 

@@ -36,9 +36,9 @@ Pour effectuer l'upload, vous aurez besoin de :
 
 ### Structure de base
 
-Les données JSON doivent respecter la structure définie dans la section [Structure des données JSON](../../loader). Elles doivent contenir au minimum :
+Les données JSON doivent respecter la structure définie dans la section [Structure des données JSON](../loader). Elles doivent contenir au minimum :
 
-- **En-tête** : Informations d'identification (voir [Structure des données JSON](../../loader#2-en-tête))
+- **En-tête** : Informations d'identification (voir [Structure des données JSON](../loader#2-en-tête))
 - **Sections de données** : Déclarants, Propriétés, Transactions, Documents, Associés
 
 ### Exemple de structure minimale
