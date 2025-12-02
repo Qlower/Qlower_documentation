@@ -23,6 +23,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
+          includeCurrentVersion: false,
         },
         blog: {
           showReadingTime: true,
@@ -62,9 +63,15 @@ const config: Config = {
           type: "docsVersionDropdown",
           position: "right",
           dropdownItemsAfter: [],
+          dropdownItemsBefore: [],
           dropdownActiveClassDisabled: true,
         },
       ],
+    },
+    colorMode: {
+      defaultMode: "light",
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
     footer: {
       style: "dark",
