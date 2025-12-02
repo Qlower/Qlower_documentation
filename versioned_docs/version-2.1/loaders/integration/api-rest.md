@@ -104,12 +104,14 @@ Certaines données ont été traitées avec succès, d'autres ont échoué :
 ```
 
 **Statuts possibles** :
+
 - `SUCCESS` : Toutes les données ont été traitées avec succès
 - `PARTIAL_SUCCESS` : Certaines données ont été traitées avec succès, d'autres ont échoué
 - `ERROR` : Toutes les données ont échoué
 
 **Structure des erreurs** :
 Chaque erreur dans le tableau `errors` contient :
+
 - `model` : Le modèle concerné (ex: "transactions", "properties", "declarants")
 - `type` : Le type d'erreur (ex: "ValidationError")
 - `error` : Le message d'erreur détaillé
@@ -128,6 +130,7 @@ Chaque erreur dans le tableau `errors` contient :
 ```
 
 **Types d'erreurs possibles** :
+
 - `ValidationError` : Les données ne respectent pas le schéma attendu
 - `WrongFormat` : Le JSON est malformé
 - `ValueError` : Données invalides fournies
@@ -153,22 +156,22 @@ npm install axios
 ```
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
-const apiUrl = 'https://stg.api.qlower.com/api/third_party/loader'; // ou 'prod' pour production
+const apiUrl = "https://stg.api.qlower.com/api/third_party/loader"; // ou 'prod' pour production
 
 const loaderData = {
-  inigPtynm: 'qlower',
-  apiKey: 'votre-cle-api',
+  inigPtynm: "qlower",
+  apiKey: "votre-cle-api",
   creDtTm: new Date().toISOString(),
-  versionId: '2.0',
+  versionId: "2.0",
   declarants: [],
   properties: [],
-  transactions: []
+  transactions: [],
 };
 
 const response = await axios.post(apiUrl, loaderData, {
-  headers: { 'Content-Type': 'application/json' }
+  headers: { "Content-Type": "application/json" },
 });
 
 console.log(response.data);
@@ -201,4 +204,3 @@ result = response.json()
 
 print(result)
 ```
-

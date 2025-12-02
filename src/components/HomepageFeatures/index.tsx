@@ -15,7 +15,8 @@ const FeatureList: FeatureItem[] = [
     title: "API REST",
     description: (
       <>
-        Envoyez vos données JSON directement via HTTP pour un traitement en temps réel avec une réponse immédiate sur le statut du traitement.
+        Envoyez vos données JSON directement via HTTP pour un traitement en
+        temps réel avec une réponse immédiate sur le statut du traitement.
       </>
     ),
     icon: "🚀",
@@ -25,17 +26,30 @@ const FeatureList: FeatureItem[] = [
     title: "Upload S3",
     description: (
       <>
-        Déposez vos fichiers JSON sur un bucket AWS S3 pour des traitements par lots adaptés aux volumes importants de données.
+        Déposez vos fichiers JSON sur un bucket AWS S3 pour des traitements par
+        lots adaptés aux volumes importants de données.
       </>
     ),
     icon: "☁️",
     link: "/docs/loaders/integration/api-s3",
   },
   {
+    title: "Webhooks",
+    description: (
+      <>
+        Recevez des notifications en temps réel sur le statut du traitement de
+        vos données via des webhooks configurables.
+      </>
+    ),
+    icon: "🔔",
+    link: "/docs/loaders/integration/api",
+  },
+  {
     title: "Structure JSON",
     description: (
       <>
-        Format JSON standardisé pour intégrer vos données : déclarants, propriétés, transactions, documents et associés.
+        Format JSON standardisé pour intégrer vos données : déclarants,
+        propriétés, transactions, documents et associés.
       </>
     ),
     icon: "📋",
@@ -45,7 +59,7 @@ const FeatureList: FeatureItem[] = [
 
 function Feature({ title, description, icon, link }: FeatureItem) {
   return (
-    <div className={clsx("col col--4")}>
+    <div className={clsx("col col--3")}>
       <Link to={link} className={styles.featureCard}>
         <div className={styles.featureIcon}>{icon}</div>
         <Heading as="h3" className={styles.featureTitle}>
@@ -64,10 +78,11 @@ export default function HomepageFeatures(): JSX.Element {
       <div className="container">
         <div className={styles.featuresHeader}>
           <Heading as="h2" className={styles.featuresTitle}>
-            Méthodes d'intégration
+            Intégration et fonctionnalités
           </Heading>
           <p className={styles.featuresSubtitle}>
-            Choisissez la méthode qui correspond le mieux à vos besoins
+            Découvrez les différentes façons d'intégrer vos données et de
+            recevoir des notifications
           </p>
         </div>
         <div className="row">

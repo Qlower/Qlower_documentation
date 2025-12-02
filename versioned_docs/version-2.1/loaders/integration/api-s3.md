@@ -72,10 +72,10 @@ npm install @aws-sdk/client-s3
 ```
 
 ```javascript
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 const s3Client = new S3Client({
-  region: 'eu-west-1',
+  region: "eu-west-1",
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -83,24 +83,26 @@ const s3Client = new S3Client({
 });
 
 const loaderData = {
-  inigPtynm: 'qlower',
-  apiKey: 'votre-cle-api',
+  inigPtynm: "qlower",
+  apiKey: "votre-cle-api",
   creDtTm: new Date().toISOString(),
-  versionId: '2.0',
+  versionId: "2.0",
   declarants: [],
   properties: [],
-  transactions: []
+  transactions: [],
 };
 
-const bucketName = 'ql-loader-stg-qlower'; // ou 'prod' pour production
+const bucketName = "ql-loader-stg-qlower"; // ou 'prod' pour production
 const fileName = `loader-${Date.now()}.json`;
 
-await s3Client.send(new PutObjectCommand({
-  Bucket: bucketName,
-  Key: fileName,
-  Body: JSON.stringify(loaderData),
-  ContentType: 'application/json',
-}));
+await s3Client.send(
+  new PutObjectCommand({
+    Bucket: bucketName,
+    Key: fileName,
+    Body: JSON.stringify(loaderData),
+    ContentType: "application/json",
+  })
+);
 ```
 
 ### Python
@@ -146,4 +148,3 @@ s3_client.put_object(
 ## Notifications
 
 Une fois le fichier JSON uploadé sur S3, le système Qlower détecte automatiquement le nouveau fichier, lance le traitement de manière asynchrone et envoie une notification par email avec les résultats du traitement.
-

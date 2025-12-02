@@ -99,6 +99,12 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .featureCard {
+    margin-bottom: 1.5rem;
+  }
+}
+
 @media screen and (max-width: 576px) {
   .featuresTitle {
     font-size: 1.75rem;
