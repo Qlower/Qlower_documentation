@@ -58,6 +58,12 @@ const config: Config = {
           position: "left",
           label: "Documentation",
         },
+        {
+          type: "docsVersionDropdown",
+          position: "right",
+          dropdownItemsAfter: [],
+          dropdownActiveClassDisabled: true,
+        },
       ],
     },
     footer: {

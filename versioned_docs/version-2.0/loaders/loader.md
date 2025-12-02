@@ -2,21 +2,21 @@
 sidebar_position: 3
 ---
 
-# Structure des données JSON
+# Charger un fichier
 
-Le format JSON de **chargement (load)** a pour rôle d'intégrer des données dans le système tout en respectant une structure précise. Il permet d'importer des informations relatives aux **déclarants**, **propriétés**, **associés**, **transactions** et **documents**. Ce format est essentiel pour la gestion des données fiscales et administratives, en assurant la cohérence et l'intégrité des informations à travers plusieurs sections.
+Le fichier de **chargement (load)** a pour rôle d'intégrer des données dans le système tout en respectant une structure précise. Il permet d'importer des informations relatives aux **déclarants**, **propriétés**, **associés**, **transactions** et **documents**. Ce fichier est essentiel pour la gestion des données fiscales et administratives, en assurant la cohérence et l'intégrité des informations à travers plusieurs sections.
 
-### 1. **Structure du JSON**
+### 1. **Structure du fichier**
 
-Le format JSON est divisé en plusieurs sections principales, chacune jouant un rôle spécifique :
+Le fichier est divisé en plusieurs sections principales, chacune jouant un rôle spécifique :
 
-- **En-tête** : Contient les informations d'identification, telles que le nom du partenaire, la date de création et la version du format.
+- **En-tête** : Contient les informations d'identification du fichier, telles que le nom du partenaire, la date de création et la version du fichier.
 - **Déclarants** : Comprend les déclarants, avec la possibilité d'y ajouter des propriétés et des associés.
 - **Transactions** : Inclut les transactions financières liées aux propriétés.
 - **Documents** : Regroupe les fichiers associés aux propriétés, comme des justificatifs ou documents fiscaux.
 - **Propriétés** : Contient les informations sur les propriétés, qui peuvent être indépendantes des déclarants ou liées via le champ **declarantId**.
 
-#### Exemple de structure JSON
+#### Exemple de structure du fichier JSON
 
 ```json
 {
@@ -39,29 +39,7 @@ Le format JSON est divisé en plusieurs sections principales, chacune jouant un 
 }
 ```
 
-### 2. **En-tête**
-
-L'en-tête regroupe les informations générales et descriptives associées à chaque envoi de données JSON dans le système. Il représente un ensemble de métadonnées cruciales fournissant des informations de suivi et de gestion des échanges de données. Il permet d'identifier l'origine des données, l'instant de leur création, ainsi que des détails sur la partie émettrice. L'ajout du numéro de version garantit une gestion claire des différentes itérations des données dans le cadre des mises à jour ou corrections.
-
-| **Attributs**         | **Obligatoire** | **Description**                      | **Valeur par défaut** | **Clé JSON** | **Domaine de validité**                                        |
-| --------------------- | :-------------: | ------------------------------------ | --------------------- | ------------ | -------------------------------------------------------------- |
-| **Nom du Partenaire** |       [x]       | Id du partenaire attribué par Qlower |                       | `inigPtynm`  | Chaîne de caractères                                           |
-| **Clé d'accès**       |       [x]       | Clé d'accès générée par notre équipe |                       | `apiKey`     | Chaîne de caractères                                           |
-| **Date d'émission**   |       [x]       | Date d'émission du message           |                       | `creDtTm`    | ISO 8601 (en l'absence de fuseau horaire, fuseau Paris/France) |
-| **Version du loader** |       [x]       | Version du loader utilisée           |                       | `versionId`  | Chaîne de caractères (**'1.0'** / **'2.0'**)                   |
-
-## Exemple d'en-tête
-
-```json
-{
-  "inigPtynm": "qlower",
-  "apiKey": "7Swvx0CZDKXLkeJ6iaOeH8Cb6TPdbHAL",
-  "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "versionId": "2.0"
-}
-```
-
-### 3. **Déclarants**
+### 2. **Déclarants**
 
 La section **déclarants** permet de décrire les individus ou les entités qui déclarent les informations dans le système. Un déclarant peut inclure :
 
@@ -70,7 +48,7 @@ La section **déclarants** permet de décrire les individus ou les entités qui 
 
 Voir [Modèle Déclarant](/docs/loaders/models/declarants) pour plus d'informations.
 
-### 4. **Propriétés**
+### 3. **Propriétés**
 
 Les **propriétés** sont des biens immobiliers ou actifs financiers qui peuvent être déclarés dans deux contextes :
 
@@ -81,13 +59,13 @@ Chaque **propriété** inclut des détails tels que l'adresse, le type de bien (
 
 Voir [Modèle Propriété](/docs/loaders/models/properties) pour plus d'informations.
 
-### 5. **Associés**
+### 4. **Associés**
 
 Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Cette section permet de lier des individus ou des entreprises à un déclarant, avec des informations spécifiques comme le nom, l'adresse, et les coordonnées.
 
 Voir [Modèle Associé](/docs/loaders/models/associates) pour plus d'informations.
 
-### 6. **Transactions**
+### 5. **Transactions**
 
 La section **transactions** est dédiée aux mouvements financiers et opérations relatives aux propriétés, telles que des paiements de loyer, des factures ou des charges. Chaque transaction doit inclure :
 
@@ -100,7 +78,7 @@ Cela permet de suivre les flux financiers associés à la gestion des propriét�
 
 Voir [Modèle Transaction](/docs/loaders/models/transactions) pour plus d'informations.
 
-### 7. **Documents**
+### 6. **Documents**
 
 Les **documents** sont des fichiers associés aux propriétés. Ils permettent d'attacher des justificatifs, tels que des liasses fiscales, des factures, ou des preuves d'acquisition. Chaque document comprend des informations comme :
 
@@ -118,7 +96,7 @@ Les documents peuvent être liés directement à une propriété ou déclarés i
 
 Voir [Modèle Document](/docs/loaders/models/documents) pour plus d'informations.
 
-### 8. **Règles importantes à respecter**
+### 7. **Règles importantes à respecter**
 
 :::danger[Mise à jour]
 
@@ -130,9 +108,9 @@ Voir [Modèle Document](/docs/loaders/models/documents) pour plus d'informations
 - **Propriétés ou documents** : Il est possible de lier des **documents** et des **propriétés** indépendamment. Assurez-vous de respecter la structure de lien entre les entités.
   :::
 
-### 9. **Exemple complet de données JSON**
+### 8. **Exemple complet de fichier de chargement**
 
-Voici un exemple complet de données JSON illustrant les différentes sections, avec un déclarant, des propriétés, des associés, des transactions et des documents.
+Voici un exemple complet de fichier illustrant les différentes sections, avec un déclarant, des propriétés, des associés, des transactions et des documents.
 
 ```json
 {
@@ -236,4 +214,4 @@ Voici un exemple complet de données JSON illustrant les différentes sections, 
 
 ### Conclusion
 
-Le format JSON de **chargement (load)** permet d'importer des données complexes concernant les déclarants, propriétés, associés, transactions, et documents. Il est crucial de bien structurer les données dès la première intégration.
+Le fichier de **chargement (load)** permet d'importer des données complexes concernant les déclarants, propriétés, associés, transactions, et documents. Il est crucial de bien structurer les données dès la première

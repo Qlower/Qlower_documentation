@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+slug: /loaders/header
 ---
 
 # En-tête du fichier
