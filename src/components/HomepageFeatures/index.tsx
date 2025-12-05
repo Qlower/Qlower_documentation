@@ -12,11 +12,33 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
+    title: "Loaders",
+    description: (
+      <>
+        Importez et synchronisez vos données fiscales avec Qlower via API REST ou S3.
+        Support des déclarants, associés, biens et transactions.
+      </>
+    ),
+    icon: "📊",
+    link: "/docs/loaders/presentation",
+  },
+  {
+    title: "Intégration Stripe",
+    description: (
+      <>
+        Recevez automatiquement les notifications de commandes via webhook.
+        Facturation PDF envoyée aux clients.
+      </>
+    ),
+    icon: "💳",
+    link: "/docs/stripe/overview",
+  },
+  {
     title: "API REST",
     description: (
       <>
         Envoyez vos données JSON directement via HTTP pour un traitement en
-        temps réel avec une réponse immédiate sur le statut du traitement.
+        temps réel avec une réponse immédiate.
       </>
     ),
     icon: "🚀",
@@ -26,34 +48,12 @@ const FeatureList: FeatureItem[] = [
     title: "Upload S3",
     description: (
       <>
-        Déposez vos fichiers JSON sur un bucket AWS S3 pour des traitements par
-        lots adaptés aux volumes importants de données.
+        Déposez vos fichiers JSON sur un bucket AWS S3 pour des traitements
+        par lots adaptés aux volumes importants.
       </>
     ),
     icon: "☁️",
     link: "/docs/loaders/integration/api-s3",
-  },
-  {
-    title: "Webhooks",
-    description: (
-      <>
-        Recevez des notifications en temps réel sur le statut du traitement de
-        vos données via des webhooks configurables.
-      </>
-    ),
-    icon: "🔔",
-    link: "/docs/loaders/integration/api",
-  },
-  {
-    title: "Structure JSON",
-    description: (
-      <>
-        Format JSON standardisé pour intégrer vos données : déclarants,
-        propriétés, transactions, documents et associés.
-      </>
-    ),
-    icon: "📋",
-    link: "/docs/loaders/loader",
   },
 ];
 
@@ -78,11 +78,10 @@ export default function HomepageFeatures(): JSX.Element {
       <div className="container">
         <div className={styles.featuresHeader}>
           <Heading as="h2" className={styles.featuresTitle}>
-            Intégration et fonctionnalités
+            Nos produits
           </Heading>
           <p className={styles.featuresSubtitle}>
-            Découvrez les différentes façons d'intégrer vos données et de
-            recevoir des notifications
+            Découvrez nos solutions d'intégration de données et de paiement
           </p>
         </div>
         <div className="row">

@@ -8,7 +8,6 @@ import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx("hero", styles.heroBanner)}>
       <div className="container">
@@ -18,14 +17,11 @@ function HomepageHeader() {
             Documentation Qlower
           </Heading>
           <p className={styles.heroSubtitle}>
-            Intégrez vos données immobilières, fiscales et comptables avec la plateforme Qlower
+            Plateforme de gestion fiscale et comptable pour la location meublée
           </p>
           <div className={styles.buttons}>
-            <Link className={clsx("button button--primary button--lg", styles.ctaButton)} to="/docs/loaders/getting-started">
-              Commencer
-            </Link>
-            <Link className={clsx("button button--outline button--lg", styles.secondaryButton)} to="/docs/loaders/integration/api">
-              Guide d'intégration
+            <Link className={clsx("button button--primary button--lg", styles.ctaButton)} to="/docs/intro">
+              Découvrir la documentation
             </Link>
           </div>
         </div>
