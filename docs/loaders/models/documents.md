@@ -14,7 +14,7 @@ Les **documents** regroupent des informations détaillées sur les fichiers asso
 | **Identifiant Propriété** |       [x]       | Identifiant de la propriété associée |                       | `propertyId` | Clé d'identification unique (chaîne de caractères) |
 | **Nom du fichier**        |       [x]       | Nom du fichier                       |                       | `fileName`   | Chaîne de caractères                               |
 | **Type de fichier**       |       [x]       | Type de fichier                      |                       | `fileType`   | Code numérique représentant le type de fichier     |
-| **Année**                 |       [ ]       | Année du document                    |                       | `year`       | `YYYY`                                             |
+| **Année**                 |       [x]       | Année du document                    |                       | `year`       | `YYYY`                                             |
 | **Lien du fichier**       |       [x]       | URL du fichier                       |                       | `fileLink`   | URL valide                                         |
 
 ### JSON
