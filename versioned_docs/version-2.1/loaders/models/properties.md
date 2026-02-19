@@ -46,6 +46,8 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
 | **Dépôt de permis de construire** |                 | Date de dépôt du permis de construire (si disponible)             |                       | `startConstrDate`     | `YYYY-MM-DD`                                                                   |
 | **Propriété démembrée**           |                 | La propriété est-elle démembrée ?                                 | `N`                   | `dismemberedProperty` | `O`, `N`                                                                       |
 | **Documents**                     |                 | Liste des documents associés à la propriété                       |                       | `documents`           | Tableau d'objets représentant les documents associés à la propriété            |
+| **Frais d'agence**                |                 | Montant des frais d'agence liés à l'acquisition du bien           |                       | `agencyFee`           | Nombre décimal (exemple : `13.56`)                                             |
+| **Frais de notaire**              |                 | Montant des frais de notaire liés à l'acquisition du bien         |                       | `notaryFee`           | Nombre décimal (exemple : `13.56`)                                             |
 
 ### JSON
 
@@ -84,6 +86,8 @@ Les **propriétés** regroupent des informations détaillées sur les biens immo
   "completionStatus": "NEW",
   "startConstrDate": "1999-01-01",
   "dismemberedProperty": "N",
-  "documents": []
+  "documents": [],
+  "agencyFee": 5000.0,
+  "notaryFee": 8000.0
 }
 ```
