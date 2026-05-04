@@ -48,6 +48,13 @@ X-API-KEY: <notre_clé_api>
         "quantity": 1,
         "unit_price": 49.99
       }
+    ],
+    "custom_fields": [
+      {
+        "key": "anneedeladeclaration",
+        "label": "Année de la déclaration",
+        "value": "2024"
+      }
     ]
   },
 
@@ -96,6 +103,7 @@ Détails de la commande.
 | `currency` | string | Code devise ISO 4217 (ex: `"EUR"`) |
 | `payment_date` | string | Date du paiement (ISO 8601) |
 | `products` | array | Liste des produits achetés |
+| `custom_fields` | array | Champs personnalisés saisis lors du checkout (ex : année de la déclaration) |
 
 ### Array `products[]`
 Liste des produits de la commande.
@@ -106,6 +114,15 @@ Liste des produits de la commande.
 | `product_name` | string | Nom du produit |
 | `quantity` | integer | Quantité achetée |
 | `unit_price` | float | Prix unitaire HT |
+
+### Array `custom_fields[]`
+Liste des champs personnalisés que le client a remplis sur la page de paiement Stripe (ex : `Année de la déclaration`). Vide si aucun champ personnalisé n'est configuré sur le checkout.
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `key` | string | Identifiant technique du champ (ex: `anneedeladeclaration`) |
+| `label` | string | Libellé affiché au client (ex: `Année de la déclaration`) |
+| `value` | string | Valeur saisie ou sélectionnée par le client (toujours sérialisée en string) |
 
 ### Objet `invoice`
 Informations sur la facture générée.
@@ -143,6 +160,13 @@ Informations sur la facture générée.
         "product_name": "Déclaration d'impôts - Formule Complète",
         "quantity": 1,
         "unit_price": 83.32
+      }
+    ],
+    "custom_fields": [
+      {
+        "key": "anneedeladeclaration",
+        "label": "Année de la déclaration",
+        "value": "2024"
       }
     ]
   },
