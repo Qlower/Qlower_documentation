@@ -2,6 +2,9 @@
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Le webhook de commande
 
 Votre endpoint reçoit un `POST` en JSON à chaque règlement. Répondez **2xx** dès que vous avez pris la
@@ -93,6 +96,20 @@ Les deux derniers ne sont présents que si une clé, respectivement un secret, o
 Un `order.renewed` porte le même abonnement qu'un `order.created` antérieur, mais un nouvel exercice
 dans `coverage` : il prolonge un dossier, il n'en ouvre pas un nouveau.
 
+### Modifications d'un abonnement
+
+| Ce qui se passe | Ce que vous recevez |
+|-----------------|---------------------|
+| Le client ajoute un bien à son abonnement | `order.created` dont `coverage` ne contient **que les biens ajoutés** |
+| Échéance annuelle | `order.renewed` avec le nouvel exercice |
+| Changement de quantité refacturé par Stripe | rien — l'ajustement est déjà couvert par l'événement d'ajout |
+| Résiliation, remboursement, changement de formule | rien, à ce jour |
+
+:::info[Les fins d'abonnement ne sont pas notifiées]
+Nous n'émettons aujourd'hui que des événements de commande. Une résiliation ou un remboursement ne
+produit aucun webhook : ne vous appuyez pas sur ce canal pour détecter la fin d'un engagement.
+:::
+
 ## `customer`
 
 | Champ | Type | Nullable |
@@ -178,17 +195,17 @@ exercice rattaché, ou acheteur sans compte sur notre plateforme. C'est un cas n
 
 | Champ | Type | Description |
 |-------|------|-------------|
-| `pdf_url` | string | URL signée de la facture, **valide 7 jours** |
+| `pdf_url` | string | URL signée de notre facture PDF, **valide 7 jours** |
 | `pdf_filename` | string | Nom de fichier suggéré |
 | `number` | string | Numéro de facture unique |
 
-:::caution[`pdf_url` n'est pas toujours un PDF]
-Si la génération de notre facture échoue, nous basculons sur le reçu Stripe du paiement, qui est une
-**page HTML** — alors que `pdf_filename` annonce toujours un `.pdf`. Si vous archivez le fichier,
-fiez-vous au `Content-Type` de la réponse plutôt qu'au nom.
-:::
+Le bloc est toujours renseigné et pointe toujours sur notre facture : nous ne vous envoyons la
+notification qu'une fois celle-ci produite.
 
 ## Implémentation
+
+<Tabs groupId="langage">
+<TabItem value="js" label="Node.js / Express">
 
 ```javascript
 app.post('/api/qlower/orders', async (req, res) => {
@@ -228,6 +245,53 @@ app.post('/api/qlower/orders', async (req, res) => {
   }
 });
 ```
+
+</TabItem>
+<TabItem value="python" label="Python / Flask">
+
+```python
+@app.route('/api/qlower/orders', methods=['POST'])
+def handle_qlower_order():
+    payload = request.get_json()
+    event_type = payload.get('event_type')
+    event_id = payload.get('event_id')
+
+    if event_type == 'ping':
+        return jsonify({'success': True}), 200
+    if event_type not in ('order.created', 'order.renewed'):
+        return jsonify({'error': 'Unknown event type'}), 400
+
+    try:
+        if Order.query.filter_by(qlower_event_id=event_id).first():
+            return jsonify({'success': True, 'message': 'Already processed'}), 200
+
+        order, customer, invoice = payload['order'], payload['customer'], payload['invoice']
+
+        db.session.add(Order(
+            qlower_event_id=event_id,
+            qlower_order_id=payload['order_id'],
+            customer_email=customer['email'],
+            amount=order['total_amount'],
+            invoice_url=invoice['pdf_url'],
+        ))
+        db.session.commit()
+
+        for line in order['coverage']:
+            property_data = line['property']
+            if property_data['external_id_origin'] == 'qlower':
+                create_property(property_data)
+            activate_declaration(property_data['external_id'], line['year'])
+
+        return jsonify({'success': True}), 200
+
+    except Exception:
+        # 5xx pour déclencher une nouvelle tentative de notre côté.
+        logger.exception('Webhook Qlower en échec', extra={'event_id': event_id})
+        return jsonify({'error': 'Internal Server Error'}), 500
+```
+
+</TabItem>
+</Tabs>
 
 Codes de réponse attendus, politique de reprise et déduplication : voir
 [Échecs et reprises](./errors.md).

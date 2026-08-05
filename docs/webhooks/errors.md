@@ -68,8 +68,11 @@ ensuite, nous ne le saurons pas et ne renverrons rien.
 
 ## Support
 
-Contact : **support@comptappart.com**
+Adressez-vous à vos interlocuteurs habituels chez Qlower, en précisant :
 
-Communiquez-nous l'`event_id` (ou l'`order_id`), l'environnement concerné et, si vous les avez, les
-logs de votre endpoint. Ces deux identifiants nous suffisent à retrouver le payload envoyé et
-l'historique complet des tentatives.
+- l'`event_id` ou l'`order_id` concerné
+- l'environnement (staging ou production)
+- les logs de votre endpoint, si vous les avez
+
+L'un des deux identifiants nous suffit à retrouver le payload envoyé et l'historique complet des
+tentatives.
