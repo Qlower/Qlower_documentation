@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "Documentation Qlower",
   tagline: "",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon.png",
   url: "https://secure.qlower.com",
   baseUrl: "/",
   organizationName: "qlower",
