@@ -9,12 +9,18 @@ sidebar_position: 6
 | Code | Description | Action ComptAppart |
 |------|-------------|-------------------|
 | **200-299** | Succès | Notification complétée |
-| **400-499** | Erreur client | Marque comme échouée |
-| **500-599** | Erreur serveur | Marque comme échouée |
-| **Timeout** | Pas de réponse en 30s | Marque comme échouée |
+| **408, 409, 425, 429** | Surcharge ou conflit temporaire | Nouvelle tentative |
+| **400-499** (autres) | Erreur client | Échec définitif, aucune nouvelle tentative |
+| **500-599** | Erreur serveur | Nouvelle tentative |
+| **Timeout** | Pas de réponse en 30s | Nouvelle tentative |
 
-:::warning[Pas de retry automatique]
-ComptAppart ne retente pas automatiquement l'envoi : une notification en échec reste `failed` définitivement, quel que soit le code retourné. Contactez-nous (voir [Support](#support)) avec l'`event_id` ou l'`order_id` concerné si vous constatez un webhook manquant.
+Les échecs transitoires sont renvoyés jusqu'à 5 fois (30 s, 2 min, 10 min, 30 min, 1 h), soit une
+fenêtre de rattrapage d'environ 2 h 45 — voir [En cas d'échec](./webhook#en-cas-déchec).
+
+:::warning[Ne répondez jamais 4xx pour un problème de votre côté]
+Un 4xx (hors 408/409/425/429) est lu comme un refus définitif du payload : nous n'insistons pas et la
+commande est perdue. Une base indisponible, une dépendance en timeout, une exception inattendue
+doivent renvoyer **5xx** pour déclencher une nouvelle tentative.
 :::
 
 ---

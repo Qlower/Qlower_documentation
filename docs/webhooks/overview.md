@@ -58,7 +58,7 @@ Cette documentation vous guide dans l'intégration de notre système de paiement
 
 1. **Paiement client** → Le client effectue un achat via Stripe
 2. **Traitement ComptAppart** → Nous recevons la notification de Stripe, générons la facture PDF et l'envoyons au client
-3. **Notification partenaire** → Votre système reçoit un webhook avec les détails de la commande (order_id, customer, montant, etc.)
+3. **Notification partenaire** → Votre système reçoit un webhook avec les détails de la commande : client, montant, produits, facture, et les **biens et exercices fiscaux couverts** par le règlement
 4. **Traitement métier** → Vous activez le service/produit acheté dans votre système
 
 ---

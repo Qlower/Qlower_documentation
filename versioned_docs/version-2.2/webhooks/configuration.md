@@ -12,6 +12,8 @@ Pour activer l'intégration Stripe, vous devez nous communiquer les informations
 |-------------|-------------|------------------------------------------------------|
 | **Webhook URL (Staging)** | URL pour les tests | `https://staging.partner.com/api/comptappart/orders` |
 | **Webhook URL (Production)** | URL pour la production | `https://api.partner.com/api/comptappart/orders`     |
+| **API key** *(optionnel)* | Envoyée en `X-API-KEY` | une chaîne secrète de 32 caractères minimum |
+| **Secret de signature** *(recommandé)* | Signe le corps en `X-Qlower-Signature` | convenu ensemble, voir plus bas |
 
 ---
 
@@ -21,9 +23,10 @@ Votre endpoint webhook doit respecter les exigences suivantes :
 
 - ✅ Accepte `Content-Type: application/json`
 - ✅ Retourne un code **2xx** (200, 201, 204) en cas de succès
-- ✅ Retourne un code **4xx ou 5xx** en cas d'erreur
+- ✅ Retourne un code **5xx** en cas d'erreur de votre côté (un 4xx ne sera pas retenté)
 - ✅ Utilise **HTTPS** (requis pour la sécurité)
 - ✅ Temps de réponse inférieur à **30 secondes**
+- ✅ Déduplique sur `event_id` — une même notification peut arriver plusieurs fois
 
 ---
 
@@ -46,6 +49,59 @@ if (apiKey !== process.env.COMPTAPPART_API_KEY) {
   return res.status(401).json({ error: 'Unauthorized' });
 }
 ```
+
+---
+
+## Signature du corps (Recommandé)
+
+Une API key transmise en clair prouve seulement que l'appelant la connaît. La **signature** prouve en
+plus que le corps n'a pas été modifié et n'est pas un rejeu. Sur demande, nous convenons d'un secret
+de signature et ajoutons l'en-tête :
+
+```
+X-Qlower-Signature: t=1767612138,v1=8d3f1c9a4b...
+```
+
+- `t` : horodatage Unix (secondes) de l'envoi
+- `v1` : `HMAC-SHA256(secret, "<t>.<corps brut>")` en hexadécimal
+
+### Exemple de vérification
+
+```javascript
+const crypto = require('crypto');
+
+// Le corps BRUT est indispensable : re-sérialiser le JSON invalide la signature.
+app.post('/api/comptappart/orders', express.raw({ type: 'application/json' }), (req, res) => {
+  const [tPart, v1Part] = req.headers['x-qlower-signature'].split(',');
+  const timestamp = tPart.split('=')[1];
+  const received = v1Part.split('=')[1];
+
+  const expected = crypto
+    .createHmac('sha256', process.env.QLOWER_WEBHOOK_SECRET)
+    .update(`${timestamp}.`)
+    .update(req.body)
+    .digest('hex');
+
+  if (!crypto.timingSafeEqual(Buffer.from(received), Buffer.from(expected))) {
+    return res.status(401).json({ error: 'Invalid signature' });
+  }
+  if (Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) {
+    return res.status(401).json({ error: 'Timestamp too old' });
+  }
+
+  const payload = JSON.parse(req.body);
+  // ...
+});
+```
+
+:::caution[Signer le corps brut, pas le JSON reparsé]
+La signature porte sur les octets exacts que nous avons postés. Un framework qui parse puis
+re-sérialise le JSON (ordre des clés, espaces, encodage des accents) produira un condensé différent.
+Récupérez le corps brut **avant** tout middleware de parsing.
+:::
+
+Le rejet sur horodatage trop ancien (ici 5 minutes) protège du rejeu. Nos nouvelles tentatives
+re-signent avec un horodatage frais, elles ne sont donc jamais rejetées par ce contrôle.
 
 ---
 
