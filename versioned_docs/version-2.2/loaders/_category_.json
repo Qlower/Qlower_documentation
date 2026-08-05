@@ -1,0 +1,8 @@
+{
+  "label": "Loaders",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Les loaders 2.0 de Qlower sont des outils avancés qui simplifient et automatisent la gestion immobilière pour les partenaires B2B. Ils facilitent l'intégration et l'alimentation de la plateforme Qlower avec des données cruciales telles que les informations sur les biens immobiliers, les aspects fiscaux, les données locatives et les transactions comptables. Compatibles avec les systèmes financiers grâce à la norme **ISO 20022**, les loaders permettent une gestion rapide et sécurisée des propriétés, des contrats de location et des flux financiers, tout en respectant les normes RGPD. Ils sont destinés aux partenaires comme les agences immobilières, les proptechs et les banques, qui souhaitent offrir des services de comptabilité et d'aide à la déclaration fiscale à leurs clients. Cette solution est robuste, évolutive et facile à intégrer, contribuant à améliorer l'efficacité opérationnelle tout en réduisant les erreurs."
+  }
+}
