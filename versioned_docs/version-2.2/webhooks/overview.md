@@ -2,70 +2,45 @@
 sidebar_position: 1
 ---
 
-# Webhooks - Vue d'ensemble
+# Vue d'ensemble
 
-Cette documentation vous guide dans l'intégration de notre système de paiement Stripe. L'intégration vous permet de recevoir automatiquement les notifications de commandes effectuées par vos clients.
+Nous encaissons les paiements de vos clients et vous notifions chaque commande. Vous n'avez ni
+paiement, ni facturation, ni relance à gérer : vous recevez la commande une fois réglée, et vous
+l'exploitez dans votre système.
 
-## Ce que nous gérons pour vous
+## Ce que nous prenons en charge
 
-✅ **Paiement Stripe** - Infrastructure complète de paiement (checkout, abonnements)
-✅ **Facturation automatique** - Génération et envoi de factures PDF aux clients
-✅ **Webhooks** - Notifications de commandes vers votre système
+- **Paiement** — checkout et abonnements Stripe
+- **Facturation** — facture PDF conforme, générée et envoyée au client
+- **Notification** — un webhook vers votre endpoint à chaque règlement
 
-## Ce que vous devez faire
+## Ce qui vous revient
 
-1. Fournir vos URLs webhook (staging et production)
-2. Implémenter un endpoint pour recevoir les notifications
-3. Traiter les commandes dans votre système
+1. Nous communiquer vos URLs d'endpoint, staging et production
+2. Implémenter cet endpoint
+3. Traiter la commande reçue
 
----
-
-## Comment ça fonctionne
+## Le flux
 
 ```
-┌─────────────┐
-│   Client    │
-│  (acheteur) │
-└──────┬──────┘
-       │
-       │ 1. Achète un produit
-       ▼
-┌─────────────────┐
-│  Stripe Payment │
-│   (checkout)    │
-└──────┬──────────┘
-       │
-       │ 2. Webhook Stripe → ComptAppart
-       ▼
-┌──────────────────────────┐
-│  ComptAppart Backend     │
-│                          │
-│  • Génère facture PDF    │
-│  • Enregistre commande   │
-└────┬─────────────────┬───┘
-     │                 │
-     │ 3a. Email       │ 3b. Webhook
-     │                 │
-     ▼                 ▼
-┌─────────────┐   ┌──────────────┐
-│   Client    │   │  Partenaire  │
-│             │   │   (vous)     │
-│ Reçoit PDF  │   │ Reçoit data  │
-└─────────────┘   └──────────────┘
+   Client                Qlower                        Vous
+     │                     │                            │
+     │  1. paie ──────────▶│                            │
+     │                     │  2. génère la facture      │
+     │                     │     enregistre la commande │
+     │  3. reçoit ◀────────│                            │
+     │     la facture      │                            │
+     │                     │  4. POST webhook ─────────▶│
+     │                     │                            │  5. active
+     │                     │◀───────── 2xx ─────────────│     le service
 ```
 
-### Étapes du processus
+L'étape 4 vous transmet le client, le montant, les produits, la facture, et surtout les **biens et
+exercices fiscaux** que le règlement couvre — c'est ce qui vous permet de savoir quoi activer, et pour
+quelle année.
 
-1. **Paiement client** → Le client effectue un achat via Stripe
-2. **Traitement ComptAppart** → Nous recevons la notification de Stripe, générons la facture PDF et l'envoyons au client
-3. **Notification partenaire** → Votre système reçoit un webhook avec les détails de la commande : client, montant, produits, facture, et les **biens et exercices fiscaux couverts** par le règlement
-4. **Traitement métier** → Vous activez le service/produit acheté dans votre système
+## Pour commencer
 
----
-
-## Prochaines étapes
-
-1. 📋 [Configuration](./configuration.md) - Fournissez vos URLs webhook
-2. 🔗 [Webhook](./webhook.md) - Implémentez votre endpoint
-3. 🧪 [Test en staging](./configuration.md#staging-tests) - Testez avec une carte Stripe test
-4. 🚀 Mise en production
+1. [Configuration](./configuration.md) — ce qu'on échange avant de démarrer
+2. [Webhook](./webhook.md) — le contrat et l'implémentation de votre endpoint
+3. [Échecs et reprises](./errors.md) — ce qui se passe quand ça ne passe pas

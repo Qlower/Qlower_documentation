@@ -2,29 +2,19 @@
 sidebar_position: 4
 ---
 
-# Email et Facture PDF
+# Email et facture
 
-## Envoi automatique au client
+## Ce que le client reçoit
 
-Après chaque paiement réussi, **nous envoyons automatiquement** :
+Après chaque règlement, nous envoyons automatiquement au client un email de confirmation avec sa
+facture PDF en pièce jointe, dans la minute qui suit la confirmation du paiement. La facture est
+conforme (TVA, mentions légales) et porte votre marque.
 
-- ✅ Email au client avec facture PDF en pièce jointe
-- ✅ Envoi immédiat (< 1 minute après confirmation Stripe)
-- ✅ Facture conforme (TVA, mentions légales)
+Vous n'avez rien à envoyer de votre côté, et rien à faire pour que cela se produise.
 
----
+## Ce que vous recevez
 
-## Accès à la facture dans le webhook
+La même facture vous est accessible via le bloc `invoice` du webhook — URL signée valide 7 jours,
+numéro, nom de fichier. Les détails sont dans [Le webhook de commande](./webhook.md#invoice).
 
-L'URL de la facture PDF est fournie dans le webhook :
-
-```json
-{
-  "invoice": {
-    "pdf_url": "https://qlower-documents.s3.eu-west-3.amazonaws.com/...",
-    "number": "FQCA-2025-000156"
-  }
-}
-```
-
-**⚠️ Important :** L'URL est valide pendant **24 heures** pour des raisons de sécurité. Si vous devez conserver la facture, téléchargez-la immédiatement.
+Si vous devez archiver la facture, téléchargez-la à la réception plutôt que de conserver l'URL.

@@ -3,6 +3,6 @@
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "Recevez les notifications de commande : webhooks, facturation automatique, et gestion des commandes."
+    "description": "Recevez une notification à chaque commande réglée : le contrat du webhook, sa sécurisation, et le comportement en cas d'échec."
   }
 }
