@@ -46,34 +46,33 @@ X-Qlower-Signature: t=1767612138,v1=8d3f1c9a4b...
 - `t` — horodatage Unix (secondes) de l'envoi
 - `v1` — `HMAC-SHA256(secret, "<t>.<corps brut>")`, en hexadécimal
 
+Isolez la vérification dans une fonction, appelée en entrée de l'endpoint (voir
+[Le webhook de commande](./webhook.md#implémentation)) :
+
 <Tabs groupId="langage">
 <TabItem value="js" label="Node.js / Express">
 
 ```javascript
 const crypto = require('crypto');
 
-app.post('/api/qlower/orders', express.raw({ type: 'application/json' }), (req, res) => {
-  if (req.headers['x-api-key'] !== process.env.QLOWER_API_KEY) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+const TOLERANCE_SECONDS = 300;
 
-  const [t, v1] = req.headers['x-qlower-signature'].split(',').map(p => p.split('=')[1]);
+function isRequestAuthentic(headers, rawBody) {
+  if (headers['x-api-key'] !== process.env.QLOWER_API_KEY) return false;
+
+  const { t, v1 } = Object.fromEntries(
+    headers['x-qlower-signature'].split(',').map(part => part.split('=')),
+  );
+  if (Math.abs(Date.now() / 1000 - Number(t)) > TOLERANCE_SECONDS) return false;
+
   const expected = crypto
     .createHmac('sha256', process.env.QLOWER_WEBHOOK_SECRET)
     .update(`${t}.`)
-    .update(req.body)
+    .update(rawBody)
     .digest('hex');
 
-  if (!crypto.timingSafeEqual(Buffer.from(v1), Buffer.from(expected))) {
-    return res.status(401).json({ error: 'Invalid signature' });
-  }
-  if (Math.abs(Date.now() / 1000 - Number(t)) > 300) {
-    return res.status(401).json({ error: 'Timestamp too old' });
-  }
-
-  const payload = JSON.parse(req.body);
-  // …
-});
+  return crypto.timingSafeEqual(Buffer.from(v1), Buffer.from(expected));
+}
 ```
 
 </TabItem>
@@ -85,13 +84,16 @@ import hmac
 import os
 import time
 
-@app.route('/api/qlower/orders', methods=['POST'])
-def handle_qlower_order():
-    if request.headers.get('X-API-KEY') != os.environ['QLOWER_API_KEY']:
-        return jsonify({'error': 'Unauthorized'}), 401
+TOLERANCE_SECONDS = 300
 
-    parts = dict(p.split('=', 1) for p in request.headers['X-Qlower-Signature'].split(','))
-    raw_body = request.get_data()
+
+def is_request_authentic(headers, raw_body):
+    if headers.get('X-API-KEY') != os.environ['QLOWER_API_KEY']:
+        return False
+
+    parts = dict(p.split('=', 1) for p in headers['X-Qlower-Signature'].split(','))
+    if abs(time.time() - int(parts['t'])) > TOLERANCE_SECONDS:
+        return False
 
     expected = hmac.new(
         os.environ['QLOWER_WEBHOOK_SECRET'].encode(),
@@ -99,13 +101,7 @@ def handle_qlower_order():
         hashlib.sha256,
     ).hexdigest()
 
-    if not hmac.compare_digest(parts['v1'], expected):
-        return jsonify({'error': 'Invalid signature'}), 401
-    if abs(time.time() - int(parts['t'])) > 300:
-        return jsonify({'error': 'Timestamp too old'}), 401
-
-    payload = request.get_json()
-    # …
+    return hmac.compare_digest(parts['v1'], expected)
 ```
 
 </TabItem>

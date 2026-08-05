@@ -41,14 +41,14 @@ rejouer la livraison à votre demande.
 ## Déduplication
 
 Les reprises impliquent que **vous recevrez parfois deux fois la même commande** : typiquement si votre
-endpoint l'a traitée puis a expiré avant de répondre. Dédupliquez sur `event_id`, stable d'une
-tentative à l'autre :
+endpoint l'a traitée puis a expiré avant de répondre. L'`event_id` est stable d'une tentative à
+l'autre, c'est votre clé.
 
-```javascript
-if (await Order.findOne({ qlower_event_id: event_id })) {
-  return res.status(200).json({ success: true, message: 'Already processed' });
-}
-```
+Posez une **contrainte d'unicité** dessus plutôt qu'un test d'existence préalable : une lecture suivie
+d'une écriture laisse passer deux tentatives simultanées. Et enregistrez-le dans la **même
+transaction** que le traitement, sinon un échec à mi-parcours vous laisse avec un marqueur posé et un
+travail inachevé, que nos reprises ne rattraperont pas. L'implémentation est dans
+[Le webhook de commande](./webhook.md#implémentation).
 
 ## Répondre vite, traiter ensuite
 

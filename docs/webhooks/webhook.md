@@ -204,44 +204,49 @@ notification qu'une fois celle-ci produite.
 
 ## Implémentation
 
+Deux points portent la fiabilité de cet endpoint :
+
+- **Le corps brut** est nécessaire à la vérification de signature — récupérez-le avant tout parsing.
+- **L'enregistrement de l'`event_id` et les effets métier sont dans une seule transaction.** Poser le
+  marqueur de déduplication avant d'avoir terminé le travail vous exposerait au pire cas : notre
+  nouvelle tentative répondrait « déjà traité » alors que la moitié des biens n'a pas été activée.
+  La contrainte unique sur `event_id` porte la déduplication, sans lecture préalable, donc deux
+  tentatives simultanées ne peuvent pas aboutir toutes les deux.
+
 <Tabs groupId="langage">
 <TabItem value="js" label="Node.js / Express">
 
 ```javascript
-app.post('/api/qlower/orders', async (req, res) => {
-  const { event_type, event_id, order_id, customer, order, invoice } = req.body;
+const HANDLED_EVENTS = new Set(['order.created', 'order.renewed']);
+const UNIQUE_VIOLATION = '23505';
 
-  if (event_type === 'ping') {
-    return res.status(200).json({ success: true });
-  }
-  if (!['order.created', 'order.renewed'].includes(event_type)) {
-    return res.status(400).json({ error: 'Unknown event type' });
-  }
+app.post('/api/qlower/orders', express.raw({ type: 'application/json' }), async (req, res) => {
+  if (!isRequestAuthentic(req.headers, req.body)) return res.sendStatus(401);
+
+  const event = JSON.parse(req.body);
+  if (event.event_type === 'ping') return res.sendStatus(200);
+  if (!HANDLED_EVENTS.has(event.event_type)) return res.sendStatus(400);
 
   try {
-    if (await Order.findOne({ qlower_event_id: event_id })) {
-      return res.status(200).json({ success: true, message: 'Already processed' });
-    }
+    await db.transaction(async tx => {
+      await tx.orders.insert({
+        qlower_event_id: event.event_id,
+        qlower_order_id: event.order_id,
+        customer_email: event.customer.email,
+        amount: event.order.total_amount,
+        invoice_url: event.invoice.pdf_url,
+      });
 
-    await Order.create({
-      qlower_event_id: event_id,
-      qlower_order_id: order_id,
-      customer_email: customer.email,
-      amount: order.total_amount,
-      invoice_url: invoice.pdf_url,
-    });
-
-    for (const { year, property } of order.coverage) {
-      if (property.external_id_origin === 'qlower') {
-        await createProperty(property);
+      for (const { year, property } of event.order.coverage) {
+        if (property.external_id_origin === 'qlower') await tx.properties.create(property);
+        await tx.declarations.activate(property.external_id, year);
       }
-      await activateDeclaration(property.external_id, year);
-    }
-
-    res.status(200).json({ success: true });
+    });
+    res.sendStatus(200);
   } catch (error) {
-    // 5xx pour déclencher une nouvelle tentative de notre côté.
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (error.code === UNIQUE_VIOLATION) return res.sendStatus(200);
+    logger.error('Webhook Qlower en échec', { event_id: event.event_id, error });
+    res.sendStatus(500);
   }
 });
 ```
@@ -250,48 +255,45 @@ app.post('/api/qlower/orders', async (req, res) => {
 <TabItem value="python" label="Python / Flask">
 
 ```python
+HANDLED_EVENTS = {'order.created', 'order.renewed'}
+
+
 @app.route('/api/qlower/orders', methods=['POST'])
 def handle_qlower_order():
-    payload = request.get_json()
-    event_type = payload.get('event_type')
-    event_id = payload.get('event_id')
+    if not is_request_authentic(request.headers, request.get_data()):
+        return '', 401
 
-    if event_type == 'ping':
-        return jsonify({'success': True}), 200
-    if event_type not in ('order.created', 'order.renewed'):
-        return jsonify({'error': 'Unknown event type'}), 400
+    event = request.get_json()
+    if event['event_type'] == 'ping':
+        return '', 200
+    if event['event_type'] not in HANDLED_EVENTS:
+        return '', 400
 
     try:
-        if Order.query.filter_by(qlower_event_id=event_id).first():
-            return jsonify({'success': True, 'message': 'Already processed'}), 200
+        with db.session.begin():
+            db.session.add(Order(
+                qlower_event_id=event['event_id'],
+                qlower_order_id=event['order_id'],
+                customer_email=event['customer']['email'],
+                amount=event['order']['total_amount'],
+                invoice_url=event['invoice']['pdf_url'],
+            ))
 
-        order, customer, invoice = payload['order'], payload['customer'], payload['invoice']
-
-        db.session.add(Order(
-            qlower_event_id=event_id,
-            qlower_order_id=payload['order_id'],
-            customer_email=customer['email'],
-            amount=order['total_amount'],
-            invoice_url=invoice['pdf_url'],
-        ))
-        db.session.commit()
-
-        for line in order['coverage']:
-            property_data = line['property']
-            if property_data['external_id_origin'] == 'qlower':
-                create_property(property_data)
-            activate_declaration(property_data['external_id'], line['year'])
-
-        return jsonify({'success': True}), 200
-
+            for line in event['order']['coverage']:
+                property_data = line['property']
+                if property_data['external_id_origin'] == 'qlower':
+                    create_property(property_data)
+                activate_declaration(property_data['external_id'], line['year'])
+    except IntegrityError:
+        return '', 200
     except Exception:
-        # 5xx pour déclencher une nouvelle tentative de notre côté.
-        logger.exception('Webhook Qlower en échec', extra={'event_id': event_id})
-        return jsonify({'error': 'Internal Server Error'}), 500
+        logger.exception('Webhook Qlower en échec', extra={'event_id': event['event_id']})
+        return '', 500
+
+    return '', 200
 ```
 
 </TabItem>
 </Tabs>
 
-Codes de réponse attendus, politique de reprise et déduplication : voir
-[Échecs et reprises](./errors.md).
+Codes de réponse attendus et politique de reprise : voir [Échecs et reprises](./errors.md).
