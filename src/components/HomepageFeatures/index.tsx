@@ -23,15 +23,15 @@ const FeatureList: FeatureItem[] = [
     link: "/docs/loaders/presentation",
   },
   {
-    title: "Intégration Stripe",
+    title: "Webhooks",
     description: (
       <>
         Recevez automatiquement les notifications de commandes via webhook.
         Facturation PDF envoyée aux clients.
       </>
     ),
-    icon: "💳",
-    link: "/docs/stripe/overview",
+    icon: "🔔",
+    link: "/docs/webhooks/overview",
   },
   {
     title: "API REST",
