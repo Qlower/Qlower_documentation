@@ -57,7 +57,6 @@ Les deux derniers ne sont présents que si une clé, respectivement un secret, o
         "year": 2026,
         "property": {
           "external_id": "00322f69-c2a2-41d3-9848-0d74c838a6c4",
-          "external_id_origin": "partner",
           "name": "Appartement Bordeaux"
         }
       }
@@ -163,23 +162,24 @@ cette section qui vous dit pour quel bien et pour quelle année le client a pay�
 |-------|------|-------------|
 | `year` | integer | Exercice fiscal couvert |
 | `property.external_id` | string | Identifiant du bien, votre clé de rapprochement |
-| `property.external_id_origin` | string | `partner` ou `qlower`, voir ci-dessous |
 | `property.name` | string | Libellé du bien, tel que saisi par le client |
 
 Le bloc s'arrête là : un bien créé depuis la page de paiement n'a que son nom, et pour un bien qui
 vient de vous, l'`external_id` vous donne accès au reste chez vous.
 
-**L'origine de l'identifiant** détermine ce que vous avez à faire :
+#### Le préfixe `qlw_` signale un bien que vous ne connaissez pas
 
-| `external_id_origin` | Situation | Forme |
-|----------------------|-----------|-------|
-| `partner` | Le bien vient de vous, transmis via les [Loaders](/docs/loaders/presentation) : nous vous rendons **votre** identifiant tel quel | celle que vous nous avez donnée |
-| `qlower` | Le client a créé le bien depuis la page de paiement : il n'existait pas chez vous, nous lui en frappons un | préfixé `qlw_`, ex. `qlw_9f2c1b84-…` |
+Pour un bien que vous nous avez transmis via les [Loaders](/docs/loaders/presentation), nous vous
+rendons **votre** identifiant, inchangé.
 
-Un `qlower` signale donc un bien **nouveau pour vous**. L'identifiant est stable et persisté chez
-nous : si vous nous rechargez ce bien plus tard via les Loaders avec ce même `external_id`, nous le
-rapprocherons du bien existant au lieu de créer un doublon. Lisez `external_id_origin`, ne testez pas
-le préfixe.
+Mais un client peut créer un bien lui-même depuis la page de paiement : il n'existe pas chez vous, donc
+nous lui en attribuons un, **toujours préfixé `qlw_`** — par exemple
+`qlw_9f2c1b84-3d7e-4a21-9c05-6b8f2ea71d43`. Un `external_id` commençant par `qlw_` est donc un bien à
+créer de votre côté.
+
+Cet identifiant est stable et conservé chez nous : si vous nous rechargez ce bien plus tard via les
+Loaders en réutilisant ce même `external_id`, nous le rapprocherons du bien existant au lieu de créer
+un doublon.
 
 :::info[`coverage` peut être vide]
 La section vaut `[]` quand le règlement ne provisionne aucun bien chez nous : achat de service sans
@@ -213,6 +213,7 @@ Deux points portent la fiabilité de cet endpoint :
 
 ```javascript
 const HANDLED_EVENTS = new Set(['order.created', 'order.renewed']);
+const QLOWER_PREFIX = 'qlw_';
 const UNIQUE_VIOLATION = '23505';
 
 app.post('/api/qlower/orders', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -233,7 +234,7 @@ app.post('/api/qlower/orders', express.raw({ type: 'application/json' }), async 
       });
 
       for (const { year, property } of event.order.coverage) {
-        if (property.external_id_origin === 'qlower') await tx.properties.create(property);
+        if (property.external_id.startsWith(QLOWER_PREFIX)) await tx.properties.create(property);
         await tx.declarations.activate(property.external_id, year);
       }
     });
@@ -251,6 +252,7 @@ app.post('/api/qlower/orders', express.raw({ type: 'application/json' }), async 
 
 ```python
 HANDLED_EVENTS = {'order.created', 'order.renewed'}
+QLOWER_PREFIX = 'qlw_'
 
 
 @app.route('/api/qlower/orders', methods=['POST'])
@@ -276,7 +278,7 @@ def handle_qlower_order():
 
             for line in event['order']['coverage']:
                 property_data = line['property']
-                if property_data['external_id_origin'] == 'qlower':
+                if property_data['external_id'].startswith(QLOWER_PREFIX):
                     create_property(property_data)
                 activate_declaration(property_data['external_id'], line['year'])
     except IntegrityError:
