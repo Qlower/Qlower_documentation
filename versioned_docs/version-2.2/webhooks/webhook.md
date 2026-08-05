@@ -58,11 +58,7 @@ Les deux derniers ne sont présents que si une clé, respectivement un secret, o
         "property": {
           "external_id": "00322f69-c2a2-41d3-9848-0d74c838a6c4",
           "external_id_origin": "partner",
-          "qlower_property_id": 48213,
-          "name": "Appartement Bordeaux",
-          "address_line1": "12 rue des Remparts",
-          "postal_code": "33000",
-          "city": "Bordeaux"
+          "name": "Appartement Bordeaux"
         }
       }
     ]
@@ -168,11 +164,10 @@ cette section qui vous dit pour quel bien et pour quelle année le client a pay�
 | `year` | integer | Exercice fiscal couvert |
 | `property.external_id` | string | Identifiant du bien, votre clé de rapprochement |
 | `property.external_id_origin` | string | `partner` ou `qlower`, voir ci-dessous |
-| `property.qlower_property_id` | integer | Notre identifiant interne, utile au support |
-| `property.name` | string | Libellé du bien |
-| `property.address_line1` | string | Adresse |
-| `property.postal_code` | string | Code postal |
-| `property.city` | string | Ville |
+| `property.name` | string | Libellé du bien, tel que saisi par le client |
+
+Le bloc s'arrête là : un bien créé depuis la page de paiement n'a que son nom, et pour un bien qui
+vient de vous, l'`external_id` vous donne accès au reste chez vous.
 
 **L'origine de l'identifiant** détermine ce que vous avez à faire :
 
