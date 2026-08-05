@@ -13,7 +13,9 @@ Pour activer l'intégration Stripe, vous devez nous communiquer les informations
 | **Webhook URL (Staging)** | URL pour les tests | `https://staging.partner.com/api/comptappart/orders` |
 | **Webhook URL (Production)** | URL pour la production | `https://api.partner.com/api/comptappart/orders`     |
 | **API key** *(optionnel)* | Envoyée en `X-API-KEY` | une chaîne secrète de 32 caractères minimum |
-| **Secret de signature** *(recommandé)* | Signe le corps en `X-Qlower-Signature` | convenu ensemble, voir plus bas |
+
+Le **secret de signature**, lui, ne se fournit pas : c'est nous qui le générons et vous le
+transmettons (voir [Signature du corps](#signature-du-corps-recommandé)).
 
 ---
 
@@ -55,8 +57,12 @@ if (apiKey !== process.env.COMPTAPPART_API_KEY) {
 ## Signature du corps (Recommandé)
 
 Une API key transmise en clair prouve seulement que l'appelant la connaît. La **signature** prouve en
-plus que le corps n'a pas été modifié et n'est pas un rejeu. Sur demande, nous convenons d'un secret
-de signature et ajoutons l'en-tête :
+plus que le corps n'a pas été modifié et n'est pas un rejeu.
+
+Contrairement à l'API key, **c'est nous qui générons ce secret** : nous en sommes l'émetteur, vous
+n'en êtes que le vérificateur. Nous vous le transmettons par lien à usage unique, jamais par email.
+Nous pouvons le régénérer à votre demande — prévoyez alors d'accepter l'ancien et le nouveau le temps
+de la bascule. L'en-tête ajouté est :
 
 ```
 X-Qlower-Signature: t=1767612138,v1=8d3f1c9a4b...
