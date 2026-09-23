@@ -169,16 +169,16 @@ vient de vous, l'`external_id` vous donne accès au reste chez vous.
 
 #### Le préfixe `qlw_` signale un bien que vous ne connaissez pas
 
-Pour un bien que vous nous avez transmis via les [Loaders](/docs/loaders/presentation), nous vous
+Pour un bien que vous nous avez transmis par l'[entrée](../../entree/structure.md), nous vous
 rendons **votre** identifiant, inchangé.
 
 Mais un client peut créer un bien lui-même depuis la page de paiement : il n'existe pas chez vous, donc
-nous lui en attribuons un, **toujours préfixé `qlw_`** — par exemple
+nous lui en attribuons un, **toujours préfixé `qlw_`**, par exemple
 `qlw_9f2c1b84-3d7e-4a21-9c05-6b8f2ea71d43`. Un `external_id` commençant par `qlw_` est donc un bien à
 créer de votre côté.
 
-Cet identifiant est stable et conservé chez nous : si vous nous rechargez ce bien plus tard via les
-Loaders en réutilisant ce même `external_id`, nous le rapprocherons du bien existant au lieu de créer
+Cet identifiant est stable et conservé chez nous : si vous nous rechargez ce bien plus tard par
+l'entrée en réutilisant ce même `external_id`, nous le rapprocherons du bien existant au lieu de créer
 un doublon.
 
 :::info[`coverage` peut être vide]

@@ -36,10 +36,10 @@ Pour effectuer l'upload, vous aurez besoin de :
 
 ### Structure de base
 
-Les données JSON doivent respecter la structure définie dans la section [Structure des données JSON](../loader). Elles doivent contenir au minimum :
+Les données JSON doivent respecter la structure définie dans la section [Structure des données JSON](../structure.md). Elles doivent contenir au minimum :
 
-- **En-tête** : Informations d'identification (voir [Structure des données JSON](../loader#en-tête))
-- **Sections de données** : Déclarants, Propriétés, Transactions, Documents, Associés
+- **En-tête** : Informations d'identification (voir [Structure des données JSON](../structure.md#en-tête))
+- **Clients** : un tableau `clients`, dont chaque entrée ouvre sur un bloc `client` puis porte ses déclarants, propriétés, transactions, documents et associés
 
 ### Exemple de structure minimale
 
@@ -48,18 +48,29 @@ Les données JSON doivent respecter la structure définie dans la section [Struc
   "inigPtynm": "votre-partenaire-id",
   "apiKey": "votre-cle-api",
   "creDtTm": "2024-01-15T10:30:00+01:00",
-  "versionId": "2.0",
-  "declarants": [],
-  "transactions": [],
-  "properties": [],
-  "documents": []
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "declarants": [],
+      "properties": [],
+      "transactions": [],
+      "documents": []
+    }
+  ]
 }
 ```
 
 ### Points importants
 
 - Le champ `creDtTm` doit être au format ISO 8601 avec le fuseau horaire
-- Le `versionId` doit être `"2.0"` pour les loaders 2.0
+- Le `versionId` doit être `"3.0"` pour le connecteur 3.0
+- Chaque entrée de `clients` porte un bloc `client` complet : voir le message [Client](../models/client.md)
 - Tous les champs obligatoires de l'en-tête doivent être présents
 - Les tableaux peuvent être vides si aucune donnée n'est à transmettre
 
@@ -82,24 +93,34 @@ const s3Client = new S3Client({
   },
 });
 
-const loaderData = {
+const load = {
   inigPtynm: "qlower",
   apiKey: "votre-cle-api",
   creDtTm: new Date().toISOString(),
-  versionId: "2.0",
-  declarants: [],
-  properties: [],
-  transactions: [],
+  versionId: "3.0",
+  clients: [
+    {
+      client: {
+        id: "CLT-00042",
+        email: "jean.dupont@example.com",
+        firstName: "Jean",
+        lastName: "Dupont",
+      },
+      declarants: [],
+      properties: [],
+      transactions: [],
+    },
+  ],
 };
 
 const bucketName = "ql-loader-stg-qlower"; // ou 'prod' pour production
-const fileName = `loader-${Date.now()}.json`;
+const fileName = `load-${Date.now()}.json`;
 
 await s3Client.send(
   new PutObjectCommand({
     Bucket: bucketName,
     Key: fileName,
-    Body: JSON.stringify(loaderData),
+    Body: JSON.stringify(load),
     ContentType: "application/json",
   })
 );
@@ -124,23 +145,33 @@ s3_client = boto3.client(
     aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')
 )
 
-loader_data = {
+load = {
     'inigPtynm': 'qlower',
     'apiKey': 'votre-cle-api',
     'creDtTm': datetime.now().isoformat(),
-    'versionId': '2.0',
-    'declarants': [],
-    'properties': [],
-    'transactions': []
+    'versionId': '3.0',
+    'clients': [
+        {
+            'client': {
+                'id': 'CLT-00042',
+                'email': 'jean.dupont@example.com',
+                'firstName': 'Jean',
+                'lastName': 'Dupont'
+            },
+            'declarants': [],
+            'properties': [],
+            'transactions': []
+        }
+    ]
 }
 
 bucket_name = 'ql-loader-stg-qlower'  # ou 'prod' pour production
-file_name = f'loader-{int(datetime.now().timestamp() * 1000)}.json'
+file_name = f'load-{int(datetime.now().timestamp() * 1000)}.json'
 
 s3_client.put_object(
     Bucket=bucket_name,
     Key=file_name,
-    Body=json.dumps(loader_data),
+    Body=json.dumps(load),
     ContentType='application/json'
 )
 ```

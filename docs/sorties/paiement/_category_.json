@@ -1,8 +1,8 @@
 {
-  "label": "Webhooks",
-  "position": 2,
+  "label": "Paiement effectué",
+  "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "Recevez une notification à chaque commande réglée : le contrat du webhook, sa sécurisation, et le comportement en cas d'échec."
+    "description": "Nous encaissons vos clients et vous notifions chaque paiement par webhook : le contrat, sa sécurisation et le comportement en cas d'échec."
   }
 }

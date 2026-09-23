@@ -1,8 +1,8 @@
 {
-  "label": "Modèles",
+  "label": "Messages",
   "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Veuillez consulter la liste des modèles ci-dessous."
+    "description": "Chaque message décrit un type d'objet du load, du client à la transaction."
   }
 }

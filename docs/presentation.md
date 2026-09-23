@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Architecture
 
-L'architecture des loaders 2.0 de Qlower est conçue pour une intégration fluide et sécurisée de vos données. Elle gère l'ensemble du processus, de la réception à l'intégration finale dans la plateforme.
+L'architecture du connecteur Qlower est conçue pour une intégration fluide et sécurisée de vos données. Elle gère l'ensemble du processus, de la réception de vos loads à la restitution de vos dossiers.
 
 ## Flux de données simplifié
 
@@ -14,6 +14,7 @@ Le processus d'intégration des données suit un pipeline structuré :
 2.  **Validation et Transformation** : Les données reçues sont automatiquement validées et transformées pour s'adapter au format interne de Qlower.
 3.  **Intégration** : Les données validées sont intégrées dans les systèmes fonctionnels de Qlower.
 4.  **Notification** : Vous recevez une notification (via la réponse API ou par email) confirmant le statut du traitement (succès, succès partiel ou échec).
+5.  **Restitution** : Vous récupérez en [sortie](./sorties/presentation.md) le lien de l'espace de chaque client, les paiements effectués et l'état à jour de vos clients.
 
 ## Sécurité et Conformité
 
@@ -24,4 +25,4 @@ La protection de vos données est une priorité. L'architecture intègre des mé
 -   **Audit et Traçabilité** : Toutes les opérations sont journalisées pour assurer un suivi précis et la conformité.
 -   **Conformité RGPD** : Les processus respectent les exigences du RGPD pour la gestion des données personnelles.
 
-Pour plus de détails sur les méthodes d'envoi, consultez la section [Intégration](./integration/api).
+Pour plus de détails sur les méthodes d'envoi, consultez la section [Intégration](./entree/integration/api.md).
