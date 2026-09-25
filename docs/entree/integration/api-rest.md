@@ -15,7 +15,7 @@ Les endpoints varient selon l'environnement :
 
 ## Description
 
-L'endpoint `/api/third_party/loader` accepte un load au format du connecteur et lance immédiatement le traitement. La réponse indique le statut du traitement, le détail des succès et des erreurs, et pour chaque client son lien d'accès (voir [Lien du Welcome Dashboard](../../sorties/welcome-dashboard.md)).
+L'endpoint `/api/third_party/loader` accepte un load au format du connecteur et lance immédiatement le traitement. Son accusé de réception indique le statut du traitement, le détail des succès et des erreurs, et pour chaque client son lien d'accès (voir [Lien du Welcome Dashboard](../../sorties/welcome-dashboard.md)).
 
 ## Headers
 
@@ -27,7 +27,9 @@ Content-Type: application/json
 
 Le corps de la requête doit contenir un load conforme au format du connecteur (voir [Structure des données JSON](../structure.md)).
 
-## Réponses
+## Accusé de réception
+
+La réponse à un load est son accusé de réception (A/R). Elle rend compte du traitement du load ; ce n'est pas une [sortie](../../sorties/presentation.md).
 
 ### Succès (200 OK)
 

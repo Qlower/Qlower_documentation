@@ -8,16 +8,16 @@ Les **transactions** regroupent des informations détaillées sur les transactio
 
 ### Attributs
 
-| **Attributs**         | **Obligatoire** | **Description**                  | **Valeur par défaut**                             | **Clé JSON**  | **Domaine de validité**                                                |
-| --------------------- | :-------------: | -------------------------------- | ------------------------------------------------- | ------------- | ---------------------------------------------------------------------- |
-| **Identifiant tiers** |       [x]       | Votre identifiant de transaction |                                                   | `id`          | Clé d'identification unique (chaîne de caractères)                     |
-| **Date**              |       [x]       | Date de la transaction           | None                                              | `reqdExctnDt` | `YYYY-MM-DD`                                                           |
-| **Propriété**         |       [x]       | Votre identifiant de propriété   |                                                   | `id-prty`     | Clé d'identification unique (chaîne de caractères)                     |
-| **Locataire**         |                 | Votre identifiant de locataire, pour rattacher la transaction à un locataire du bien |          | `id-tenant`   | Clé d'identification unique (chaîne de caractères)                     |
-| **Montant**           |       [x]       | Montant signé TTC                | Montant négatif = débit, Montant positif = crédit | `amt`         | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
-| **Devise**            |                 | Devise normalisée                | `EUR`                                             | `ccy`         | `EUR`, `USD`, `GBP`                                                    |
-| **Catégorie**         |                 | Votre code catégorie             |                                                   | `purpose`     | Votre liste de catégories                                              |
-| **Référence**         |       [x]       | Description de la transaction    | None                                              | `ref`         | Chaîne de caractères                                                   |
+| **Attributs**                     | **Obligatoire** | **Description**                                                                      | **Valeur par défaut**                             | **Clé JSON**  | **Domaine de validité**                                                |
+| --------------------------------- | :-------------: | ------------------------------------------------------------------------------------ | ------------------------------------------------- | ------------- | ---------------------------------------------------------------------- |
+| **Identifiant de la transaction** |       [x]       | Votre identifiant de transaction                                                     |                                                   | `id`          | Clé d'identification unique (chaîne de caractères)                     |
+| **Date**                          |       [x]       | Date de la transaction                                                               | None                                              | `reqdExctnDt` | `YYYY-MM-DD`                                                           |
+| **Identifiant de la propriété**   |       [x]       | Votre identifiant de propriété                                                       |                                                   | `id-prty`     | Clé d'identification unique (chaîne de caractères)                     |
+| **Identifiant du locataire**      |                 | Votre identifiant de locataire, pour rattacher la transaction à un locataire du bien |                                                   | `id-tenant`   | Clé d'identification unique (chaîne de caractères)                     |
+| **Montant**                       |       [x]       | Montant signé TTC                                                                    | Montant négatif = débit, Montant positif = crédit | `amt`         | Nombre décimal avec partie décimale séparée par un “.” (ex. : “13.56”) |
+| **Devise**                        |                 | Devise normalisée                                                                    | `EUR`                                             | `ccy`         | `EUR`, `USD`, `GBP`                                                    |
+| **Catégorie**                     |                 | Votre code catégorie                                                                 |                                                   | `purpose`     | Votre liste de catégories                                              |
+| **Référence**                     |       [x]       | Description de la transaction                                                        | None                                              | `ref`         | Chaîne de caractères                                                   |
 
 ### JSON
 

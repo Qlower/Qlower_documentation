@@ -20,7 +20,7 @@ L'API REST permet d'envoyer directement vos données JSON via une requête HTTP 
 - **Staging** : `https://stg.api.qlower.com/api/third_party/loader`
 
 **Avantages** :
-- Réponse immédiate avec détails sur le traitement
+- Accusé de réception immédiat, avec le détail du traitement
 - Pas besoin de credentials AWS
 - Intégration simple via HTTP
 - Gestion d'erreurs en temps réel
@@ -39,20 +39,20 @@ L'upload vers S3 est adapté pour les traitements par lots (batch) ou lorsque vo
 ### Via API REST
 
 ```
-Votre Système → Génération du load → POST du load → Traitement Qlower → Réponse immédiate
+Votre Système → Génération du load → POST du load → Traitement Qlower → Accusé de réception immédiat
 ```
 
 ### Via Upload S3
 
 ```
-Votre Système → Génération du load → Upload S3 → Traitement Qlower → Notification email
+Votre Système → Génération du load → Upload S3 → Traitement Qlower → Accusé de réception par email
 ```
 
 ## Comparaison des méthodes
 
 | Critère | API REST | Upload S3 |
 |---------|----------|-----------|
-| **Temps réel** | ✅ Réponse immédiate | ❌ Traitement asynchrone |
+| **Temps réel** | ✅ Accusé de réception immédiat | ❌ Traitement asynchrone |
 | **Volume de données** | Limité par la taille de la requête HTTP | ✅ Volumes importants |
 | **Traitement par lots** | Possible mais moins adapté | ✅ Idéal pour les batch |
 | **Simplicité** | ✅ Plus simple (pas de config AWS) | Nécessite credentials AWS |

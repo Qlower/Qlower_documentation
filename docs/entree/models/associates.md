@@ -4,21 +4,21 @@ sidebar_position: 2
 
 # Associé
 
-**L'associé** est la personne physique ou morale qui possède une part dans une société. Il est lié à un déclarant.
+**L'associé** est la personne physique ou morale qui possède une part dans une société. Il se déclare dans le tableau `associates` de son déclarant : c'est ce qui le rattache à ce déclarant, sans identifiant à renseigner.
 
 ### Attributs
 
-| **Attributs**                | **Obligatoire** | **Description**                 | **Valeur par défaut** | **Clé JSON** | **Domaine de validité**                            |
-| ---------------------------- | :-------------: | ------------------------------- | --------------------- | ------------ | -------------------------------------------------- |
-| **Description d’un associé** |       [x]       | Votre identifiant de déclarant  |                       | `id`         | Clé d'identification unique (chaîne de caractères) |
-| **Civilité (M/MME/société)** |       [x]       | Type de propriétaire            |                       | `civility`   | `M` (monsieur), `MME` (madame), `SOC` (société)    |
-| **Prénom**                   |                 | Prénom du propriétaire          |                       | `firstName`  | Chaîne de caractères                               |
-| **Nom**                      |                 | Nom du propriétaire             |                       | `lastName`   | Chaîne de caractères                               |
-| **Adresse**                  |                 | Adresse du propriétaire         |                       | `address`    | Chaîne de caractères                               |
-| **Ville**                    |                 | Ville du propriétaire           |                       | `townName`   | Chaîne de caractères                               |
-| **Pays**                     |                 | Pays du propriétaire            | None                  | `ctry`       | Code de pays `FR`                                  |
-| **Email**                    |       [x]       | Email du propriétaire           |                       | `email`      | Chaîne de caractères                               |
-| **Gérant**                   |                 | Le propriétaire est le gérant ? | `N`                   | `manager`    | `O`, `N`                                           |
+| **Attributs**                | **Obligatoire** | **Description**              | **Valeur par défaut** | **Clé JSON** | **Domaine de validité**                            |
+| ---------------------------- | :-------------: | ---------------------------- | --------------------- | ------------ | -------------------------------------------------- |
+| **Identifiant de l'associé** |       [x]       | Votre identifiant d'associé  |                       | `id`         | Clé d'identification unique (chaîne de caractères) |
+| **Civilité (M/MME/société)** |       [x]       | Civilité de l'associé        |                       | `civility`   | `M` (monsieur), `MME` (madame), `SOC` (société)    |
+| **Prénom**                   |                 | Prénom de l'associé          |                       | `firstName`  | Chaîne de caractères                               |
+| **Nom**                      |                 | Nom de l'associé             |                       | `lastName`   | Chaîne de caractères                               |
+| **Adresse**                  |                 | Adresse de l'associé         |                       | `address`    | Chaîne de caractères                               |
+| **Ville**                    |                 | Ville de l'associé           |                       | `townName`   | Chaîne de caractères                               |
+| **Pays**                     |                 | Pays de l'associé            | None                  | `ctry`       | Code de pays `FR`                                  |
+| **Email**                    |       [x]       | Email de l'associé           |                       | `email`      | Chaîne de caractères                               |
+| **Gérant**                   |                 | L'associé est-il le gérant ? | `N`                   | `manager`    | `O`, `N`                                           |
 
 ### JSON
 

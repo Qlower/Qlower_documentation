@@ -10,8 +10,8 @@ Bienvenue sur la **documentation du connecteur Qlower**. Elle vous accompagne da
 
 Le **connecteur 3.0** est le contrat d'échange entre Qlower et ses partenaires, qu'ils encaissent eux-mêmes leurs clients ou qu'ils nous en délèguent le paiement. Il fonctionne dans deux sens :
 
-- **L'[entrée](./entree/structure.md)** : ce que vous nous envoyez. Vos clients, leurs déclarants, leurs biens, puis leurs transactions. Un envoi s'appelle un _load_.
-- **Les [sorties](./sorties/presentation.md)** : ce que vous récupérez chez nous. Le lien de l'espace de chaque client, les paiements effectués, l'état à jour de vos clients.
+- **L'[entrée](./entree/structure.md)** : ce que vous nous envoyez. Vos clients, leurs déclarants, leurs biens, puis leurs transactions. Un envoi s'appelle un _load_ ; chaque load reçoit un accusé de réception, qui porte le lien de l'espace de chaque client.
+- **Les [sorties](./sorties/presentation.md)** : ce que vous pouvez récupérer chez nous, une fois vos clients transmis en entrée : l'état à jour de vos clients, les paiements effectués et, dès début 2027, leurs prévisionnels.
 
 ## Entrée : deux méthodes d'envoi
 
@@ -52,6 +52,8 @@ Avant d'envoyer vos données, familiarisez-vous avec :
 
 - **[Structure des données JSON](./entree/structure.md)** : organisation d'un load et champs de l'en-tête
 - **[Messages](./entree/models/client.md)** : le détail de chaque message, du client à la transaction
+
+Un load peut rester minimal : chaque message n'exige que quelques champs, et votre client complète le reste depuis son espace.
 
 ## Prochaines étapes
 

@@ -13,8 +13,8 @@ Le processus d'intégration des données suit un pipeline structuré :
 1.  **Envoi des données** : Vous envoyez vos données JSON à Qlower, soit via l'API REST pour un traitement en temps réel, soit en déposant des fichiers JSON sur un bucket AWS S3 pour des traitements par lots.
 2.  **Validation et Transformation** : Les données reçues sont automatiquement validées et transformées pour s'adapter au format interne de Qlower.
 3.  **Intégration** : Les données validées sont intégrées dans les systèmes fonctionnels de Qlower.
-4.  **Notification** : Vous recevez une notification (via la réponse API ou par email) confirmant le statut du traitement (succès, succès partiel ou échec).
-5.  **Restitution** : Vous récupérez en [sortie](./sorties/presentation.md) le lien de l'espace de chaque client, les paiements effectués et l'état à jour de vos clients.
+4.  **Accusé de réception** : Vous recevez un accusé de réception (dans la réponse de l'API ou par email) qui confirme le statut du traitement (succès, succès partiel ou échec) et, pour un load envoyé par l'API REST, le lien du Welcome Dashboard de chaque client.
+5.  **Restitution** : Vous pouvez récupérer en [sortie](./sorties/presentation.md) l'état à jour de vos clients, les paiements effectués et, dès début 2027, leurs prévisionnels.
 
 ## Sécurité et Conformité
 

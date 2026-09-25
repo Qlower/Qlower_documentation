@@ -176,6 +176,6 @@ s3_client.put_object(
 )
 ```
 
-## Notifications
+## Accusé de réception
 
-Une fois le fichier JSON uploadé sur S3, le système Qlower détecte automatiquement le nouveau fichier, lance le traitement de manière asynchrone et envoie une notification par email avec les résultats du traitement.
+Une fois le fichier JSON déposé sur S3, le système Qlower détecte automatiquement le nouveau fichier, lance le traitement de manière asynchrone et vous envoie son accusé de réception (A/R) par email, avec les résultats du traitement.

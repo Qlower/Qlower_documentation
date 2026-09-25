@@ -8,17 +8,34 @@ Un **load** est un envoi de messages par le connecteur d'entrée. Il intègre vo
 
 ## Vue d'ensemble
 
+Les messages d'un load se rattachent les uns aux autres :
+
+```mermaid
+flowchart TD
+  C["Client"] -->|N| D["Déclarant"]
+  D -->|N| A["Associé"]
+  D -->|N| P["Propriété"]
+  C -->|N, sans déclarant| P
+  P -->|N| T["Transaction"]
+  P -->|N| F["Document"]
+  D -->|N| F
+```
+
+Un client peut avoir plusieurs déclarants, et chaque déclarant plusieurs associés et plusieurs propriétés. Une propriété peut aussi se rattacher directement au client, sans déclarant. Les transactions se rattachent à une propriété, les documents à une propriété ou à un déclarant.
+
 Un load comprend :
 
-| Section       | Clé JSON       | Contenu                                                                    |
-| ------------- | -------------- | --------------------------------------------------------------------------- |
-| En-tête       | *(racine)*     | Identification du partenaire et version du format                          |
-| Client        | `client`       | Le client final, en tête de chaque entrée de `clients`                      |
-| Déclarants    | `declarants`   | Personnes ou entités qui déclarent, avec leurs propriétés et associés       |
-| Propriétés    | `properties`   | Biens immobiliers, imbriqués dans un déclarant ou liés via `declarantId`    |
-| Associés      | `associates`   | Personnes ou entités liées à un déclarant (copropriétaires, actionnaires…)  |
-| Transactions  | `transactions` | Mouvements financiers liés à une propriété                                  |
-| Documents     | `documents`    | Fichiers liés à une propriété ou un déclarant                               |
+| Section      | Clé JSON       | Contenu                                                                               |
+| ------------ | -------------- | ------------------------------------------------------------------------------------- |
+| En-tête      | *(racine)*     | Identification du partenaire et version du format                                     |
+| Client       | `client`       | Le client final, en tête de chaque entrée de `clients`                                |
+| Déclarants   | `declarants`   | Personnes ou entités qui déclarent, avec leurs propriétés et associés                 |
+| Propriétés   | `properties`   | Biens immobiliers, imbriqués dans un déclarant ou liés via `declarantId`              |
+| Associés     | `associates`   | Associés d'un déclarant (copropriétaires, actionnaires…), imbriqués dans ce déclarant |
+| Transactions | `transactions` | Mouvements financiers liés à une propriété                                            |
+| Documents    | `documents`    | Fichiers liés à une propriété ou un déclarant                                         |
+
+Chaque message n'exige que quelques champs : de quoi ouvrir l'espace de votre client et y rattacher ses biens. Tout ce que vous ne nous transmettez pas, votre client peut le compléter lui-même depuis son espace, et vous le récupérez ensuite en [sortie](../sorties/clients.md). Voir l'[exemple minimal](#exemple-minimal).
 
 Ces données se regroupent par client destinataire, dans un tableau **`clients`** : chaque entrée désigne un compte via un bloc `client`, puis porte les sections ci-dessus, propres à ce client : voir [Bloc `client`](#bloc-client).
 
@@ -135,7 +152,7 @@ Voir le message [Propriété](./models/properties.md) pour la liste complète de
 
 ## Associés
 
-Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Cette section permet de lier des individus ou des entreprises à un déclarant, avec des informations spécifiques comme le nom, l'adresse, et les coordonnées.
+Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Ils se déclarent dans le tableau `associates` de leur déclarant, avec des informations comme le nom, l'adresse et les coordonnées.
 
 Voir le message [Associé](./models/associates.md) pour la liste complète des champs.
 
@@ -146,7 +163,9 @@ La section **transactions** est dédiée aux mouvements financiers et opération
 - Un identifiant unique de la transaction.
 - La date d'exécution prévue ou réelle.
 - L'identifiant de la propriété concernée.
-- Le montant de la transaction, la devise, et la raison ou le motif (exemple : « Loyer mensuel »).
+- Le montant et la référence de la transaction.
+
+La devise (EUR par défaut) et votre code catégorie (exemple : « Loyer ») sont facultatifs.
 
 Cela permet de suivre les flux financiers associés à la gestion des propriétés déclarées.
 
@@ -174,9 +193,46 @@ Voir le message [Document](./models/documents.md) pour la liste complète des ch
 **Aucune modification post-création** : tous les modèles doivent être correctement créés lors de leur première intégration. Il n'est pas possible de modifier un modèle après sa création initiale.
 :::
 
+:::info[Les données du client priment]
+Si votre client enrichit ou modifie ses données dans son espace après un load, ce sont ses informations qui priment. Vous les récupérez en [sortie](../sorties/clients.md).
+:::
+
 :::info[Indépendance]
 **Propriétés ou documents** : il est possible de lier des **documents** et des **propriétés** indépendamment. Assurez-vous de respecter la structure de lien entre les entités.
 :::
+
+## Exemple minimal
+
+Le plus petit load utile : un client et un bien, avec leurs seuls champs obligatoires. Votre client complète le reste depuis son espace.
+
+```json
+{
+  "inigPtynm": "votre-identifiant-partenaire",
+  "apiKey": "votre-cle-api",
+  "creDtTm": "2026-10-01T09:00:00+02:00",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "properties": [
+        {
+          "id": "exemple-propriete",
+          "description": "Appartement 1",
+          "streetName": "rue Exemple",
+          "postCode": "12345",
+          "townName": "Exempleville",
+          "ctry": "FR"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Exemple complet de données JSON
 

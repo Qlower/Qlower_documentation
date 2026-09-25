@@ -5,16 +5,17 @@ sidebar_label: Clients
 
 # Clients
 
-La route Clients vous rend vos clients tels qu'ils sont chez nous : ce que vous nous avez transmis, et ce que vos clients ont ajouté eux-mêmes depuis leur espace, comme un bien complémentaire. Elle vous permet de vous resynchroniser sans échange de fichiers.
+La route Clients vous rend vos clients tels qu'ils sont chez nous, et vous permet de vous resynchroniser sans échange de fichiers. Elle restitue ce que vous nous avez transmis, avec ce que vos clients ont enrichi, modifié ou ajouté eux-mêmes depuis leur espace, comme un bien complémentaire : ce que votre client saisit prime sur vos loads.
 
 ## Endpoints
 
 ```
 GET /api/third_party/clients
 GET /api/third_party/clients/{id}
+GET /api/third_party/clients/{id}/welcome-link
 ```
 
-La première renvoie la liste paginée de vos clients. La seconde renvoie un client, désigné par votre identifiant ou par l'identifiant `qlw_` que nous lui avons attribué. L'authentification est décrite dans la [vue d'ensemble](./presentation.md#appeler-une-route-de-lecture).
+La première renvoie la liste paginée de vos clients. La deuxième renvoie un client, désigné par votre identifiant ou par l'identifiant `qlw_` que nous lui avons attribué. La troisième renvoie son lien d'accès au Welcome Dashboard. L'authentification est décrite dans la [vue d'ensemble](./presentation.md#appeler-une-route-de-lecture).
 
 ## Paramètres de la liste
 
@@ -81,6 +82,26 @@ Un bien rattaché à un déclarant figure dans ce déclarant ; un bien sans déc
 | `results`  | array          | Les clients de la page, dans le format décrit ci-dessus   |
 
 La route `GET /api/third_party/clients/{id}` renvoie directement un élément de `results`.
+
+## Lien d'accès d'un client
+
+`GET /api/third_party/clients/{id}/welcome-link` renvoie le lien d'accès du client au Welcome Dashboard : le même que celui de l'[accusé de réception](./welcome-dashboard.md) de vos loads. Utile pour un load déposé sur S3, ou pour réafficher le lien plus tard.
+
+```json
+{
+  "id": "CLT-00042",
+  "email": "jean.dupont@example.com",
+  "welcome_url": "https://secure.comptappart.com/declaration/...",
+  "created_at": "2026-12-02T09:45:10+00:00"
+}
+```
+
+| Champ         | Type   | Description                                          |
+| ------------- | ------ | ---------------------------------------------------- |
+| `id`          | string | Votre identifiant du client                          |
+| `email`       | string | L'email du client, celui qui lui sert à se connecter |
+| `welcome_url` | string | Le lien d'accès à son espace                         |
+| `created_at`  | string | Date de création du lien, ISO 8601                   |
 
 ## Objets créés chez nous
 
