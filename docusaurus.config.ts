@@ -12,6 +12,11 @@ const config: Config = {
   projectName: "qlower-doc",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
+  // Schémas ```mermaid dans les pages (modèle de données de la structure d'un load).
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
   i18n: {
     defaultLocale: "fr",
     locales: ["fr"],
