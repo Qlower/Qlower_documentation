@@ -66,6 +66,12 @@ const config: Config = {
           dropdownItemsBefore: [],
           dropdownActiveClassDisabled: true,
         },
+        {
+          href: "pathname:///auth/logout",
+          label: "Se déconnecter",
+          position: "right",
+          target: "_self",
+        },
       ],
     },
     colorMode: {

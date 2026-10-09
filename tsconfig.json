@@ -3,5 +3,6 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": "."
-  }
+  },
+  "exclude": ["netlify", "node_modules", "build"]
 }
