@@ -52,7 +52,7 @@ Toutes les données ont été traitées avec succès :
       "id": "CLT-00042",
       "email": "jean.dupont@example.com",
       "status": "CREATED",
-      "welcome_url": "https://secure.comptappart.com/declaration/..."
+      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.fr/..."
     }
   ],
   "combined_result": [

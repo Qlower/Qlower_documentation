@@ -7,6 +7,24 @@ sidebar_label: Lien du Welcome Dashboard
 
 Chacun de vos clients dispose d'un espace à votre marque, le Welcome Dashboard. Il y retrouve ses biens, ses déclarations et les services que vous lui avez ouverts. Il y accède par un lien unique, que nous lui envoyons et que nous vous rendons en parallèle, dans l'accusé de réception de vos loads.
 
+## L'adresse de votre espace
+
+Votre espace a sa propre adresse, à votre nom, sur le domaine `espacefiscal.fr` :
+
+```
+https://<votre-marque>.<code>.espacefiscal.fr
+```
+
+| Élément          | Exemple           | Sens                                                                    |
+| ---------------- | ----------------- | ----------------------------------------------------------------------- |
+| `<votre-marque>` | `votremarque`     | Le nom de votre marque, pour que vos clients reconnaissent leur espace  |
+| `<code>`         | `k7m2xq`          | Un code de six caractères propre à votre espace, attribué par nos soins |
+| Domaine          | `espacefiscal.fr` | Le domaine commun à tous les espaces partenaires                        |
+
+Le code est indispensable : sans lui, connaître votre nom ne suffit pas à trouver l'adresse de votre espace. Il vous est communiqué à l'ouverture de vos accès.
+
+Chaque client est rattaché à un seul espace, celui du partenaire qui nous l'a transmis : il ne peut pas se connecter à l'espace d'un autre partenaire.
+
 ## Ce que reçoit votre client
 
 À la création de son compte, votre client reçoit par email son lien d'accès, à votre marque. Vous n'avez rien à lui envoyer.
@@ -27,7 +45,7 @@ L'accusé de réception de chaque load envoyé par l'[API REST](../entree/integr
       "id": "CLT-00042",
       "email": "jean.dupont@example.com",
       "status": "CREATED",
-      "welcome_url": "https://secure.comptappart.com/declaration/..."
+      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.fr/..."
     }
   ]
 }
@@ -36,7 +54,7 @@ L'accusé de réception de chaque load envoyé par l'[API REST](../entree/integr
 Les loads déposés sur S3 sont traités en différé : récupérez le lien par la route [Clients](./clients.md).
 
 :::tip[Utilisez le lien tel quel]
-Ne reconstruisez pas le lien vous-même : son format peut évoluer. Il est servi sur `secure.comptappart.com` en production et sur `stg.comptappart.com` en staging.
+Ne reconstruisez pas le lien vous-même : seule l'adresse de votre espace est fixe, la suite du lien peut évoluer. L'adresse de staging vous est communiquée avec vos accès de test.
 :::
 
 ## Ce que ce lien n'est pas
