@@ -4,7 +4,16 @@ sidebar_position: 4
 
 # Transaction
 
-Les **transactions** regroupent des informations détaillées sur les transactions financières liées à la location de biens immobiliers.
+Une **transaction** est une opération financière issue d'un système de gestion amont : un loyer encaissé, une charge payée, un remboursement.
+
+Qlower accepte des transactions de plusieurs sources : saisies par le client, issues d'une connexion bancaire, d'un relevé de compte bancaire, d'un compte rendu de gestion complet ou partiel, d'un agent IA sécurisé et, depuis peu, des factures électroniques. Le connecteur charge tout type de transaction.
+
+Une fois chargées, les transactions sont :
+
+1. **catégorisées**, contrôlées et validées par le client ;
+2. **réparties** entre TVA et HT, le cas échéant ;
+3. **complétées** des transactions manquantes (taxe foncière, assurance...) ;
+4. **comptabilisées**, pour produire à la fois une comptabilité de trésorerie et une comptabilité fiscale.
 
 ### Attributs
 
