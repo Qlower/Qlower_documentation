@@ -1,0 +1,8 @@
+{
+  "label": "Entrée",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Ce que vous nous envoyez : vos clients, leurs déclarants, leurs biens et leurs transactions, regroupés en loads. Envoi par API REST ou par dépôt sur un bucket S3. Le format suit les conventions de la norme ISO 20022 et respecte le RGPD."
+  }
+}

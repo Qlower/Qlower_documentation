@@ -1,0 +1,355 @@
+---
+sidebar_position: 3
+---
+
+# Structure des données JSON
+
+Un **load** est un envoi de messages par le connecteur d'entrée. Il intègre vos données dans Qlower : clients, déclarants, propriétés, associés, transactions, documents. Cette page décrit la structure complète du JSON ; pour le détail champ par champ, voir les [messages](./models/client.md).
+
+## Vue d'ensemble
+
+Les messages d'un load se rattachent les uns aux autres :
+
+```mermaid
+flowchart TD
+  C["Client"] -->|N| D["Déclarant"]
+  D -->|N| A["Associé"]
+  D -->|N| P["Propriété"]
+  C -->|N, sans déclarant| P
+  P -->|N| T["Transaction"]
+  P -->|N| F["Document"]
+  D -->|N| F
+```
+
+Un client peut avoir plusieurs déclarants, et chaque déclarant plusieurs associés et plusieurs propriétés. Une propriété peut aussi se rattacher directement au client, sans déclarant. Les transactions se rattachent à une propriété, les documents à une propriété ou à un déclarant.
+
+Un load comprend :
+
+| Section      | Clé JSON       | Contenu                                                                               |
+| ------------ | -------------- | ------------------------------------------------------------------------------------- |
+| En-tête      | *(racine)*     | Identification du partenaire et version du format                                     |
+| Client       | `client`       | Le client final, en tête de chaque entrée de `clients`                                |
+| Déclarants   | `declarants`   | Personnes ou entités qui déclarent, avec leurs propriétés et associés                 |
+| Propriétés   | `properties`   | Biens immobiliers, imbriqués dans un déclarant ou liés via `declarantId`              |
+| Associés     | `associates`   | Associés d'un déclarant (copropriétaires, actionnaires…), imbriqués dans ce déclarant |
+| Transactions | `transactions` | Mouvements financiers liés à une propriété                                            |
+| Documents    | `documents`    | Fichiers liés à une propriété ou un déclarant                                         |
+
+Chaque message n'exige que quelques champs : de quoi ouvrir l'espace de votre client et y rattacher ses biens. Tout ce que vous ne nous transmettez pas, votre client peut le compléter lui-même depuis son espace, et vous le récupérez ensuite en [sortie](../sorties/clients.md). Voir l'[exemple minimal](#exemple-minimal).
+
+Ces données se regroupent par client destinataire, dans un tableau **`clients`** : chaque entrée désigne un compte via un bloc `client`, puis porte les sections ci-dessus, propres à ce client : voir [Bloc `client`](#bloc-client).
+
+```json
+{
+  "inigPtynm": "",
+  "apiKey": "",
+  "creDtTm": "",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "",
+        "email": "",
+        "firstName": "",
+        "lastName": ""
+      },
+      "declarants": [],
+      "properties": [],
+      "transactions": [],
+      "documents": []
+    }
+  ]
+}
+```
+
+## En-tête
+
+L'en-tête identifie l'émetteur des données et le format utilisé. Il est obligatoire, à la racine du JSON.
+
+| **Attributs**         | **Obligatoire** | **Description**                      | **Valeur par défaut** | **Clé JSON** | **Domaine de validité**                                        |
+| --------------------- | :--------------: | ------------------------------------ | --------------------- | ------------ | -------------------------------------------------------------- |
+| **Nom du Partenaire** |       [x]       | Id du partenaire attribué par Qlower |                       | `inigPtynm`  | Chaîne de caractères                                            |
+| **Clé d'accès**       |       [x]       | Clé d'accès générée par notre équipe |                       | `apiKey`     | Chaîne de caractères                                            |
+| **Date d'émission**   |       [x]       | Date d'émission du message           |                       | `creDtTm`    | ISO 8601 (en l'absence de fuseau horaire, fuseau Paris/France)  |
+| **Version du connecteur** |   [x]   | Version du connecteur utilisée       |                       | `versionId`  | Chaîne de caractères (**'3.0'**)                                 |
+
+### Exemple
+
+```json
+{
+  "inigPtynm": "qlower",
+  "apiKey": "7Swvx0CZDKXLkeJ6iaOeH8Cb6TPdbHAL",
+  "creDtTm": "2023-08-28T10:15:43.25+01:00",
+  "versionId": "3.0"
+}
+```
+
+## Bloc `client`
+
+Chaque entrée de `clients` désigne un client final et porte son propre lot de données. Elle contient :
+
+- Un bloc **`client`**, qui identifie le client par votre identifiant `id` et par son email. Voir le message [Client](./models/client.md) pour la liste complète des champs.
+- Les sections `declarants`, `properties`, `transactions`, `documents` habituelles, **propres à ce client**.
+
+### Exemple
+
+```json
+{
+  "inigPtynm": "",
+  "apiKey": "",
+  "creDtTm": "",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "declarants": [
+        {
+          "properties": [
+            {
+              "documents": []
+            }
+          ],
+          "associates": []
+        }
+      ],
+      "transactions": [],
+      "properties": []
+    }
+  ]
+}
+```
+
+### Comportement
+
+:::info[Une entrée = un client]
+Une entrée de `clients` échoue **seule** si son bloc `client` est invalide ou que le compte ne peut pas être créé : les autres entrées du même envoi sont traitées normalement.
+:::
+
+## Déclarants
+
+La section **déclarants** permet de décrire les individus ou les entités qui déclarent les informations dans le système. Un déclarant peut inclure :
+
+- Un tableau de **propriétés** détenues par ce déclarant.
+- Un tableau d'**associés** représentant des personnes physiques ou morales liées au déclarant (comme des copropriétaires ou actionnaires).
+
+Voir le message [Déclarant](./models/declarants.md) pour la liste complète des champs.
+
+## Propriétés
+
+Les **propriétés** sont des biens immobiliers ou actifs financiers qui peuvent être déclarés dans deux contextes :
+
+1. **Dans le cadre d'un déclarant** : si une propriété appartient directement à un déclarant, elle est incluse dans la section `properties` de ce dernier.
+2. **Indépendamment d'un déclarant** : une propriété peut être déclarée séparément, avec un champ `declarantId` facultatif pour établir un lien vers un déclarant spécifique.
+
+Chaque **propriété** inclut des détails tels que l'adresse, le type de bien (appartement, maison, local commercial), la gestion (meublée ou non), la superficie, le nombre de pièces, la date d'acquisition, etc.
+
+Voir le message [Propriété](./models/properties.md) pour la liste complète des champs.
+
+## Associés
+
+Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Ils se déclarent dans le tableau `associates` de leur déclarant, avec des informations comme le nom, l'adresse et les coordonnées.
+
+Voir le message [Associé](./models/associates.md) pour la liste complète des champs.
+
+## Transactions
+
+La section **transactions** est dédiée aux mouvements financiers et opérations relatives aux propriétés, telles que des paiements de loyer, des factures ou des charges. Chaque transaction doit inclure :
+
+- Un identifiant unique de la transaction.
+- La date d'exécution prévue ou réelle.
+- L'identifiant de la propriété concernée.
+- Le montant et la référence de la transaction.
+
+La devise (EUR par défaut) et votre code catégorie (exemple : « Loyer ») sont facultatifs.
+
+Cela permet de suivre les flux financiers associés à la gestion des propriétés déclarées.
+
+Voir le message [Transaction](./models/transactions.md) pour la liste complète des champs.
+
+## Documents
+
+Les **documents** sont des fichiers associés aux propriétés. Ils permettent d'attacher des justificatifs, tels que des liasses fiscales, des factures, ou des preuves d'acquisition. Chaque document comprend des informations comme :
+
+- Le nom du fichier.
+- Le type de fichier (ex : PDF, image, etc.).
+- L'année de référence.
+- Un lien vers le fichier hébergé.
+
+### Deux façons de lier un document
+
+1. **Dans le cadre d'une propriété** : le document est attaché à une propriété spécifique via la section `documents` de cette propriété.
+2. **Indépendamment d'une propriété** : le document est déclaré dans la section principale `documents`, en utilisant `propertyId` ou `declarantId` pour le rattacher.
+
+Voir le message [Document](./models/documents.md) pour la liste complète des champs.
+
+## Règles importantes à respecter
+
+:::danger[Mise à jour]
+**Aucune modification post-création** : tous les modèles doivent être correctement créés lors de leur première intégration. Il n'est pas possible de modifier un modèle après sa création initiale.
+:::
+
+:::info[Les données du client priment]
+Si votre client enrichit ou modifie ses données dans son espace après un load, ce sont ses informations qui priment. Vous les récupérez en [sortie](../sorties/clients.md).
+:::
+
+:::info[Indépendance]
+**Propriétés ou documents** : il est possible de lier des **documents** et des **propriétés** indépendamment. Assurez-vous de respecter la structure de lien entre les entités.
+:::
+
+## Exemple minimal
+
+Le plus petit load utile : un client et un bien, avec leurs seuls champs obligatoires. Votre client complète le reste depuis son espace.
+
+```json
+{
+  "inigPtynm": "votre-identifiant-partenaire",
+  "apiKey": "votre-cle-api",
+  "creDtTm": "2026-10-01T09:00:00+02:00",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "properties": [
+        {
+          "id": "exemple-propriete",
+          "description": "Appartement 1",
+          "streetName": "rue Exemple",
+          "postCode": "12345",
+          "townName": "Exempleville",
+          "ctry": "FR"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Exemple complet de données JSON
+
+Exemple complet illustrant toutes les sections, avec un déclarant, ses propriétés, ses associés, une transaction et un document.
+
+```json
+{
+  "inigPtynm": "tristan",
+  "apiKey": "YcSk0ZAab6ahG7Kgimu138qFtV4DNKPB",
+  "creDtTm": "2020-10-10",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "declarants": [
+        {
+          "id": "DECL9876543211",
+          "sirenId": "123456789",
+          "nicId": "00012",
+          "legalStatusId": "5426",
+          "taxRegimeAggregation": "IS",
+          "taxCategoryId": "3",
+          "taxRegimeId": "3",
+          "corporateName": "Mon Entreprise",
+          "debActDate": "2020-05-01",
+          "address": "123 Avenue des Champs",
+          "townName": "Paris",
+          "postCode": "75008",
+          "ogaSiretId": "31517251000036",
+          "ogaName": "OGI-France",
+          "ogaId": "105350",
+          "ogaNumber": "98079",
+          "properties": [
+            {
+              "id": "exemple-propriete",
+              "type": "A",
+              "description": "Appartement 1",
+              "furnished": "N",
+              "managed": "D",
+              "bldgNb": "123",
+              "streetName": "rue Exemple",
+              "streetName2": "Appartement 1",
+              "townName": "Exempleville",
+              "postCode": "12345",
+              "ctry": "FR",
+              "lastName": "Dupont",
+              "firstName": "Jean",
+              "telNumber": "0123456789",
+              "email": "jean.dupont@example.com",
+              "constructionDate": "2020-01-01",
+              "acquisitionDate": "2020-01-01",
+              "nbrRooms": 3,
+              "area": 75.5,
+              "terrArea": 10.0,
+              "gardArea": 20.0,
+              "nbrFloors": 2,
+              "nbrPark": 1,
+              "siretId": "12345678901234",
+              "tvaOption": "N",
+              "netReevaluation": 250000.0,
+              "debActDate": "2020-01-01",
+              "taxRegime": 5,
+              "workCompDate": "2021-01-01",
+              "costPrice": 200000.0,
+              "completionStatus": "NEW",
+              "startConstrDate": "1999-01-01",
+              "dismemberedProperty": "N",
+              "agencyFee": 5000.0,
+              "notaryFee": 8000.0,
+              "documents": [
+                {
+                  "id": "9876543211234iddocuments",
+                  "propertyId": "PROP12345678AZERTY",
+                  "fileName": "Liasse 2022 Appartement XXX",
+                  "fileType": "26",
+                  "year": "2022",
+                  "fileLink": "https://liasse20220601a.pdf"
+                }
+              ]
+            }
+          ],
+          "associates": [
+            {
+              "id": "ASSOC12345678",
+              "civility": "M",
+              "firstName": "John",
+              "lastName": "Doe",
+              "address": "12 Rue de la République, Lyon, France",
+              "townName": "Paris",
+              "ctry": "FR",
+              "email": "johndoe@example.com",
+              "manager": "O"
+            }
+          ]
+        }
+      ],
+      "transactions": [
+        {
+          "id": "TRANS114725836912",
+          "reqdExctnDt": "2023-06-15",
+          "id-prty": "exemple-propriete",
+          "amt": 1500.0,
+          "ccy": "EUR",
+          "purpose": "Loyer",
+          "ref": "PAIEMENT12345"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Conclusion
+
+Un **load** permet d'importer des données complexes concernant les clients, déclarants, propriétés, associés, transactions et documents. Il est crucial de bien structurer les données dès la première intégration.

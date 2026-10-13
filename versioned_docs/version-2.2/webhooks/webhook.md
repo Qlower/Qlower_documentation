@@ -169,7 +169,7 @@ vient de vous, l'`external_id` vous donne accès au reste chez vous.
 
 #### Le préfixe `qlw_` signale un bien que vous ne connaissez pas
 
-Pour un bien que vous nous avez transmis via les [Loaders](/docs/loaders/presentation), nous vous
+Pour un bien que vous nous avez transmis via les [Loaders](/docs/2.2/loaders/presentation), nous vous
 rendons **votre** identifiant, inchangé.
 
 Mais un client peut créer un bien lui-même depuis la page de paiement : il n'existe pas chez vous, donc
