@@ -9,17 +9,17 @@ Chacun de vos clients dispose d'un espace à votre marque, le Welcome Dashboard.
 
 ## L'adresse de votre espace
 
-Votre espace a sa propre adresse, à votre nom, sur le domaine `espacefiscal.fr` :
+Votre espace a sa propre adresse, à votre nom, sur le domaine `espacefiscal.com` :
 
 ```
-https://<votre-marque>.<code>.espacefiscal.fr
+https://<votre-marque>.<code>.espacefiscal.com
 ```
 
-| Élément          | Exemple           | Sens                                                                    |
-| ---------------- | ----------------- | ----------------------------------------------------------------------- |
-| `<votre-marque>` | `votremarque`     | Le nom de votre marque, pour que vos clients reconnaissent leur espace  |
-| `<code>`         | `k7m2xq`          | Un code de six caractères propre à votre espace, attribué par nos soins |
-| Domaine          | `espacefiscal.fr` | Le domaine commun à tous les espaces partenaires                        |
+| Élément          | Exemple            | Sens                                                                    |
+| ---------------- | ------------------ | ----------------------------------------------------------------------- |
+| `<votre-marque>` | `votremarque`      | Le nom de votre marque, pour que vos clients reconnaissent leur espace  |
+| `<code>`         | `k7m2xq`           | Un code de six caractères propre à votre espace, attribué par nos soins |
+| Domaine          | `espacefiscal.com` | Le domaine commun à tous les espaces partenaires                        |
 
 Le code est indispensable : sans lui, connaître votre nom ne suffit pas à trouver l'adresse de votre espace. Il vous est communiqué à l'ouverture de vos accès.
 
@@ -45,7 +45,7 @@ L'accusé de réception de chaque load envoyé par l'[API REST](../entree/integr
       "id": "CLT-00042",
       "email": "jean.dupont@example.com",
       "status": "CREATED",
-      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.fr/..."
+      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.com/..."
     }
   ]
 }

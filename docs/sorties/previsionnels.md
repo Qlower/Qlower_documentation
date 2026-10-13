@@ -27,7 +27,7 @@ Un bien reçoit un prévisionnel quand son dernier exercice est clôturé chez n
   "client": { "id": "CLT-00042" },
   "property": { "id": "exemple-propriete" },
   "base_year": 2026,
-  "simulation_url": "https://votremarque.k7m2xq.espacefiscal.fr/...",
+  "simulation_url": "https://votremarque.k7m2xq.espacefiscal.com/...",
   "simulations": {
     "cashflow": [],
     "taxable_cashflow": [],
