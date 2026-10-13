@@ -12,26 +12,26 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "Loaders",
+    title: "Connecteur",
     description: (
       <>
-        Importez et synchronisez vos données fiscales avec Qlower via API REST ou S3.
-        Support des déclarants, associés, biens et transactions.
+        Envoyez-nous vos clients, leurs déclarants, leurs biens et leurs
+        transactions, par API REST ou par S3.
       </>
     ),
     icon: "📊",
-    link: "/docs/loaders/presentation",
+    link: "/docs/presentation",
   },
   {
-    title: "Webhooks",
+    title: "Sorties",
     description: (
       <>
-        Recevez automatiquement les notifications de commandes via webhook.
-        Facturation PDF envoyée aux clients.
+        Récupérez le lien d'accès de vos clients, leurs paiements et leurs
+        données, par webhook ou par nos routes de lecture.
       </>
     ),
     icon: "🔔",
-    link: "/docs/webhooks/overview",
+    link: "/docs/sorties/presentation",
   },
   {
     title: "API REST",
@@ -42,7 +42,7 @@ const FeatureList: FeatureItem[] = [
       </>
     ),
     icon: "🚀",
-    link: "/docs/loaders/integration/api-rest",
+    link: "/docs/entree/integration/api-rest",
   },
   {
     title: "Upload S3",
@@ -53,7 +53,7 @@ const FeatureList: FeatureItem[] = [
       </>
     ),
     icon: "☁️",
-    link: "/docs/loaders/integration/api-s3",
+    link: "/docs/entree/integration/api-s3",
   },
 ];
 

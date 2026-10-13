@@ -1,0 +1,9 @@
+{
+  "label": "Intégration",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Guides d'intégration pour connecter vos données à la plateforme Qlower via API REST ou upload S3."
+  }
+}
+

@@ -28,18 +28,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          // Brouillon Connecteur V3 : docs/ est servi comme version 3.0, marquée
-          // « non publiée ». La 2.2 reste la version par défaut tant que la 3.0
-          // n'est pas figée (npm run version:create 3.0).
-          includeCurrentVersion: true,
-          lastVersion: "2.2",
-          versions: {
-            current: {
-              label: "3.0 (en cours)",
-              path: "3.0",
-              banner: "unreleased",
-            },
-          },
+          // Version 3.0 (Connecteur V3) figée dans versioned_docs/version-3.0 et
+          // servie par défaut. docs/ reste la copie de travail de la prochaine version.
+          includeCurrentVersion: false,
+          lastVersion: "3.0",
         },
         blog: {
           showReadingTime: true,

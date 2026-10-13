@@ -46,7 +46,7 @@ La section **déclarants** permet de décrire les individus ou les entités qui 
 - Un tableau de **propriétés** détenues par ce déclarant.
 - Un tableau d'**associés** représentant des personnes physiques ou morales liées au déclarant (comme des copropriétaires ou actionnaires).
 
-Voir [Modèle Déclarant](/docs/loaders/models/declarants) pour plus d'informations.
+Voir [Modèle Déclarant](/docs/2.0/loaders/models/declarants) pour plus d'informations.
 
 ### 3. **Propriétés**
 
@@ -57,13 +57,13 @@ Les **propriétés** sont des biens immobiliers ou actifs financiers qui peuvent
 
 Chaque **propriété** inclut des détails tels que l'adresse, le type de bien (appartement, maison, local commercial), la gestion (meublée ou non), ainsi que des informations relatives à sa superficie, nombre de pièces, date d'acquisition, et plus encore.
 
-Voir [Modèle Propriété](/docs/loaders/models/properties) pour plus d'informations.
+Voir [Modèle Propriété](/docs/2.0/loaders/models/properties) pour plus d'informations.
 
 ### 4. **Associés**
 
 Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Cette section permet de lier des individus ou des entreprises à un déclarant, avec des informations spécifiques comme le nom, l'adresse, et les coordonnées.
 
-Voir [Modèle Associé](/docs/loaders/models/associates) pour plus d'informations.
+Voir [Modèle Associé](/docs/2.0/loaders/models/associates) pour plus d'informations.
 
 ### 5. **Transactions**
 
@@ -76,7 +76,7 @@ La section **transactions** est dédiée aux mouvements financiers et opération
 
 Cela permet de suivre les flux financiers associés à la gestion des propriétés déclarées.
 
-Voir [Modèle Transaction](/docs/loaders/models/transactions) pour plus d'informations.
+Voir [Modèle Transaction](/docs/2.0/loaders/models/transactions) pour plus d'informations.
 
 ### 6. **Documents**
 
@@ -94,7 +94,7 @@ Les documents peuvent être liés directement à une propriété ou déclarés i
 1. **Dans le cadre d'une propriété** : Les documents sont attachés à une propriété spécifique via la section `documents` de cette propriété.
 2. **Indépendamment d'une propriété** : Un document peut être déclaré indépendamment dans la section principale `documents`, en utilisant un `declarantId` pour lier ce document à une propriété ou un déclarant spécifique.
 
-Voir [Modèle Document](/docs/loaders/models/documents) pour plus d'informations.
+Voir [Modèle Document](/docs/2.0/loaders/models/documents) pour plus d'informations.
 
 ### 7. **Règles importantes à respecter**
 
