@@ -1,0 +1,8 @@
+{
+  "label": "Sorties",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Ce que vous récupérez chez nous en retour de vos loads : le lien de l'espace de chaque client, les paiements effectués et l'état à jour de vos clients."
+  }
+}

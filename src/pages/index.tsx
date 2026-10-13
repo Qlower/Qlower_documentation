@@ -20,7 +20,7 @@ function HomepageHeader() {
             Plateforme de gestion fiscale et comptable pour la location meublée
           </p>
           <div className={styles.buttons}>
-            <Link className={clsx("button button--primary button--lg", styles.ctaButton)} to="/docs/loaders/getting-started">
+            <Link className={clsx("button button--primary button--lg", styles.ctaButton)} to="/docs/getting-started">
               Découvrir la documentation
             </Link>
           </div>

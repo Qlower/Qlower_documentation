@@ -12,6 +12,11 @@ const config: Config = {
   projectName: "qlower-doc",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
+  // Schémas ```mermaid dans les pages (modèle de données de la structure d'un load).
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
   i18n: {
     defaultLocale: "fr",
     locales: ["fr"],
@@ -23,7 +28,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
+          // Version 3.0 (Connecteur V3) figée dans versioned_docs/version-3.0 et
+          // servie par défaut. docs/ reste la copie de travail de la prochaine version.
           includeCurrentVersion: false,
+          lastVersion: "3.0",
         },
         blog: {
           showReadingTime: true,
