@@ -19,25 +19,27 @@
       :root {
         --primary: #3f55c8;
         --primary-hover: #2d3f9e;
-        --background: #ffffff;
+        --page: #f4f5fb;
+        --card: #ffffff;
         --foreground: #1c1e21;
         --muted: #606770;
-        --border: #dadde1;
+        --border: #e3e5ec;
         --danger-background: #ffebec;
         --danger-border: #e13238;
         --danger-foreground: #4b1113;
-        --card-shadow: 0 24px 32px rgba(63, 85, 200, 0.12);
+        --card-shadow: 0 1px 2px rgba(16, 24, 64, 0.04), 0 12px 32px rgba(63, 85, 200, 0.08);
       }
       :root[data-theme="dark"] {
         --primary: #5a6dd4;
         --primary-hover: #6a7dd8;
-        --background: #1b1b1d;
+        --page: #141416;
+        --card: #1e1e21;
         --foreground: #e3e3e3;
         --muted: #a8adb3;
-        --border: #444950;
+        --border: #34363c;
         --danger-background: rgba(225, 50, 56, 0.15);
         --danger-foreground: #ffb3b5;
-        --card-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+        --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
         color-scheme: dark;
       }
       * { box-sizing: border-box; }
@@ -48,33 +50,41 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 24px;
+        gap: 32px;
         padding: calc(32px + env(safe-area-inset-top)) 16px calc(32px + env(safe-area-inset-bottom));
-        background: var(--background);
+        background: radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, var(--primary) 10%, transparent), transparent), var(--page);
         color: var(--foreground);
         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
       }
-      .illustration { display: none; width: 826px; margin-right: -100px; }
-      .logo { height: 40px; }
-      .manrope { font-family: Manrope, sans-serif; }
-      main { width: 100%; max-width: 28rem; padding: 24px 20px; }
-      h1 { margin: 0; text-align: center; font-size: 1.25rem; line-height: 1.4; font-weight: 700; }
-      .subtitle { margin: 8px 0 20px; text-align: center; font-size: 0.875rem; color: var(--muted); }
-      form { display: flex; flex-direction: column; gap: 12px; }
-      label { display: block; margin-bottom: 4px; font-size: 0.875rem; font-weight: 500; color: var(--primary); }
+      main {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px 32px 32px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+      }
+      .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+      .brand img { height: 32px; }
+      .brand span { font-family: Manrope, sans-serif; font-weight: 700; font-size: 1.05rem; }
+      .brand small { font-weight: 500; color: var(--muted); }
+      h1 { margin: 0; font-family: Manrope, sans-serif; font-size: 1.5rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
+      .subtitle { margin: 8px 0 28px; font-size: 0.9rem; color: var(--muted); }
+      form { display: flex; flex-direction: column; gap: 16px; }
+      label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; }
       .field { position: relative; }
       input {
         width: 100%;
-        height: 40px;
-        padding: 0 12px;
+        height: 44px;
+        padding: 0 14px;
         font: inherit;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         color: var(--foreground);
-        background: transparent;
+        background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 6.4px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
         outline: none;
         transition: border-color 0.15s, box-shadow 0.15s;
       }
@@ -101,58 +111,36 @@
       .error {
         margin: 0;
         padding: 10px 14px;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
         color: var(--danger-foreground);
         background: var(--danger-background);
         border-left: 4px solid var(--danger-border);
-        border-radius: 6.4px;
+        border-radius: 8px;
       }
       button[type="submit"] {
-        width: 100%;
-        height: 40px;
+        height: 44px;
         margin-top: 8px;
         font: inherit;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         font-weight: 600;
         color: #ffffff;
         background: var(--primary);
         border: 0;
-        border-radius: 6.4px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
         cursor: pointer;
         transition: background 0.15s;
       }
       button[type="submit"]:hover { background: var(--primary-hover); }
       button[type="submit"]:disabled { opacity: 0.6; cursor: wait; }
+      .help { margin: 24px 0 0; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); text-align: center; }
       footer { font-size: 0.8rem; color: var(--muted); }
-      @media (min-width: 1024px) {
-        body { flex-direction: row; gap: 0; }
-        .illustration { display: block; }
-        .logo, footer { display: none; }
-        main { margin-left: -100px; position: relative; }
-      }
-      @media (min-width: 640px) {
-        main {
-          max-width: none;
-          width: auto;
-          padding: 60px 100px;
-          background: var(--background);
-          border-radius: 16px;
-          box-shadow: var(--card-shadow);
-        }
-        form { width: 340px; gap: 16px; }
-        h1 { font-size: 2.25rem; line-height: 1.1; }
-        .subtitle { margin: 24px 0 48px; font-size: 1.25rem; }
-        button[type="submit"] { width: 276px; margin: 20px auto 0; }
-      }
     </style>
   </head>
   <body>
-    <img class="illustration" src="/img/login-illustration.svg" alt="" />
-    <img class="logo" src="/img/logo-qlower.svg" alt="Qlower" />
     <main>
-      <h1 class="manrope">Connectez-vous</h1>
-      <p class="subtitle manrope">Accédez à la documentation Qlower</p>
+      <div class="brand"><img src="/img/logo-qlower.svg" alt="" /><span>Qlower <small>Documentation</small></span></div>
+      <h1>Connexion</h1>
+      <p class="subtitle">Accédez à la documentation des connecteurs.</p>
       <form id="login" novalidate>
         <div>
           <label for="email">E-mail</label>
@@ -168,6 +156,7 @@
         <p class="error" id="error" role="alert" hidden></p>
         <button type="submit">Se connecter</button>
       </form>
+      <p class="help">Pas encore d'accès ou mot de passe perdu ? Contactez votre interlocuteur Qlower.</p>
     </main>
     <footer id="copyright"></footer>
     <script>

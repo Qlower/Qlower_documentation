@@ -2,7 +2,7 @@ import type { Config, Context } from "@netlify/edge-functions";
 
 const COOKIE = "doc_session";
 const LOGIN_PAGE = "/login.html";
-const PUBLIC_PATHS = [LOGIN_PAGE, "/login", "/img/logo-qlower.svg", "/img/login-illustration.svg", "/img/favicon.png"];
+const PUBLIC_PATHS = [LOGIN_PAGE, "/login", "/img/logo-qlower.svg", "/img/favicon.png"];
 const encoder = new TextEncoder();
 
 const keys = new Map<string, Promise<CryptoKey>>();
