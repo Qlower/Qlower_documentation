@@ -164,7 +164,6 @@
         DOC_ACCESS_DENIED: "E-mail ou mot de passe incorrect, ou accès à la documentation non autorisé.",
         DOC_ACCESS_RATE_LIMITED: "Trop de tentatives. Réessayez plus tard.",
         DOC_ACCESS_DISABLED: "La connexion à la documentation est momentanément indisponible.",
-        DOC_ACCESS_BAD_REQUEST: "Requête invalide. Rechargez la page et réessayez.",
       };
       document.getElementById("copyright").textContent = `Copyright © ${new Date().getFullYear()} Qlower, Inc.`;
       const form = document.getElementById("login");
@@ -185,7 +184,7 @@
         button.disabled = true;
         error.hidden = true;
         try {
-          const response = await fetch("/auth/login", {
+          const response = await fetch("/api/admin/partners/doc-access/login/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: form.email.value, password: password.value }),
@@ -195,8 +194,8 @@
             location.replace(next.origin === location.origin ? next.href : "/");
             return;
           }
-          const { error: code } = await response.json().catch(() => ({}));
-          error.textContent = MESSAGES[code] || MESSAGES.DOC_ACCESS_DISABLED;
+          const { errors } = await response.json().catch(() => ({}));
+          error.textContent = MESSAGES[errors?.[0]] || MESSAGES.DOC_ACCESS_DISABLED;
           error.hidden = false;
         } catch {
           error.textContent = MESSAGES.DOC_ACCESS_DISABLED;
