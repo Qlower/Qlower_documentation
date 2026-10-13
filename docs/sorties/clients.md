@@ -91,7 +91,7 @@ La route `GET /api/third_party/clients/{id}` renvoie directement un élément de
 {
   "id": "CLT-00042",
   "email": "jean.dupont@example.com",
-  "welcome_url": "https://votremarque.k7m2xq.espacefiscal.fr/...",
+  "welcome_url": "https://votremarque.k7m2xq.espacefiscal.com/...",
   "created_at": "2026-12-02T09:45:10+00:00"
 }
 ```
