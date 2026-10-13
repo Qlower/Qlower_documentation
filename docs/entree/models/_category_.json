@@ -1,0 +1,8 @@
+{
+  "label": "Messages",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Chaque message décrit un type d'objet du load, du client à la transaction."
+  }
+}

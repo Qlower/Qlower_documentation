@@ -4,32 +4,51 @@ sidebar_position: 3
 
 # Structure des données JSON
 
-Le format JSON de **chargement (load)** intègre vos données dans Qlower : déclarants, propriétés, associés, transactions, documents. Cette page décrit la structure complète du JSON ; pour le détail champ par champ de chaque type, voir les [modèles de données](./models/declarants).
+Un **load** est un envoi de messages par le connecteur d'entrée. Il intègre vos données dans Qlower : clients, déclarants, propriétés, associés, transactions, documents. Cette page décrit la structure complète du JSON ; pour le détail champ par champ, voir les [messages](./models/client.md).
 
 ## Vue d'ensemble
 
-Un JSON de chargement comprend :
+Les messages d'un load se rattachent les uns aux autres :
 
-| Section       | Clé JSON       | Contenu                                                                    |
-| ------------- | -------------- | --------------------------------------------------------------------------- |
-| En-tête       | *(racine)*     | Identification du partenaire et version du format                          |
-| Déclarants    | `declarants`   | Personnes ou entités qui déclarent, avec leurs propriétés et associés       |
-| Propriétés    | `properties`   | Biens immobiliers, imbriqués dans un déclarant ou liés via `declarantId`    |
-| Associés      | `associates`   | Personnes ou entités liées à un déclarant (copropriétaires, actionnaires…)  |
-| Transactions  | `transactions` | Mouvements financiers liés à une propriété                                  |
-| Documents     | `documents`    | Fichiers liés à une propriété ou un déclarant                               |
+```mermaid
+flowchart TD
+  C["Client"] -->|N| D["Déclarant"]
+  D -->|N| A["Associé"]
+  D -->|N| P["Propriété"]
+  C -->|N, sans déclarant| P
+  P -->|N| T["Transaction"]
+  P -->|N| F["Document"]
+  D -->|N| F
+```
 
-Ces données se regroupent par client destinataire, dans un tableau **`clients`** : chaque entrée désigne un compte via un bloc `client`, puis porte les sections ci-dessus, propres à ce client — voir [Bloc `client`](#bloc-client).
+Un client peut avoir plusieurs déclarants, et chaque déclarant plusieurs associés et plusieurs propriétés. Une propriété peut aussi se rattacher directement au client, sans déclarant. Les transactions se rattachent à une propriété, les documents à une propriété ou à un déclarant.
+
+Un load comprend :
+
+| Section      | Clé JSON       | Contenu                                                                               |
+| ------------ | -------------- | ------------------------------------------------------------------------------------- |
+| En-tête      | *(racine)*     | Identification du partenaire et version du format                                     |
+| Client       | `client`       | Le client final, en tête de chaque entrée de `clients`                                |
+| Déclarants   | `declarants`   | Personnes ou entités qui déclarent, avec leurs propriétés et associés                 |
+| Propriétés   | `properties`   | Biens immobiliers, imbriqués dans un déclarant ou liés via `declarantId`              |
+| Associés     | `associates`   | Associés d'un déclarant (copropriétaires, actionnaires…), imbriqués dans ce déclarant |
+| Transactions | `transactions` | Mouvements financiers liés à une propriété                                            |
+| Documents    | `documents`    | Fichiers liés à une propriété ou un déclarant                                         |
+
+Chaque message n'exige que quelques champs : de quoi ouvrir l'espace de votre client et y rattacher ses biens. Tout ce que vous ne nous transmettez pas, votre client peut le compléter lui-même depuis son espace, et vous le récupérez ensuite en [sortie](../sorties/clients.md). Voir l'[exemple minimal](#exemple-minimal).
+
+Ces données se regroupent par client destinataire, dans un tableau **`clients`** : chaque entrée désigne un compte via un bloc `client`, puis porte les sections ci-dessus, propres à ce client : voir [Bloc `client`](#bloc-client).
 
 ```json
 {
   "inigPtynm": "",
   "apiKey": "",
   "creDtTm": "",
-  "versionId": "2.0",
+  "versionId": "3.0",
   "clients": [
     {
       "client": {
+        "id": "",
         "email": "",
         "firstName": "",
         "lastName": ""
@@ -52,7 +71,7 @@ L'en-tête identifie l'émetteur des données et le format utilisé. Il est obli
 | **Nom du Partenaire** |       [x]       | Id du partenaire attribué par Qlower |                       | `inigPtynm`  | Chaîne de caractères                                            |
 | **Clé d'accès**       |       [x]       | Clé d'accès générée par notre équipe |                       | `apiKey`     | Chaîne de caractères                                            |
 | **Date d'émission**   |       [x]       | Date d'émission du message           |                       | `creDtTm`    | ISO 8601 (en l'absence de fuseau horaire, fuseau Paris/France)  |
-| **Version du loader** |       [x]       | Version du loader utilisée           |                       | `versionId`  | Chaîne de caractères (**'1.0'** / **'2.0'**)                    |
+| **Version du connecteur** |   [x]   | Version du connecteur utilisée       |                       | `versionId`  | Chaîne de caractères (**'3.0'**)                                 |
 
 ### Exemple
 
@@ -61,15 +80,15 @@ L'en-tête identifie l'émetteur des données et le format utilisé. Il est obli
   "inigPtynm": "qlower",
   "apiKey": "7Swvx0CZDKXLkeJ6iaOeH8Cb6TPdbHAL",
   "creDtTm": "2023-08-28T10:15:43.25+01:00",
-  "versionId": "2.0"
+  "versionId": "3.0"
 }
 ```
 
 ## Bloc `client`
 
-Chaque entrée de `clients` désigne un compte destinataire et porte son propre lot de données. Elle contient :
+Chaque entrée de `clients` désigne un client final et porte son propre lot de données. Elle contient :
 
-- Un bloc **`client`** qui identifie le compte cible par son email : l'identifiant unique qui permet de retrouver le même utilisateur aussi bien chez vous que chez Qlower.
+- Un bloc **`client`**, qui identifie le client par votre identifiant `id` et par son email. Voir le message [Client](./models/client.md) pour la liste complète des champs.
 - Les sections `declarants`, `properties`, `transactions`, `documents` habituelles, **propres à ce client**.
 
 ### Exemple
@@ -79,10 +98,11 @@ Chaque entrée de `clients` désigne un compte destinataire et porte son propre 
   "inigPtynm": "",
   "apiKey": "",
   "creDtTm": "",
-  "versionId": "2.0",
+  "versionId": "3.0",
   "clients": [
     {
       "client": {
+        "id": "CLT-00042",
         "email": "jean.dupont@example.com",
         "firstName": "Jean",
         "lastName": "Dupont"
@@ -104,15 +124,6 @@ Chaque entrée de `clients` désigne un compte destinataire et porte son propre 
 }
 ```
 
-### Champs du bloc `client`
-
-| **Attributs** | **Obligatoire** | **Description**                                                                                                                       | **Valeur par défaut** | **Clé JSON**  | **Domaine de validité** |
-| ------------- | :--------------: | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------------- | ------------------------ |
-| **Email**     |       [x]        | Identifiant unique du client, partagé entre votre système et celui de Qlower : c'est ce qui permet de retrouver le même utilisateur des deux côtés. Un client déjà connu (même email) est réutilisé ; sinon un compte lui est créé. |                        | `email`        | Adresse email valide     |
-| **Prénom**    |       [x]        | Prénom du client                                                                                                                       |                        | `firstName`    | Chaîne de caractères     |
-| **Nom**       |       [x]        | Nom du client                                                                                                                          |                        | `lastName`     | Chaîne de caractères     |
-| **Téléphone** |                  | Téléphone du client, utilisé uniquement à la création du compte                                                                        |                        | `phoneNumber`  | Chaîne de caractères     |
-
 ### Comportement
 
 :::info[Une entrée = un client]
@@ -126,7 +137,7 @@ La section **déclarants** permet de décrire les individus ou les entités qui 
 - Un tableau de **propriétés** détenues par ce déclarant.
 - Un tableau d'**associés** représentant des personnes physiques ou morales liées au déclarant (comme des copropriétaires ou actionnaires).
 
-Voir [Modèle Déclarant](/docs/loaders/models/declarants) pour la liste complète des champs.
+Voir le message [Déclarant](./models/declarants.md) pour la liste complète des champs.
 
 ## Propriétés
 
@@ -137,13 +148,13 @@ Les **propriétés** sont des biens immobiliers ou actifs financiers qui peuvent
 
 Chaque **propriété** inclut des détails tels que l'adresse, le type de bien (appartement, maison, local commercial), la gestion (meublée ou non), la superficie, le nombre de pièces, la date d'acquisition, etc.
 
-Voir [Modèle Propriété](/docs/loaders/models/properties) pour la liste complète des champs.
+Voir le message [Propriété](./models/properties.md) pour la liste complète des champs.
 
 ## Associés
 
-Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Cette section permet de lier des individus ou des entreprises à un déclarant, avec des informations spécifiques comme le nom, l'adresse, et les coordonnées.
+Les **associés** sont les personnes physiques ou morales associées à un déclarant, comme des copropriétaires, des actionnaires, ou des représentants légaux. Ils se déclarent dans le tableau `associates` de leur déclarant, avec des informations comme le nom, l'adresse et les coordonnées.
 
-Voir [Modèle Associé](/docs/loaders/models/associates) pour la liste complète des champs.
+Voir le message [Associé](./models/associates.md) pour la liste complète des champs.
 
 ## Transactions
 
@@ -152,11 +163,13 @@ La section **transactions** est dédiée aux mouvements financiers et opération
 - Un identifiant unique de la transaction.
 - La date d'exécution prévue ou réelle.
 - L'identifiant de la propriété concernée.
-- Le montant de la transaction, la devise, et la raison ou le motif (exemple : « Loyer mensuel »).
+- Le montant et la référence de la transaction.
+
+La devise (EUR par défaut) et votre code catégorie (exemple : « Loyer ») sont facultatifs.
 
 Cela permet de suivre les flux financiers associés à la gestion des propriétés déclarées.
 
-Voir [Modèle Transaction](/docs/loaders/models/transactions) pour la liste complète des champs.
+Voir le message [Transaction](./models/transactions.md) pour la liste complète des champs.
 
 ## Documents
 
@@ -172,7 +185,7 @@ Les **documents** sont des fichiers associés aux propriétés. Ils permettent d
 1. **Dans le cadre d'une propriété** : le document est attaché à une propriété spécifique via la section `documents` de cette propriété.
 2. **Indépendamment d'une propriété** : le document est déclaré dans la section principale `documents`, en utilisant `propertyId` ou `declarantId` pour le rattacher.
 
-Voir [Modèle Document](/docs/loaders/models/documents) pour la liste complète des champs.
+Voir le message [Document](./models/documents.md) pour la liste complète des champs.
 
 ## Règles importantes à respecter
 
@@ -180,9 +193,46 @@ Voir [Modèle Document](/docs/loaders/models/documents) pour la liste complète 
 **Aucune modification post-création** : tous les modèles doivent être correctement créés lors de leur première intégration. Il n'est pas possible de modifier un modèle après sa création initiale.
 :::
 
+:::info[Les données du client priment]
+Si votre client enrichit ou modifie ses données dans son espace après un load, ce sont ses informations qui priment. Vous les récupérez en [sortie](../sorties/clients.md).
+:::
+
 :::info[Indépendance]
 **Propriétés ou documents** : il est possible de lier des **documents** et des **propriétés** indépendamment. Assurez-vous de respecter la structure de lien entre les entités.
 :::
+
+## Exemple minimal
+
+Le plus petit load utile : un client et un bien, avec leurs seuls champs obligatoires. Votre client complète le reste depuis son espace.
+
+```json
+{
+  "inigPtynm": "votre-identifiant-partenaire",
+  "apiKey": "votre-cle-api",
+  "creDtTm": "2026-10-01T09:00:00+02:00",
+  "versionId": "3.0",
+  "clients": [
+    {
+      "client": {
+        "id": "CLT-00042",
+        "email": "jean.dupont@example.com",
+        "firstName": "Jean",
+        "lastName": "Dupont"
+      },
+      "properties": [
+        {
+          "id": "exemple-propriete",
+          "description": "Appartement 1",
+          "streetName": "rue Exemple",
+          "postCode": "12345",
+          "townName": "Exempleville",
+          "ctry": "FR"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Exemple complet de données JSON
 
@@ -193,10 +243,11 @@ Exemple complet illustrant toutes les sections, avec un déclarant, ses proprié
   "inigPtynm": "tristan",
   "apiKey": "YcSk0ZAab6ahG7Kgimu138qFtV4DNKPB",
   "creDtTm": "2020-10-10",
-  "versionId": "2.0",
+  "versionId": "3.0",
   "clients": [
     {
       "client": {
+        "id": "CLT-00042",
         "email": "jean.dupont@example.com",
         "firstName": "Jean",
         "lastName": "Dupont"
@@ -301,4 +352,4 @@ Exemple complet illustrant toutes les sections, avec un déclarant, ses proprié
 
 ## Conclusion
 
-Le format JSON de **chargement (load)** permet d'importer des données complexes concernant les déclarants, propriétés, associés, transactions, et documents. Il est crucial de bien structurer les données dès la première intégration.
+Un **load** permet d'importer des données complexes concernant les clients, déclarants, propriétés, associés, transactions et documents. Il est crucial de bien structurer les données dès la première intégration.
