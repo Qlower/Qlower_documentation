@@ -5,51 +5,68 @@ sidebar_label: Prévisionnels
 
 # Prévisionnels
 
-:::info[Disponible début 2027]
-Cette sortie ouvrira début 2027. Nous publions son format dès maintenant pour que vous puissiez préparer votre intégration.
-:::
+Pour chaque bien de vos clients, nous calculons un prévisionnel sur cinq ans, à partir de son dernier exercice clôturé : ses comptes servent de base au calcul. Il réunit quatre simulations, trésorerie, fiscalité, rendement et patrimoine, que vous lisez par une route pour les afficher dans votre outil.
 
-Pour chaque bien de vos clients, nous calculons un prévisionnel sur cinq ans, à partir de son dernier exercice clôturé. Il réunit quatre simulations : trésorerie, fiscalité, rendement et patrimoine. Vous le recevez sous deux formes :
+Nous calculons les prévisionnels par vagues. Un bien dont aucun prévisionnel n'est encore prêt n'apparaît pas dans la réponse.
 
-- **un lien** vers l'écran de simulation de votre client, à votre marque : ses courbes année par année et, pour chaque indicateur, un commentaire de lecture rédigé automatiquement ;
-- **les résultats**, pour les afficher dans votre outil : une valeur par année et par indicateur.
+## Requête
 
-## Mode
+```
+GET /api/third_party/forecasts
+```
 
-Vous n'avez rien à demander : nous calculons les prévisionnels de vos clients par vagues, et vous envoyons chacun dès qu'il est prêt. Le canal de réception sera précisé avant l'ouverture.
+Les en-têtes, l'enveloppe de réponse, la pagination et les erreurs communes sont décrits dans la [vue d'ensemble](./presentation.md#appeler-une-route-de-lecture).
 
-Un bien reçoit un prévisionnel quand son dernier exercice est clôturé chez nous : ses comptes servent de base au calcul.
+### Paramètres
 
-## Format
+Indiquez `property_id`, `email` ou les deux.
+
+| Paramètre     | Type    | Obligatoire        | Description                                                                                  |
+| ------------- | ------- | ------------------ | -------------------------------------------------------------------------------------------- |
+| `property_id` | string  | L'un des deux      | L'identifiant du bien, tel que la route [Clients](./clients.md) vous le rend                 |
+| `email`       | string  | L'un des deux      | L'email du client : renvoie les prévisionnels de tous ses biens                              |
+| `type`        | string  |                    | Une seule simulation : `cashflow`, `taxable_cashflow`, `yield` ou `net_asset_value`          |
+| `year`        | integer |                    | Ne renvoie que les prévisionnels calculés cette année-là                                     |
+
+```
+GET /api/third_party/forecasts?property_id=exemple-propriete
+GET /api/third_party/forecasts?email=jean.dupont@example.com&type=yield
+```
+
+## Réponse (200 OK)
+
+Une liste, avec une entrée par bien et par simulation : le prévisionnel le plus récent. La liste est vide si aucun prévisionnel n'est prêt.
 
 ```json
 {
-  "client": { "id": "CLT-00042" },
-  "property": { "id": "exemple-propriete" },
-  "base_year": 2026,
-  "simulation_url": "https://votremarque.k7m2xq.espacefiscal.com/...",
-  "simulations": {
-    "cashflow": [],
-    "taxable_cashflow": [],
-    "yield": [],
-    "net_asset_value": []
-  }
+  "status": 1,
+  "errors": "",
+  "results": [
+    {
+      "property_id": "exemple-propriete",
+      "type": "cashflow",
+      "base_year": 2026,
+      "results": [
+        { "year": 2026, "incomes": 9600.0, "outcomes": -7600.0, "cashflow": 2000.0 },
+        { "year": 2027, "incomes": 9888.0, "outcomes": -7624.0, "cashflow": 2264.0 }
+      ]
+    }
+  ]
 }
 ```
 
-| Champ            | Type    | Description                                                                                |
-| ---------------- | ------- | ------------------------------------------------------------------------------------------ |
-| `client.id`      | string  | Votre identifiant du client                                                                |
-| `property.id`    | string  | Votre identifiant du bien, ou le nôtre, préfixé `qlw_`, si votre client l'a créé lui-même |
-| `base_year`      | integer | L'exercice clôturé qui sert de base au calcul                                              |
-| `simulation_url` | string  | Le lien vers l'écran de simulation, à votre marque                                         |
-| `simulations`    | object  | Les quatre simulations, détaillées ci-dessous                                              |
+| Champ         | Type    | Description                                                                         |
+| ------------- | ------- | ----------------------------------------------------------------------------------- |
+| `property_id` | string  | L'identifiant du bien, selon la règle des [identifiants](./presentation.md#identifiants) |
+| `type`        | string  | La simulation : `cashflow`, `taxable_cashflow`, `yield` ou `net_asset_value`        |
+| `base_year`   | integer | L'année de calcul du prévisionnel, première année de `results`                      |
+| `results`     | array   | Cinq entrées, une par année : `year` et les indicateurs de la simulation, détaillés ci-dessous |
 
-Chaque simulation est un tableau de cinq entrées, une par année : l'exercice de base, puis les quatre années suivantes. Les montants sont en euros, les rendements en pourcentage. Les exemples ci-dessous sont abrégés à deux années.
+Les montants sont en euros, les rendements en pourcentage, arrondis à deux décimales. Les exemples ci-dessous ne montrent que le contenu de `results`, abrégé à deux années.
 
 ## Trésorerie
 
-Clé `cashflow` : ce qui entre et sort chaque année pour le bien.
+Type `cashflow` : ce qui entre et sort chaque année pour le bien.
 
 ```json
 [
@@ -76,7 +93,7 @@ Clé `cashflow` : ce qui entre et sort chaque année pour le bien.
 
 ## Fiscalité
 
-Clé `taxable_cashflow` : le passage du revenu locatif à l'impôt, selon le régime fiscal du bien.
+Type `taxable_cashflow` : le passage du revenu locatif à l'impôt, selon le régime fiscal du bien.
 
 ```json
 [
@@ -112,7 +129,7 @@ Clé `taxable_cashflow` : le passage du revenu locatif à l'impôt, selon le ré
 
 ## Rendement
 
-Clé `yield` : les rendements du bien, rapportés à son prix d'acquisition, frais inclus.
+Type `yield` : les rendements du bien, rapportés à son prix d'acquisition, frais inclus.
 
 ```json
 [
@@ -139,7 +156,7 @@ Clé `yield` : les rendements du bien, rapportés à son prix d'acquisition, fra
 
 ## Patrimoine
 
-Clé `net_asset_value` : la valeur du bien, son financement et l'actif net qui en résulte.
+Type `net_asset_value` : la valeur du bien, son financement et l'actif net qui en résulte.
 
 ```json
 [
@@ -176,12 +193,9 @@ Clé `net_asset_value` : la valeur du bien, son financement et l'actif net qui e
 | `net_patrimony`                | Actif net actualisé     | La valeur de marché moins le capital restant dû              |
 | `net_patrimony_after_disposal` | Actif net après cession | L'actif net actualisé, moins des frais de cession estimés    |
 
-Sans tableau d'amortissement pour les emprunts du bien, seuls `acquisition_cost`, `gross_patrimony` et `latent_capital_gain` sont calculés : les autres valent `null`.
+## Erreurs
 
-## Le lien de simulation
-
-`simulation_url` ouvre l'écran de simulation dans l'espace de votre client, à votre marque : il y accède avec le même email que pour son [Welcome Dashboard](./welcome-dashboard.md). Chaque prévisionnel porte son propre lien.
-
-:::tip[Utilisez le lien tel quel]
-Ne reconstruisez pas le lien vous-même : son format peut évoluer.
-:::
+| Code  | Cas                                                                              |
+| ----- | -------------------------------------------------------------------------------- |
+| `400` | Ni `property_id` ni `email`, `type` inconnu, ou `year` qui n'est pas une année   |
+| `404` | Aucun de vos clients ne porte cet email, ou aucun de leurs biens cet identifiant |

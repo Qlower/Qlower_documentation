@@ -51,8 +51,7 @@ Toutes les données ont été traitées avec succès :
     {
       "id": "CLT-00042",
       "email": "jean.dupont@example.com",
-      "status": "CREATED",
-      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.com/..."
+      "status": "CREATED"
     }
   ],
   "combined_result": [
@@ -125,7 +124,6 @@ Chaque entrée du tableau `clients` rend compte d'un client du load :
 - `id` : votre identifiant du client
 - `email` : son email
 - `status` : `CREATED` si nous lui avons créé un compte, `EXISTING` s'il était déjà connu, `ERROR` si son entrée a échoué
-- `welcome_url` : le lien d'accès à son espace, absent en cas d'erreur (voir [Lien du Welcome Dashboard](../../sorties/welcome-dashboard.md))
 
 **Structure des erreurs** :
 Chaque erreur dans le tableau `errors` contient :

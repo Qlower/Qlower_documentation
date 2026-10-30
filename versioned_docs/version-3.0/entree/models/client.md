@@ -10,7 +10,7 @@ Le **client** est la personne pour qui vous nous transmettez des données : votr
 
 | **Attributs**             | **Obligatoire** | **Description**                                                                                          | **Valeur par défaut** | **Clé JSON**  | **Domaine de validité**                            |
 | ------------------------- | :-------------: | -------------------------------------------------------------------------------------------------------- | --------------------- | ------------- | -------------------------------------------------- |
-| **Identifiant du client** |       [x]       | Votre identifiant de client. Nous vous le rendons dans toutes les [sorties](../../sorties/presentation.md) |                       | `id`          | Clé d'identification unique (chaîne de caractères) |
+| **Identifiant du client** |       [x]       | Votre identifiant de client                                                                               |                       | `id`          | Clé d'identification unique (chaîne de caractères) |
 | **Email**                 |       [x]       | Adresse de votre client. Elle lui sert à accéder à son espace et à recevoir son lien d'accès             |                       | `email`       | Adresse email valide                               |
 | **Prénom**                |       [x]       | Prénom du client                                                                                         |                       | `firstName`   | Chaîne de caractères                               |
 | **Nom**                   |       [x]       | Nom du client                                                                                            |                       | `lastName`    | Chaîne de caractères                               |
@@ -18,9 +18,9 @@ Le **client** est la personne pour qui vous nous transmettez des données : votr
 
 ### Rapprochement
 
-Nous retrouvons votre client par son `id`. Si cet `id` nous est inconnu, nous le recherchons par son email. À défaut, nous lui créons un compte.
+Nous retrouvons votre client par son email parmi vos clients. À défaut, nous lui créons un compte.
 
-Un client créé de notre côté, sans que vous nous l'ayez transmis, porte un identifiant que nous émettons, toujours préfixé `qlw_` : voir [Clients](../../sorties/clients.md).
+Dans les [sorties](../../sorties/presentation.md), votre client porte notre identifiant, toujours préfixé `qlw_` : voir [Clients](../../sorties/clients.md).
 
 ### Exemple
 

@@ -32,6 +32,7 @@ Les deux derniers ne sont présents que si une clé, respectivement un secret, o
   "timestamp": "2026-08-05T08:42:18+00:00",
 
   "customer": {
+    "id": "qlw_3b7e91d0-5c2a-4f8e-b1d6-0a9c4e27f513",
     "first_name": "Marie",
     "last_name": "Martin",
     "email": "marie.martin@example.com",
@@ -109,6 +110,7 @@ produit aucun webhook : ne vous appuyez pas sur ce canal pour détecter la fin d
 
 | Champ | Type | Nullable |
 |-------|------|----------|
+| `id` | string | Oui — notre identifiant du client, préfixé `qlw_` ; `null` si l'acheteur n'a pas de compte chez nous |
 | `first_name` | string | Oui — vide si le client ne l'a pas renseigné au paiement |
 | `last_name` | string | Oui |
 | `email` | string | Non |
