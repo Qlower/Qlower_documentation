@@ -5,7 +5,7 @@ sidebar_label: Lien du Welcome Dashboard
 
 # Lien du Welcome Dashboard
 
-Chacun de vos clients dispose d'un espace à votre marque, le Welcome Dashboard. Il y retrouve ses biens, ses déclarations et les services que vous lui avez ouverts. Il y accède par un lien unique, que nous lui envoyons et que nous vous rendons en parallèle, dans l'accusé de réception de vos loads.
+Chacun de vos clients dispose d'un espace à votre marque, le Welcome Dashboard. Il y retrouve ses biens, ses déclarations et les services que vous lui avez ouverts. Il y accède par l'adresse de votre espace, la même pour tous vos clients.
 
 ## L'adresse de votre espace
 
@@ -29,44 +29,16 @@ Chaque client est rattaché à un seul espace, celui du partenaire qui nous l'a 
 
 À la création de son compte, votre client reçoit par email son lien d'accès, à votre marque. Vous n'avez rien à lui envoyer.
 
-## Ce que vous recevez
+## Ce que vous affichez
 
-Le même lien, pour l'afficher dans votre outil : votre client n'a pas à retrouver un email reçu des semaines plus tôt.
+L'adresse de votre espace, pour que votre client y accède depuis votre outil sans retrouver un email reçu des semaines plus tôt. Il n'y a pas de lien propre à chaque client : affichez la même adresse à tous. Elle ne figure pas dans l'accusé de réception de vos loads ; l'adresse de staging vous est communiquée avec vos accès de test.
 
-### Dans l'accusé de réception du load
+## Ce que cette adresse n'est pas
 
-L'accusé de réception de chaque load envoyé par l'[API REST](../entree/integration/api-rest.md) porte, pour chaque client, son lien dans le champ `welcome_url` :
-
-```json
-{
-  "status": "SUCCESS",
-  "clients": [
-    {
-      "id": "CLT-00042",
-      "email": "jean.dupont@example.com",
-      "status": "CREATED",
-      "welcome_url": "https://votremarque.k7m2xq.espacefiscal.com/..."
-    }
-  ]
-}
-```
-
-Les loads déposés sur S3 sont traités en différé : récupérez le lien par la route [Clients](./clients.md).
-
-:::tip[Utilisez le lien tel quel]
-Ne reconstruisez pas le lien vous-même : seule l'adresse de votre espace est fixe, la suite du lien peut évoluer. L'adresse de staging vous est communiquée avec vos accès de test.
+:::info[Cette adresse n'est pas un identifiant de connexion]
+Elle ouvre l'écran d'accès de l'espace : votre client saisit son email, reçoit un code à six chiffres, puis entre dans son espace. Il n'a aucun mot de passe à créer.
 :::
 
-## Ce que ce lien n'est pas
+Vous pouvez donc l'afficher dans votre outil sans précaution particulière : sans accès à la boîte mail du client, elle ne donne accès à rien. Chaque connexion est journalisée.
 
-:::info[Ce lien n'est pas un identifiant de connexion]
-Il ouvre l'écran d'accès de l'espace : votre client saisit son email, reçoit un code à six chiffres, puis entre dans son espace. Il n'a aucun mot de passe à créer.
-:::
-
-Vous pouvez donc afficher ce lien dans votre outil sans précaution particulière : sans accès à la boîte mail du client, il ne donne accès à rien. Chaque connexion est journalisée.
-
-Transmettez-nous l'adresse que votre client utilise réellement. C'est celle qu'il devra saisir pour retrouver les biens que vous nous avez envoyés.
-
-## Durée de vie
-
-Le lien est durable : il ne change pas d'un load à l'autre et n'expire pas. Nous pouvons le révoquer, par exemple à la demande du client ; la route [Clients](./clients.md) renvoie toujours le lien en vigueur.
+Transmettez-nous l'adresse email que votre client utilise réellement. C'est celle qu'il devra saisir pour retrouver les biens que vous nous avez envoyés.
