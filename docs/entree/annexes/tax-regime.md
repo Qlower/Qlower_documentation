@@ -45,6 +45,7 @@ Ci-dessous, une liste des régimes fiscaux avec leurs descriptions respectives :
 | 31        | Scellier intermédiaire                                |
 | 32        | Scellier réhabilitation                               |
 | 33        | Denormandie                                           |
+| 34        | Duflot neuf                                           |
 | 35        | Duflot réhabilitation                                 |
 | 9         | Pinel Réhabilitation                                  |
 | 38        | SARL                                                  |
